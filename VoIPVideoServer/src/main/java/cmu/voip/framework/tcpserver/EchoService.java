@@ -8,7 +8,7 @@ public class EchoService {
 		if ("FAIL".equals(input)) {
 			throw new RuntimeException("Failure Demonstration");
 		}
-		return "echo:" + input;
+		return "echo   :" + input;
 	}
 
 }
