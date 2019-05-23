@@ -2,9 +2,26 @@
 LG SW architect studio project repository 
 
 
-test
+## Commit guideline
+- Please write commit message in english 
+  - Seperate subject from body with a blank line 
+  - Capitalize the subject line and each paragraph 
+  - Use the body to explain what and why you have done something.
+- commit files in appropriate path (refer folder structure)
 
-test from frank
 
+## Folder structure 
+- source 
+  - server	
+  - client
 
-test commit
+- document 
+  - develpment
+    - requirement 
+    - design 
+      - ads 
+    - implement 
+    - test
+  - management 
+		- meeting
+    
