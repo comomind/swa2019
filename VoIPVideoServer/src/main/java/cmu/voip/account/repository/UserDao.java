@@ -10,7 +10,7 @@ import cmu.voip.account.vo.User;
 @Repository
 public class UserDao {
 	
-	//@Resource(name="sqlSession")
+	// @Resource(name="sqlSession")
 	SqlSession sqlsession;
 	
 	public User selectUserById(User user) {
