@@ -23,5 +23,5 @@ LG SW architect studio project repository
     - implement 
     - test
   - management 
-		- meeting
+    - meeting
     
