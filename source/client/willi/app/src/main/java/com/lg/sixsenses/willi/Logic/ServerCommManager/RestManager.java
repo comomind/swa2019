@@ -1,16 +1,14 @@
-package com.lg.sixsenses.willi.ConnectionManager;
+package com.lg.sixsenses.willi.Logic.ServerCommManager;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lg.sixsenses.willi.LoginResult;
-import com.lg.sixsenses.willi.Model.DataManager;
-import com.lg.sixsenses.willi.RegisterInfo;
-import com.lg.sixsenses.willi.UpdatedData;
-import com.lg.sixsenses.willi.UserInfo;
+import com.lg.sixsenses.willi.DataRepository.DataManager;
+import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
+import com.lg.sixsenses.willi.DataRepository.UpdatedData;
+import com.lg.sixsenses.willi.DataRepository.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +27,7 @@ public class RestManager {
 
     public static final String TAG = RestManager.class.getName().toString();
 
-    public static final String SERVER_IP = "128.237.219.73";
+    public static final String SERVER_IP = "128.237.177.77";
     public static final String PORT = "8080";
     public static final String CMD_REGISTER = "user/register.json";
     public static final String CMD_LOGIN = "user/login.json";

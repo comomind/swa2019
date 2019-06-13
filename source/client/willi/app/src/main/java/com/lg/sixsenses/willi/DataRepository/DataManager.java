@@ -1,9 +1,6 @@
-package com.lg.sixsenses.willi.Model;
+package com.lg.sixsenses.willi.DataRepository;
 
 import android.util.Log;
-
-import com.lg.sixsenses.willi.UpdatedData;
-import com.lg.sixsenses.willi.UserInfo;
 
 import java.util.ArrayList;
 import java.util.Observable;

@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi;
+package com.lg.sixsenses.willi.DataRepository;
 
 public class UserInfo {
     private String name;

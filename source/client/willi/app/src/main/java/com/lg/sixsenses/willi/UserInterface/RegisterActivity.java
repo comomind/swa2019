@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.View;
+package com.lg.sixsenses.willi.UserInterface;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +10,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.lg.sixsenses.willi.ConnectionManager.RestManager;
-import com.lg.sixsenses.willi.Model.DataManager;
+import com.lg.sixsenses.willi.Logic.ServerCommManager.RestManager;
+import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.R;
-import com.lg.sixsenses.willi.RegisterInfo;
-import com.lg.sixsenses.willi.UpdatedData;
-import com.lg.sixsenses.willi.UserInfo;
+import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
+import com.lg.sixsenses.willi.DataRepository.UpdatedData;
+import com.lg.sixsenses.willi.DataRepository.UserInfo;
 
 import java.util.Observable;
 import java.util.Observer;

@@ -1,4 +1,6 @@
-package com.lg.sixsenses.willi;
+package com.lg.sixsenses.willi.Logic.ServerCommManager;
+
+import com.lg.sixsenses.willi.DataRepository.UserInfo;
 
 import java.util.ArrayList;
 
