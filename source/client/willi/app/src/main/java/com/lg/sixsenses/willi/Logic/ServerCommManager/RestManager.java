@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
+import com.lg.sixsenses.willi.DataRepository.LoginInfo;
 import com.lg.sixsenses.willi.DataRepository.UpdatedData;
 import com.lg.sixsenses.willi.DataRepository.UserInfo;
 
@@ -182,19 +183,20 @@ public class RestManager {
         AsyncTask.execute(new MyRunnable(registerInfo));
     }
 
-    public void sendLogin(RegisterInfo registerInfo)
+    public void sendLogin(LoginInfo loginInfo)
     {
         class MyRunnable implements Runnable {
-            RegisterInfo registerInfo;
-            MyRunnable(RegisterInfo info) { registerInfo = info; }
+            LoginInfo loginInfo;
+            //RegisterInfo registerInfo;
+            MyRunnable(LoginInfo info) { loginInfo = info; }
 
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_LOGIN);
-                sendRestfulRequest(conn,registerInfo);
+                sendRestfulRequest(conn,loginInfo);
                 recvRestfulResponse(conn);
                 conn.disconnect();
             }
         }
-        AsyncTask.execute(new MyRunnable(registerInfo));
+        AsyncTask.execute(new MyRunnable(loginInfo));
     }
 }

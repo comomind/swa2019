@@ -9,10 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.lg.sixsenses.willi.DataRepository.LoginInfo;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.RestManager;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.R;
-import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
+//import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
 import com.lg.sixsenses.willi.DataRepository.UpdatedData;
 import com.lg.sixsenses.willi.DataRepository.UserInfo;
 
@@ -45,12 +46,19 @@ public class LoginActivity extends AppCompatActivity implements Observer {
             return;
         }
 
-        RegisterInfo registerInfo = new RegisterInfo();
-        registerInfo.setEmail(editTextEmail.getText().toString());
-        registerInfo.setPassword(editTextPassword.getText().toString());
+        //RegisterInfo registerInfo = new RegisterInfo();
+        //registerInfo.setEmail(editTextEmail.getText().toString());
+        //registerInfo.setPassword(editTextPassword.getText().toString());
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(editTextEmail.getText().toString());
+        loginInfo.setPassword(editTextPassword.getText().toString());
+        loginInfo.setip("123.123.123.123");
+        loginInfo.setPort(60001);
 
         restManager = new RestManager();
-        restManager.sendLogin(registerInfo);
+       // restManager.sendLogin(registerInfo);
+        restManager.sendLogin(loginInfo);
     }
 
     public void buttonRegisterClick(View view)
