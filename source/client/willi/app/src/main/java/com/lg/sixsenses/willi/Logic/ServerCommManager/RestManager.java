@@ -1,10 +1,12 @@
 package com.lg.sixsenses.willi.Logic.ServerCommManager;
 
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
 import com.lg.sixsenses.willi.DataRepository.LoginInfo;
@@ -28,7 +30,7 @@ public class RestManager {
 
     public static final String TAG = RestManager.class.getName().toString();
 
-    public static final String SERVER_IP = "128.237.177.77";
+    public static final String SERVER_IP = ConstantsWilli.SERVER_IP;
     public static final String PORT = "8080";
     public static final String CMD_REGISTER = "user/register.json";
     public static final String CMD_LOGIN = "user/login.json";
@@ -104,15 +106,17 @@ public class RestManager {
         {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                TypeReference ref = new TypeReference<RestfulResponse<LoginResult>>() {
-                };
+                TypeReference ref = new TypeReference<RestfulResponse<LoginResult>>() {};
                 RestfulResponse restfulResponse = mapper.readValue(recv, ref);
                 Log.d(TAG, restfulResponse.toString());
-
+                String token = restfulResponse.getToken();
+                DataManager.getInstance().setToken(token);
                 LoginResult result = (LoginResult) (restfulResponse.getBody());
 
+                UserInfo myInfo = result.getMyInfo();
                 ArrayList<UserInfo> list = result.getList();
 
+                DataManager.getInstance().setMyInfo(myInfo);
                 DataManager.getInstance().setContactList(list);
 
                 UpdatedData data = new UpdatedData();

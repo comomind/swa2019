@@ -18,6 +18,8 @@ public class DataManager extends Observable {
 
     private UserInfo myInfo;
     private ArrayList<UserInfo> contactList;
+    private String token;
+    private String callerPhoneNum;
 
     public UserInfo getMyInfo() {
         return myInfo;
@@ -33,6 +35,22 @@ public class DataManager extends Observable {
 
     public void setContactList(ArrayList<UserInfo> contactList) {
         this.contactList = contactList;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getCallerPhoneNum() {
+        return callerPhoneNum;
+    }
+
+    public void setCallerPhoneNum(String callerPhoneNum) {
+        this.callerPhoneNum = callerPhoneNum;
     }
 
     public void NotifyUpdate(UpdatedData data) {

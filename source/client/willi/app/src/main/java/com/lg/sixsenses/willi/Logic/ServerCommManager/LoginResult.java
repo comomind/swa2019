@@ -5,6 +5,7 @@ import com.lg.sixsenses.willi.DataRepository.UserInfo;
 import java.util.ArrayList;
 
 public class LoginResult {
+    private UserInfo myInfo;
     private ArrayList<UserInfo> list;
 
     public ArrayList<UserInfo> getList() {
@@ -15,10 +16,19 @@ public class LoginResult {
         this.list = list;
     }
 
+    public UserInfo getMyInfo() {
+        return myInfo;
+    }
+
+    public void setMyInfo(UserInfo myInfo) {
+        this.myInfo = myInfo;
+    }
+
     @Override
     public String toString() {
         return "LoginResult{" +
-                "list=" + list +
+                "myInfo=" + myInfo +
+                ", list=" + list +
                 '}';
     }
 }

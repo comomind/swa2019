@@ -9,13 +9,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.LoginInfo;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.RestManager;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
+import com.lg.sixsenses.willi.Logic.ServerCommManager.TcpRecvCallManager;
+import com.lg.sixsenses.willi.Logic.ServerCommManager.TcpSendCallManager;
 import com.lg.sixsenses.willi.R;
 //import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
 import com.lg.sixsenses.willi.DataRepository.UpdatedData;
 import com.lg.sixsenses.willi.DataRepository.UserInfo;
+import com.lg.sixsenses.willi.Util;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -25,10 +29,11 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     public static final String TAG = LoginActivity.class.getName().toString();
     private RestManager restManager;
-    private Button buttonLogin;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewResult;
+    private TcpSendCallManager sender = null;
+    private TcpRecvCallManager receiver = null;
 
     public void buttonLoginClick(View view)
     {
@@ -53,8 +58,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(editTextEmail.getText().toString());
         loginInfo.setPassword(editTextPassword.getText().toString());
-        loginInfo.setip("123.123.123.123");
-        loginInfo.setPort(60001);
+        loginInfo.setip(Util.getIPAddress());
+        loginInfo.setPort(ConstantsWilli.CLIENT_TCP_CALL_SIGNAL_PORT);
 
         restManager = new RestManager();
        // restManager.sendLogin(registerInfo);
@@ -74,12 +79,14 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
         DataManager.getInstance().addObserver(this);
 
-        buttonLogin         = (Button)findViewById(R.id.buttonRegister);
+        //buttonLogin         = (Button)findViewById(R.id.buttonRegister);
         editTextEmail       = (EditText)findViewById(R.id.editTextEmail);
         editTextPassword    = (EditText)findViewById(R.id.editTextPassword);
         textViewResult      = (TextView)findViewById(R.id.textViewResult);
         textViewResult.setText(null);
 
+        receiver = new TcpRecvCallManager();
+        receiver.start();
     }
 
     @Override
@@ -111,6 +118,19 @@ public class LoginActivity extends AppCompatActivity implements Observer {
             });
 
 
+
         }
     }
+
+    public void buttonSendClick(View view)
+    {
+        sender = new TcpSendCallManager();
+        sender.startPhoneCall("1001");
+    }
+
+    public void buttonReceiveClick(View view)
+    {
+        receiver.receiveCall();
+    }
+
 }
