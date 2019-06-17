@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/voice0_item"
+        android:title="@string/None" />
+    <item android:id="@+id/voice1_item"
+        android:title="@string/Voice1" />
+    <item android:id="@+id/voice2_item"
+        android:title="@string/Voice2" />
+    <item android:id="@+id/voice3_item"
+        android:title="@string/Voice3" />
+    <item android:id="@+id/voice4_item"
+        android:title="@string/Voice4"/>
+
+</menu>

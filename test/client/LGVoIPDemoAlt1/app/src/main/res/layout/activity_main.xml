@@ -1,0 +1,160 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/textViewLocalIp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/LocalIp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button" />
+
+    <TextView
+        android:id="@+id/textViewRemoteIp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/RemoteIp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp">
+
+        <EditText
+            android:id="@+id/editTextRemoteIp"
+            android:labelFor="@+id/textViewRemoteIp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:digits="0123456789."
+            android:ems="10"
+            android:inputType="number|numberDecimal"
+            android:maxLength="15"
+            android:singleLine="true"
+            android:hint="@string/IpAddress"
+            android:importantForAutofill="no"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button">
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/buttonCall"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/CallIp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textViewPhoneState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/PhoneState"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Answer" />
+
+        <Button
+            android:id="@+id/buttonRefuse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Refuse" />
+
+        <Button
+            android:id="@+id/buttonEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/End" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/buttonSimVoice"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/None" />
+
+        <ToggleButton
+            android:id="@+id/buttonToggleBoost"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:textOff="@string/BoostOff"
+            android:textOn="@string/BoostOn" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="0dp"
+        android:gravity="center_horizontal">
+
+        <ToggleButton
+            android:id="@+id/buttonToggleMicrophone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:textOff="@string/MicMuted"
+            android:textOn="@string/MicOn" />
+
+        <Button
+            android:id="@+id/buttonAudioOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Earpiece" />
+
+        <ToggleButton
+            android:id="@+id/buttonToggleRinger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:textOff="@string/RingerOff"
+            android:textOn="@string/RingerOn" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+
+        <ImageView
+            android:id="@+id/imageViewVideo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:contentDescription="@string/VideoFrame"/>
+    </LinearLayout>
+
+</LinearLayout>

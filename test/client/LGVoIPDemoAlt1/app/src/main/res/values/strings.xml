@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">LG VoIP Demo Alt</string>
+    <string name="BoostOn">Boost On</string>
+    <string name="BoostOff">Boost Off</string>
+    <string name="LocalIp">Local IP: %1$s</string>
+    <string name="PhoneState">State: %1$s %2$s</string>
+    <string name="RemoteIp">Remote IP To Call:</string>
+    <string name="IpAddress">IP Address</string>
+    <string name="CallIp">Call IP</string>
+    <string name="Answer">Answer</string>
+    <string name="Refuse">Refuse</string>
+    <string name="End">End</string>
+    <string name="Speaker">Speaker</string>
+    <string name="Earpiece">EarPiece</string>
+    <string name="BlueTooth">BlueTooth</string>
+    <string name="MicOn">Mic On</string>
+    <string name="MicMuted">Mic Muted</string>
+    <string name="RingerOn">Ringer On</string>
+    <string name="RingerOff">Ringer Off</string>
+    <string name="None">Sim Voice: None</string>
+    <string name="Voice1">Sim Voice: Voice 1</string>
+    <string name="Voice2">Sim Voice: Voice 2</string>
+    <string name="Voice3">Sim Voice: Voice 3</string>
+    <string name="Voice4">Sim Voice: Voice 4</string>
+    <string name="VideoFrame">Video Frame</string>
+</resources>
