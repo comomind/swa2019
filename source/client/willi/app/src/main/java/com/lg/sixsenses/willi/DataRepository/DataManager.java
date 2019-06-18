@@ -13,6 +13,8 @@ public class DataManager extends Observable {
         return instance;
     }
 
+    public enum CallStatus {IDLE, CALLING, RINGING, CONNECTED}
+
     private DataManager() {
     }
 
@@ -20,6 +22,7 @@ public class DataManager extends Observable {
     private ArrayList<UserInfo> contactList;
     private String token;
     private String callerPhoneNum;
+    private CallStatus callStatus;
 
     public UserInfo getMyInfo() {
         return myInfo;
@@ -51,6 +54,14 @@ public class DataManager extends Observable {
 
     public void setCallerPhoneNum(String callerPhoneNum) {
         this.callerPhoneNum = callerPhoneNum;
+    }
+
+    public CallStatus getCallStatus() {
+        return callStatus;
+    }
+
+    public void setCallStatus(CallStatus callStatus) {
+        this.callStatus = callStatus;
     }
 
     public void NotifyUpdate(UpdatedData data) {

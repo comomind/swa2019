@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
+import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
 import com.lg.sixsenses.willi.Util;
 
 import java.io.BufferedReader;
@@ -76,7 +77,10 @@ public class TcpRecvCallManager {
                         Log.d(TAG, "TCP Callee Recv Header : " + recvHeader.toString());
                         Log.d(TAG, "TCP Callee Recv Body : " + recvBody.toString());
 
-                        Log.d(TAG, "Ring~ Ring~ Ring~ Call From  : " + recvBody.getCallerPhoneNum());
+                        if(recvBody.getCmd().equals("CallRequestS2C")) CallStateMachine.getInstance().recvCallRequest();
+                        else if(recvBody.getCmd().equals("CallRejectS2C")) CallStateMachine.getInstance().recvCallReject();
+
+//                        Log.d(TAG, "Ring~ Ring~ Ring~ Call From  : " + recvBody.getCallerPhoneNum());
                         DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
 //                        buf.append("-Echo\r\n");
 //                        // 그리고 현재 날짜를 출력해줍니다.
@@ -152,6 +156,62 @@ public class TcpRecvCallManager {
 
                     streamOut.write(input.getBytes());
                     streamOut.flush();
+
+                    CallStateMachine.getInstance().sendCallAccept();
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        AsyncTask.execute(new MyRunnable(streamOut));
+
+    }
+
+    public void rejectCall()
+    {
+        class MyRunnable implements Runnable {
+            OutputStream streamOut;
+            MyRunnable(OutputStream stream) { this.streamOut = stream; }
+
+            public void run() {
+                try {
+                    TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
+
+                    TcpCallSignalHeader header = new TcpCallSignalHeader();
+                    header.setType("R");
+                    header.setToken(DataManager.getInstance().getToken());
+                    header.setIpaddr(Util.getIPAddress());
+                    header.setTrantype("SYNC");
+                    header.setSvcid("tcpCallService");
+                    header.setReqtype(1);
+                    header.setSvctype(1);
+
+
+                    TcpCallSignalBody body = new TcpCallSignalBody();
+                    body.setCmd("CallRejectC2S");
+                    body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
+                    body.setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
+                    body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
+//                    int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
+//                    body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
+//                    body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
+//                    body.setIpaddr(Util.getIPAddress());
+
+                    callSignal.setHeader(header);
+                    callSignal.setBody(body);
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    String input = mapper.writeValueAsString(callSignal);
+
+
+                    Log.d(TAG, "TCP Response Send : " + input);
+
+                    input = input + "\r\n";
+
+                    streamOut.write(input.getBytes());
+                    streamOut.flush();
+                    CallStateMachine.getInstance().sendCallReject();
                 }
                 catch (IOException e) {
                     e.printStackTrace();

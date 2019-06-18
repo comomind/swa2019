@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.LoginInfo;
+import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.RestManager;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.TcpRecvCallManager;
@@ -116,9 +117,26 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
                 }
             });
+        }
+        else if(data.getType().equals("CallState"))
+        {
+            DataManager.CallStatus status = (DataManager.CallStatus)(data.getData());
+            Log.d(TAG, "CallState : "+ status.toString());
 
+            class MyRunnable implements Runnable {
+                DataManager.CallStatus status;
+                MyRunnable(DataManager.CallStatus status) { this.status = status; }
 
+                public void run() {
 
+                }
+            }
+            runOnUiThread(new MyRunnable(status) {
+                @Override
+                public void run() {
+                    textViewResult.setText("Call State : "+status.toString());
+                }
+            });
         }
     }
 
@@ -131,6 +149,26 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     public void buttonReceiveClick(View view)
     {
         receiver.receiveCall();
+    }
+    public void buttonRejectClick1(View view)
+    {
+        TcpSendCallManager sender1 = new TcpSendCallManager();
+        sender1.rejectPhoneCall("1001");
+    }
+
+    public void buttonRejectClick2(View view)
+    {
+        receiver.rejectCall();
+    }
+
+    public void buttonParkClick(View view)
+    {
+        editTextEmail.setText("park@lge.com");
+        editTextPassword.setText("1234");
+    }
+    public void buttonLeeClick(View view) {
+        editTextEmail.setText("lee@lge.com");
+        editTextPassword.setText("1234");
     }
 
 }
