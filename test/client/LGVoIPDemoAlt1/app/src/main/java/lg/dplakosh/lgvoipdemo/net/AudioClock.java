@@ -15,7 +15,13 @@ public class AudioClock extends RtpClock {
   }
 
   @Override
+  public double getTime(double timestamp) {
+    return (timestamp / samplesPerMillisecond);
+  }
+
+  @Override
   public long getTimestamp(long time) {
     return (long) (time * samplesPerMillisecond);
   }
+
 }

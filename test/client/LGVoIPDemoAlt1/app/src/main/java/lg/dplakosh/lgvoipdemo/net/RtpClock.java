@@ -39,5 +39,6 @@ public abstract class RtpClock {
   }
 
   public abstract long getTime(long timestamp);
+  public abstract double getTime(double timestamp);
   public abstract long getTimestamp(long time);
 }

@@ -1,12 +1,13 @@
 package lg.dplakosh.lgvoipdemo.net;
 
+import android.util.Log;
+
 import java.io.Serializable;
-import java.util.logging.Logger;
 
 import lg.dplakosh.lgvoipdemo.util.BufferConcurrentLinkedQueue;
 
-
 public class JitterBuffer implements Serializable {
+  private static final String TAG = JitterBuffer.class.getSimpleName();
 
   private int period;
   private int jitter;
@@ -16,9 +17,9 @@ public class JitterBuffer implements Serializable {
 
   private long duration;
   private volatile long timestamp;
+  //private Format format;
   private int sampleRate;
   private RtpClock clock;
-  private Logger logger = Logger.getLogger(getClass().getName());
   private long delta;
 
   Object lock = new Object();
@@ -72,10 +73,11 @@ public class JitterBuffer implements Serializable {
       //if buffer's ready flag equals true then it means that reading
       //starting and we should compare timestamp of arrived packet with time of
       //last reading.
-      logger.info("RX packet: rx ts = " + t + ", local ts = " + timestamp + ", diff = " + (t - timestamp));
-      if (ready && t > timestamp + jitterSamples) {
-        //silentrly discard otstanding packet
-        logger.warning("Packet " + rtpPacket + " is discarded by jitter buffer");
+      Log.i(TAG, "RX packet: rx ts = " + t + ", local ts = " + timestamp + ", diff = " + (t - timestamp));
+//      if (ready && t > timestamp + jitterSamples) {
+      if (ready && t > timestamp + jitter) {
+        //silently discard outstanding packet
+        Log.w(TAG, "Packet " + rtpPacket + " is discarded by jitter buffer");
         return;
       }
     }
@@ -98,15 +100,16 @@ public class JitterBuffer implements Serializable {
     delta = 0;
   }
 
-  public RtpPacket read(long timestamp) {
+  public RtpPacket read() {
     //discard buffer is buffer is not full yet
     if (!ready) {
       return null;
     }
 
     synchronized(lock) {
+      long now = System.currentTimeMillis();
       //remember timestamp
-      this.timestamp = timestamp + delta;
+      this.timestamp = clock.getTimestamp(now) + delta;
     }
 
     //if packet queue is empty (but was full) we have to returns

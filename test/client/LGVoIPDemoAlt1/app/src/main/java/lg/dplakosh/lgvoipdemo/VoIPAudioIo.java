@@ -25,6 +25,7 @@ import android.os.Process;
 
 import lg.dplakosh.lgvoipdemo.net.AudioClock;
 import lg.dplakosh.lgvoipdemo.net.JitterBuffer;
+import lg.dplakosh.lgvoipdemo.net.JitterBuffer1;
 import lg.dplakosh.lgvoipdemo.net.RtpConst;
 import lg.dplakosh.lgvoipdemo.net.RtpPacket;
 
@@ -48,7 +49,8 @@ public class VoIPAudioIo {
     private boolean IsRunning = false;
     private boolean AudioIoThreadThreadRun = false;
     private boolean UdpVoipReceiveDataThreadRun = false;
-    private ConcurrentLinkedQueue<byte[]> IncommingpacketQueue;
+    private ConcurrentLinkedQueue<byte[]> incommingPacketQueue;
+    private JitterBuffer jitterBuffer;
     private int RtpSeqNum = 0;
 
     private int mTimestampOffset = 0;
@@ -59,11 +61,10 @@ public class VoIPAudioIo {
     private long prevReceiverTimeUnit = 0;
 
     // for sender
-    private long mPrevSenderTime = 0;
     private long prevSenderTimestamp = 0;
 
     // D = transit relative time
-    private long prevDelayTimestamp = 0;
+//    private long prevDelayTimestamp = 0;
 
     // for jitter
     private double prevJitterTimestamp = 0;
@@ -78,7 +79,7 @@ public class VoIPAudioIo {
         if (IsRunning) return (true);
         if (JniGsmOpen() == 0)
             Log.i(TAG, "JniGsmOpen() Success");
-        IncommingpacketQueue = new ConcurrentLinkedQueue<>();
+        incommingPacketQueue = new ConcurrentLinkedQueue<>();
         mSimVoice = SimVoice;
         this.RemoteIp = IP;
         StartAudioIoThread();
@@ -116,7 +117,7 @@ public class VoIPAudioIo {
 
         AudioIoThread = null;
         UdpReceiveDataThread = null;
-        IncommingpacketQueue = null;
+        incommingPacketQueue = null;
         RecvUdpSocket = null;
         JniGsmClose();
         IsRunning = false;
@@ -201,8 +202,13 @@ public class VoIPAudioIo {
                     RtpSeqNum = 0;
 
                     while (AudioIoThreadThreadRun) {
-                        if (IncommingpacketQueue.size() > 0) {
-                            byte[] AudioOutputBufferBytes = IncommingpacketQueue.remove();
+                        RtpPacket packetFromJitterbuffer = jitterBuffer.read();
+                        if (packetFromJitterbuffer != null) {
+                          packetFromJitterbuffer.getPayload(gsmbuf);
+                          // decode
+                          JniGsmDecodeB(gsmbuf, rawbuf);
+
+                          byte[] AudioOutputBufferBytes = rawbuf;
                             if (!MainActivity.BoostAudio) {
                                 OutputTrack.write(AudioOutputBufferBytes, 0, RAW_BUFFER_SIZE);
                             }
@@ -251,6 +257,7 @@ public class VoIPAudioIo {
                             RtpSeqNum++;
                         }
                     }
+
                     // Stop Audio Thread);
                     Recorder.stop();
                     Recorder.release();
@@ -295,77 +302,73 @@ public class VoIPAudioIo {
                     boolean isFirstReceived = true;
                     AudioClock audioClock = new AudioClock();
                     // TODO: Need to find out proper(jitter & period) through experiment
-                    JitterBuffer jitterBuffer = new JitterBuffer(30, 30);
+                    jitterBuffer = new JitterBuffer(30, 200);
                     jitterBuffer.setSampleRate(SAMPLE_RATE);
                     jitterBuffer.setClock(audioClock);
 
                     while (UdpVoipReceiveDataThreadRun) {
-                        byte[] rawbuf = new byte[RAW_BUFFER_SIZE];
-                        byte[] gsmbuf = new byte[GSM_BUFFER_SIZE];
 
                         byte[] rtpBuffer = new byte[RtpPacket.HEADER_SIZE + GSM_BUFFER_SIZE];
                         DatagramPacket packet = new DatagramPacket(rtpBuffer, RtpPacket.HEADER_SIZE + GSM_BUFFER_SIZE);
                         RecvUdpSocket.receive(packet);
 
                         RtpPacket rtpPacket = new RtpPacket(packet.getData(), packet.getLength());
-                        rtpPacket.getPayload(gsmbuf);
 
-                        // calculate jitter
-                        long senderTimestamp = 0;
-                        long receiverTime = 0;
+//                        // calculate jitter
+//                        long senderTimestamp = 0;
+//                        long receiverTime = 0;
+//
+//                        long receiverTimeUnit = 0;
+//                        long receiverTimestamp = 0;
+//
+//                        long delayTimestamp = 0;
+//                        double delayTime = 0;
+//
+//                        double jitterTimestamp = 0;
+//                        double jitterTime = 0;
+//
+//                        senderTimestamp = rtpPacket.getTimestamp();
+//                        receiverTime = System.currentTimeMillis();
+//
+//                        if (!isFirstReceived) {
+//                            receiverTimeUnit = (receiverTime - prevReceiverTime) + prevReceiverTimeUnit;
+//                            receiverTimestamp = receiverTimeUnit * 8000 / 1000;
+//
+//                            delayTimestamp = (receiverTimestamp - prevReceiverTimestamp) - (senderTimestamp - prevSenderTimestamp);
+//                            if (delayTimestamp < 0) {
+//                                delayTimestamp = -delayTimestamp;
+//                            }
+//
+//                            jitterTimestamp = prevJitterTimestamp + (delayTimestamp - prevJitterTimestamp)/(double)16;
+//                            jitterTime = jitterTimestamp / (double)(SAMPLE_RATE / 1000);
+//
+//                            delayTime = delayTimestamp / (double)(SAMPLE_RATE / 1000);
+//                        }
+//
+//                        Log.d(TAG, "seq: " + rtpPacket.getSequenceNumber() +
+//                            " Si (timestamp): " + senderTimestamp +
+//                            " Si (ms): " + (senderTimestamp/(double)(SAMPLE_RATE/1000)) +
+//                            " Rec(i)(ms): " + receiverTimeUnit +
+//                            " RecTS(i)(timestamp): " + receiverTimestamp +
+//                            " D(timestamp): " + delayTimestamp +
+//                            " D(ms): " + String.format("%.2f", delayTime) +
+//                            " j(timestamp): " + jitterTimestamp +
+//                            " j(ms): " + String.format("%.2f", jitterTime) +
+//                            " latency(ms): " + (receiverTimestamp - senderTimestamp)/8
+//                        );
+//
+//                        // post action
+//                        isFirstReceived = false;
+////                        prevDelayTimestamp = delayTimestamp;
+//                        prevSenderTimestamp = senderTimestamp;
+//                        prevJitterTimestamp = jitterTimestamp;
+//
+//                        prevReceiverTime = receiverTime;
+//                        prevReceiverTimestamp = receiverTimestamp;
+//                        prevReceiverTimeUnit = receiverTimeUnit;
 
-                        long receiverTimeUnit = 0;
-                        long receiverTimestamp = 0;
-
-                        long delayTimestamp = 0;
-                        double delayTime = 0;
-
-                        double jitterTimestamp = 0;
-                        double jitterTime = 0;
-
-                        senderTimestamp = rtpPacket.getTimestamp();
-                        receiverTime = System.currentTimeMillis();
-
-                        if (!isFirstReceived) {
-                            receiverTimeUnit = (receiverTime - prevReceiverTime) + prevReceiverTimeUnit;
-                            receiverTimestamp = receiverTimeUnit * 8000 / 1000;
-
-                            delayTimestamp = (receiverTimestamp - prevReceiverTimestamp) - (senderTimestamp - prevSenderTimestamp);
-                            if (delayTimestamp < 0) {
-                                delayTimestamp = -delayTimestamp;
-                            }
-
-                            jitterTimestamp = prevJitterTimestamp + (delayTimestamp - prevJitterTimestamp)/(double)16;
-                            jitterTime = jitterTimestamp / (double)(SAMPLE_RATE / 1000);
-
-                            delayTime = delayTimestamp / (double)(SAMPLE_RATE / 1000);
-                        }
-
-                        Log.d(TAG, "seq: " + rtpPacket.getSequenceNumber() +
-                            " Si (timestamp): " + senderTimestamp +
-                            " Si (ms): " + (senderTimestamp/(double)(SAMPLE_RATE/1000)) +
-                            " Rec(i)(ms): " + receiverTimeUnit +
-                            " RecTS(i)(timestamp): " + receiverTimestamp +
-                            " D(timestamp): " + delayTimestamp +
-                            " D(ms): " + String.format("%.2f", delayTime) +
-                            " j(timestamp): " + jitterTimestamp +
-                            " j(ms): " + String.format("%.2f", jitterTime)
-                        );
-
-                        // post action
-                        isFirstReceived = false;
-                        prevDelayTimestamp = delayTimestamp;
-                        prevSenderTimestamp = senderTimestamp;
-                        prevJitterTimestamp = jitterTimestamp;
-
-                        prevReceiverTime = receiverTime;
-                        prevReceiverTimestamp = receiverTimestamp;
-                        prevReceiverTimeUnit = receiverTimeUnit;
-
-                        // decode
-                        JniGsmDecodeB(gsmbuf, rawbuf);
-
-                        IncommingpacketQueue.add(rawbuf);
+                        // push jitter buffer
+                        jitterBuffer.write(rtpPacket);
                     }
 
                     // close socket

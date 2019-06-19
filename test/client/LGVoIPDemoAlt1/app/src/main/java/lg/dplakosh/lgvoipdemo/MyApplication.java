@@ -16,15 +16,16 @@ public class MyApplication extends Application {
 
     Log.d(TAG, "MyApplication created");
 
-    new Thread(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          TrueTime.build().initialize();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
-    }).start();
+//    new Thread(new Runnable() {
+//      @Override
+//      public void run() {
+//        try {
+//          TrueTime.build().withNtpHost("10.0.1.240")
+//              .initialize();
+//        } catch (IOException e) {
+//          e.printStackTrace();
+//        }
+//      }
+//    }).start();
   }
 }
