@@ -4,6 +4,7 @@ public class UserInfo {
     private String name;
     private String email;
     private String phoneNum;
+    private String loginStatus;
 
     public void setName(String name) {
         this.name = name;
@@ -29,12 +30,21 @@ public class UserInfo {
         return phoneNum;
     }
 
+    public String getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(String loginStatus) {
+        this.loginStatus = loginStatus;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
+                ", loginStatus='" + loginStatus + '\'' +
                 '}';
     }
 }
