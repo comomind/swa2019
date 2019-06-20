@@ -98,7 +98,7 @@ public class TcpSendCallManager {
                     else
                         response = result;
 
-                    //Log.d(TAG, "TCP ClientSocket Recved : " + response);
+                    Log.d(TAG, "TCP ClientSocket Recved : " + response);
 
                     ObjectMapper mapper2 = new ObjectMapper();
                     TypeReference ref = new TypeReference<TcpCallSignalReceive<TcpCallSignalBody>>() {
@@ -108,16 +108,17 @@ public class TcpSendCallManager {
                     TcpCallSignalHeader recvHeader = receive.getHeader();
                     TcpCallSignalBody recvBody = (TcpCallSignalBody) (receive.getBody());
 
-                    Log.d(TAG, "TCP ClientSocket Recv Header : " + recvHeader.toString());
-                    Log.d(TAG, "TCP ClientSocket Recv Body : " + recvBody.toString());
+                    //Log.d(TAG, "TCP ClientSocket Recv Header : " + recvHeader.toString());
+                    //Log.d(TAG, "TCP ClientSocket Recv Body : " + recvBody.toString());
 
 
                     if (recvBody.getCmd().equals("CallAcceptS2C")) {
                         CallStateMachine.getInstance().recvCallAccept();
                         DataManager.getInstance().setCallId(recvBody.getCallId());
-                    } else if (recvBody.getCmd().equals("CallRejectS2C"))
+                    } else if ( recvBody.getCmd().equals("CallRejectS2C") ||
+                                recvBody.getCmd().equals("CallFailS2C")) {
                         CallStateMachine.getInstance().recvCallReject();
-
+                    }
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();

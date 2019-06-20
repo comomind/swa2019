@@ -56,7 +56,7 @@ public class TcpRecvCallManager {
                                 count++;
                         }
 
-                        //Log.d(TAG, "Client ServerSocket : " + buf.toString());
+                        Log.d(TAG, "Client ServerSocket : " + buf.toString());
 
                         ObjectMapper mapper2 = new ObjectMapper();
                         TypeReference ref = new TypeReference<TcpCallSignalReceive<TcpCallSignalBody>>() {
@@ -66,10 +66,38 @@ public class TcpRecvCallManager {
                         TcpCallSignalHeader recvHeader = receive.getHeader();
                         TcpCallSignalBody recvBody = (TcpCallSignalBody) (receive.getBody());
 
-                        Log.d(TAG, "TCP ServerSocket Recv Header : " + recvHeader.toString());
-                        Log.d(TAG, "TCP ServerSocket Recv Body : " + recvBody.toString());
+//                        Log.d(TAG, "TCP ServerSocket Recv Header : " + recvHeader.toString());
+//                        Log.d(TAG, "TCP ServerSocket Recv Body : " + recvBody.toString());
 
-                        if (recvBody.getCmd().equals("CallRequestS2C")) {
+                        if(recvHeader.getType().equals("H")) {
+                            TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
+
+                            TcpCallSignalHeader header = new TcpCallSignalHeader();
+                            header.setType("H");
+                            header.setToken(DataManager.getInstance().getToken());
+                            header.setIpaddr(Util.getIPAddress());
+                            header.setTrantype("SYNC");
+                            header.setReqtype(1);
+                            header.setSvctype(1);
+                            callSignal.setHeader(header);
+
+                            ObjectMapper mapper = new ObjectMapper();
+                            String input = mapper.writeValueAsString(callSignal);
+
+                            Log.d(TAG, "TCP ServerSocket Response for HealthCheck : " + input);
+
+                            input = input + "@@";
+
+                            OutputStream streamOut1 = socket.getOutputStream();
+                            streamOut1.write(input.getBytes());
+                            streamOut1.flush();
+
+
+                            streamOut1.close();
+                            socket.close();
+
+
+                        } else if (recvBody.getCmd().equals("CallRequestS2C")) {
                             CallStateMachine.getInstance().recvCallRequest();
                             DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
                             DataManager.getInstance().setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
@@ -109,6 +137,63 @@ public class TcpRecvCallManager {
 
 
                             Log.d(TAG, "TCP ServerSocket Response for CallReject : " + input);
+
+                            //input = input + "\r\n";
+                            input = input + "@@";
+
+                            OutputStream streamOut1 = socket.getOutputStream();
+                            streamOut1.write(input.getBytes());
+                            streamOut1.flush();
+
+
+                            streamOut1.close();
+                            socket.close();
+
+                            if (firstRecvSocket != null) {
+                                OutputStream streamOut2 = firstRecvSocket.getOutputStream();
+                                streamOut2.write(input.getBytes());
+                                streamOut2.flush();
+                                streamOut2.close();
+                                firstRecvSocket.close();
+                                firstRecvSocket = null;
+                            }
+
+                            CallStateMachine.getInstance().sendCallReject();
+                        }
+                        else if (recvBody.getCmd().equals("CallFailS2C")) {
+                            CallStateMachine.getInstance().recvCallReject();
+                            // CallFail 명령을 받는 경우..
+                            // 1. Caller가 전화를 하였는데, Callee가 전화를 오랴 안받아 CallFail을 받는 경우
+                            // 2. Callee가 미쳐 전화를 못받았는데, 서버 타임아웃으로 CallFail을 받는 경우
+                            TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
+
+                            TcpCallSignalHeader header = new TcpCallSignalHeader();
+                            header.setType("R");
+                            header.setToken(DataManager.getInstance().getToken());
+                            header.setIpaddr(Util.getIPAddress());
+                            header.setTrantype("SYNC");
+                            header.setReqtype(1);
+                            header.setSvctype(1);
+
+
+                            TcpCallSignalBody body = new TcpCallSignalBody();
+                            body.setCmd("CallFailC2S");
+                            body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
+                            body.setCalleePhoneNum(DataManager.getInstance().getCalleePhoneNum());
+                            body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
+                            body.setCallId(DataManager.getInstance().getCallId());
+                            //                    int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
+                            //                    body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
+                            //                    body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
+                            //                    body.setIpaddr(Util.getIPAddress());
+                            callSignal.setHeader(header);
+                            callSignal.setBody(body);
+
+                            ObjectMapper mapper = new ObjectMapper();
+                            String input = mapper.writeValueAsString(callSignal);
+
+
+                            Log.d(TAG, "TCP ServerSocket Response for CallFail : " + input);
 
                             //input = input + "\r\n";
                             input = input + "@@";
