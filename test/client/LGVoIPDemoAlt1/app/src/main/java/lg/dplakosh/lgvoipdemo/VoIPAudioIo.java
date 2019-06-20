@@ -23,6 +23,7 @@ import android.media.MediaRecorder;
 import android.util.Log;
 import android.os.Process;
 
+import lg.dplakosh.lgvoipdemo.codec.audio.AudioCodec;
 import lg.dplakosh.lgvoipdemo.net.AudioClock;
 import lg.dplakosh.lgvoipdemo.net.JitterBuffer;
 import lg.dplakosh.lgvoipdemo.net.JitterBuffer1;
@@ -49,7 +50,9 @@ public class VoIPAudioIo {
     private boolean IsRunning = false;
     private boolean AudioIoThreadThreadRun = false;
     private boolean UdpVoipReceiveDataThreadRun = false;
-    private ConcurrentLinkedQueue<byte[]> incommingPacketQueue;
+//    private ConcurrentLinkedQueue<byte[]> incommingPacketQueue;
+
+    private AudioCodec audioCodec;
     private JitterBuffer jitterBuffer;
     private int RtpSeqNum = 0;
 
@@ -75,11 +78,19 @@ public class VoIPAudioIo {
 
     }
 
+    public AudioCodec getAudioCodec() {
+        return audioCodec;
+    }
+
+    public void setAudioCodec(AudioCodec audioCodec) {
+        this.audioCodec = audioCodec;
+    }
+
     synchronized boolean StartAudio(InetAddress IP, int SimVoice) {
         if (IsRunning) return (true);
-        if (JniGsmOpen() == 0)
+        if (audioCodec.open() == 0)
             Log.i(TAG, "JniGsmOpen() Success");
-        incommingPacketQueue = new ConcurrentLinkedQueue<>();
+//        incommingPacketQueue = new ConcurrentLinkedQueue<>();
         mSimVoice = SimVoice;
         this.RemoteIp = IP;
         StartAudioIoThread();
@@ -117,9 +128,9 @@ public class VoIPAudioIo {
 
         AudioIoThread = null;
         UdpReceiveDataThread = null;
-        incommingPacketQueue = null;
+//        incommingPacketQueue = null;
         RecvUdpSocket = null;
-        JniGsmClose();
+        audioCodec.close();
         IsRunning = false;
         return (false);
     }
@@ -206,7 +217,7 @@ public class VoIPAudioIo {
                         if (packetFromJitterbuffer != null) {
                           packetFromJitterbuffer.getPayload(gsmbuf);
                           // decode
-                          JniGsmDecodeB(gsmbuf, rawbuf);
+                          audioCodec.decode(gsmbuf, rawbuf);
 
                           byte[] AudioOutputBufferBytes = rawbuf;
                             if (!MainActivity.BoostAudio) {
@@ -243,7 +254,7 @@ public class VoIPAudioIo {
                             }
                         }
                         if (BytesRead == RAW_BUFFER_SIZE) {
-                            JniGsmEncodeB(rawbuf, gsmbuf);
+                            audioCodec.encode(rawbuf, gsmbuf);
 
                             // rtp packet
 //                            RtpPacket rtpPacket = new RtpPacket(RtpConst.PayloadType.GSM.getValue(), RtpSeqNum++, TrueTime.now().getTime(), gsmbuf, GSM_BUFFER_SIZE );
@@ -386,17 +397,6 @@ public class VoIPAudioIo {
         UdpReceiveDataThread.start();
     }
 
-    public static native int JniGsmOpen();
-    // Not Used uncomment to enable
-    //public static native int JniGsmDecode(byte encoded[], short lin[]);
-    // Not Used uncomment to enable
-    //public static native int JniGsmEncode(short lin[], byte encoded[]);
-
-    public static native int JniGsmDecodeB(byte encoded[], byte lin[]);
-
-    public static native int JniGsmEncodeB(byte lin[], byte encoded[]);
-
-    public static native void JniGsmClose();
 }
 
 

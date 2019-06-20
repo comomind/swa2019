@@ -22,6 +22,10 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Locale;
 
+import lg.dplakosh.lgvoipdemo.codec.CodecConst;
+import lg.dplakosh.lgvoipdemo.codec.audio.AudioCodec;
+import lg.dplakosh.lgvoipdemo.codec.audio.AudioCodecFactory;
+
 public class UDPListenerService extends Service {
     public static final int CONTROL_DATA_PORT = 5123;
     public final static String GUI_VOIP_CTRL = "GuiVoIpControl";
@@ -79,6 +83,10 @@ public class UDPListenerService extends Service {
                     InetAddress address = InetAddress.getByName(PhoneState.getInstance().GetRemoteIP());
                     PhoneState.getInstance().SetInComingIP(PhoneState.getInstance().GetRemoteIP());
                     PhoneState.getInstance().SetPhoneState(PhoneState.CallState.INCALL);
+
+                    // TODO: need to get audio codec type before start audio
+                    AudioCodec audioCodec = AudioCodecFactory.getCodec(CodecConst.CodecType.GSM);
+                    Audio.setAudioCodec(audioCodec);
                     if (Audio.StartAudio(address,MainActivity.SimVoice))
                         Log.e(LOG_TAG, "Audio Already started (Answer Button)");
                     if (Video.StartVideo(address))
@@ -213,6 +221,10 @@ public class UDPListenerService extends Service {
                 if (PhoneState.getInstance().GetPhoneState() == PhoneState.CallState.CALLING) {
                     try {
                         InetAddress address = InetAddress.getByName(Sender);
+
+                        // TODO: need to get audio codec type before start audio
+                        AudioCodec audioCodec = AudioCodecFactory.getCodec(CodecConst.CodecType.GSM);
+                        Audio.setAudioCodec(audioCodec);
                         if (Audio.StartAudio(address,MainActivity.SimVoice))
                             Log.e(LOG_TAG, "Audio Already started (Answer)");
                         if (Video.StartVideo(address))
