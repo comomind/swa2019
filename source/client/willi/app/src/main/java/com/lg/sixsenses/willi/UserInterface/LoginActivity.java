@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        sender = new TcpSendCallManager();
         DataManager.getInstance().addObserver(this);
 
         //buttonLogin         = (Button)findViewById(R.id.buttonRegister);
@@ -142,7 +143,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     public void buttonSendClick(View view)
     {
-        sender = new TcpSendCallManager();
         sender.startPhoneCall("1001");
     }
 
@@ -150,13 +150,15 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     {
         receiver.receiveCall();
     }
-    public void buttonRejectClick1(View view)
+    public void buttonReject1Click(View view)
     {
-        TcpSendCallManager sender1 = new TcpSendCallManager();
-        sender1.rejectPhoneCall("1001");
+        Log.d(TAG,"Button Reject1 Click");
+//        TcpSendCallManager sender1 = new TcpSendCallManager();
+//        sender1.rejectPhoneCall("1001");
+        sender.rejectPhoneCall("1001");
     }
 
-    public void buttonRejectClick2(View view)
+    public void buttonReject2Click(View view)
     {
         receiver.rejectCall();
     }

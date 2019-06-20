@@ -1,5 +1,6 @@
 package com.lg.sixsenses.willi.DataRepository;
 
+import android.telecom.Call;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -22,7 +23,17 @@ public class DataManager extends Observable {
     private ArrayList<UserInfo> contactList;
     private String token;
     private String callerPhoneNum;
+    private String calleePhoneNum;
     private CallStatus callStatus;
+    private long callId;
+
+    public void clearCallInfo()
+    {
+        callerPhoneNum = null;
+        calleePhoneNum = null;
+        callStatus = CallStatus.IDLE;
+        callId = 0;
+    }
 
     public UserInfo getMyInfo() {
         return myInfo;
@@ -62,6 +73,22 @@ public class DataManager extends Observable {
 
     public void setCallStatus(CallStatus callStatus) {
         this.callStatus = callStatus;
+    }
+
+    public long getCallId() {
+        return callId;
+    }
+
+    public void setCallId(long callId) {
+        this.callId = callId;
+    }
+
+    public String getCalleePhoneNum() {
+        return calleePhoneNum;
+    }
+
+    public void setCalleePhoneNum(String calleePhoneNum) {
+        this.calleePhoneNum = calleePhoneNum;
     }
 
     public void NotifyUpdate(UpdatedData data) {

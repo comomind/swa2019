@@ -8,6 +8,7 @@ public class TcpCallSignalBody {
     private int udpAudioPort;
     private int udpVideoPort;
     private String ipaddr;
+    private long callId;
 
     public String getCmd() {
         return cmd;
@@ -65,6 +66,14 @@ public class TcpCallSignalBody {
         this.ipaddr = ipaddr;
     }
 
+    public long getCallId() {
+        return callId;
+    }
+
+    public void setCallId(long callId) {
+        this.callId = callId;
+    }
+
     @Override
     public String toString() {
         return "TcpCallSignalBody{" +
@@ -75,6 +84,7 @@ public class TcpCallSignalBody {
                 ", udpAudioPort=" + udpAudioPort +
                 ", udpVideoPort=" + udpVideoPort +
                 ", ipaddr='" + ipaddr + '\'' +
+                ", callId='" + callId + '\'' +
                 '}';
     }
 }

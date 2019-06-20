@@ -1,32 +1,26 @@
 package com.lg.sixsenses.willi.Logic.ServerCommManager;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
-import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
 import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
 import com.lg.sixsenses.willi.Util;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 
 public class TcpRecvCallManager {
     public static final String TAG = TcpRecvCallManager.class.getName().toString();
 
-    public InputStream streamIn = null;
-    public OutputStream streamOut = null;
-
+    private Socket firstRecvSocket = null;
 
     private class SocketServerThread extends Thread {
         @Override
@@ -34,76 +28,121 @@ public class TcpRecvCallManager {
             try {
                 // 서버소켓 생성
 
-                Log.d(TAG,"ServerSocket Thread ... run()");
+                Log.d(TAG, "ServerSocket Thread ... run()");
                 ServerSocket serverSocket = new ServerSocket(ConstantsWilli.CLIENT_TCP_CALL_SIGNAL_PORT);
 
                 // 소켓서버가 종료될때까지 무한루프
-                while(true){
+                while (true) {
                     // 소켓 접속 요청이 올때까지 대기합니다.
-                    Socket socket = serverSocket.accept();
+                    try {
+                        Socket socket = serverSocket.accept();
 
-                    Log.d(TAG,"ServerSocket Accepted ... ");
-                    try{
+                        Log.d(TAG, "ServerSocket New Connection Accepted ... ");
+
                         // 응답을 위해 스트림을 얻어옵니다.
-                        streamIn = socket.getInputStream();
-                        streamOut = socket.getOutputStream();
+                        InputStream streamIn = socket.getInputStream();
 
                         int data = 0;
-
                         StringBuffer buf = new StringBuffer();
-
                         char stop = '@';
-
                         int count = 0;
 
-                        while(count < 2){
-                            data =streamIn.read();
-                            char ch = (char)data;
+                        while (count < 2) {
+                            data = streamIn.read();
+                            char ch = (char) data;
                             buf.append(ch);
 
-                            if(ch == stop)
+                            if (ch == stop)
                                 count++;
                         }
 
-                        Log.d(TAG, "Client ServerSocket : "+buf.toString());
+                        //Log.d(TAG, "Client ServerSocket : " + buf.toString());
 
                         ObjectMapper mapper2 = new ObjectMapper();
-                        TypeReference ref = new TypeReference<TcpCallSignalReceive<TcpCallSignalBody>>() {};
+                        TypeReference ref = new TypeReference<TcpCallSignalReceive<TcpCallSignalBody>>() {
+                        };
 
                         TcpCallSignalReceive receive = mapper2.readValue(buf.toString(), ref);
                         TcpCallSignalHeader recvHeader = receive.getHeader();
-                        TcpCallSignalBody recvBody = (TcpCallSignalBody)(receive.getBody());
+                        TcpCallSignalBody recvBody = (TcpCallSignalBody) (receive.getBody());
 
-                        Log.d(TAG, "TCP Callee Recv Header : " + recvHeader.toString());
-                        Log.d(TAG, "TCP Callee Recv Body : " + recvBody.toString());
+                        Log.d(TAG, "TCP ServerSocket Recv Header : " + recvHeader.toString());
+                        Log.d(TAG, "TCP ServerSocket Recv Body : " + recvBody.toString());
 
-                        if(recvBody.getCmd().equals("CallRequestS2C")) CallStateMachine.getInstance().recvCallRequest();
-                        else if(recvBody.getCmd().equals("CallRejectS2C")) CallStateMachine.getInstance().recvCallReject();
+                        if (recvBody.getCmd().equals("CallRequestS2C")) {
+                            CallStateMachine.getInstance().recvCallRequest();
+                            DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
+                            DataManager.getInstance().setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
+                            DataManager.getInstance().setCallId(recvBody.getCallId());
+                            //Log.d(TAG, "SetCallID : " + recvBody.getCallId());
+                            firstRecvSocket = socket;
+                        } else if (recvBody.getCmd().equals("CallRejectS2C")) {
+                            CallStateMachine.getInstance().recvCallReject();
+                            // CallReject 명령을 통화중/Ringing 에 받는 경우..
+                            // 서버 에게 확인의 의미로 CallRejectC2S를 보낸다
+                            TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
 
-//                        Log.d(TAG, "Ring~ Ring~ Ring~ Call From  : " + recvBody.getCallerPhoneNum());
-                        DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
-//                        buf.append("-Echo\r\n");
-//                        // 그리고 현재 날짜를 출력해줍니다.
-//                        streamOut.write(buf.toString().getBytes());
-//                        streamOut.flush();
-//                        Log.w("-------[S ECHO]", buf.toString());
-                    }catch(Exception e){
+                            TcpCallSignalHeader header = new TcpCallSignalHeader();
+                            header.setType("R");
+                            header.setToken(DataManager.getInstance().getToken());
+                            header.setIpaddr(Util.getIPAddress());
+                            header.setTrantype("SYNC");
+                            header.setReqtype(1);
+                            header.setSvctype(1);
+
+
+                            TcpCallSignalBody body = new TcpCallSignalBody();
+                            body.setCmd("CallRejectC2S");
+                            body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
+                            body.setCalleePhoneNum(DataManager.getInstance().getCalleePhoneNum());
+                            body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
+                            body.setCallId(DataManager.getInstance().getCallId());
+                            //                    int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
+                            //                    body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
+                            //                    body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
+                            //                    body.setIpaddr(Util.getIPAddress());
+                            callSignal.setHeader(header);
+                            callSignal.setBody(body);
+
+                            ObjectMapper mapper = new ObjectMapper();
+                            String input = mapper.writeValueAsString(callSignal);
+
+
+                            Log.d(TAG, "TCP ServerSocket Response for CallReject : " + input);
+
+                            //input = input + "\r\n";
+                            input = input + "@@";
+
+                            OutputStream streamOut1 = socket.getOutputStream();
+                            streamOut1.write(input.getBytes());
+                            streamOut1.flush();
+
+
+                            streamOut1.close();
+                            socket.close();
+
+                            if (firstRecvSocket != null) {
+                                OutputStream streamOut2 = firstRecvSocket.getOutputStream();
+                                streamOut2.write(input.getBytes());
+                                streamOut2.flush();
+                                streamOut2.close();
+                                firstRecvSocket.close();
+                                firstRecvSocket = null;
+                            }
+
+                            CallStateMachine.getInstance().sendCallReject();
+                        }
+                    }catch (IOException e) {
                         e.printStackTrace();
                     }
-//                    finally{
-//                        // 반드시 소켓은 닫습니다.
-//                        try {
-//                            streamIn.close();
-//                            streamOut.close();
-//                        }catch(Exception ex) {
-//
-//                        }
-//                        socket.close();
-//                    }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
         }
     }
 
@@ -113,12 +152,11 @@ public class TcpRecvCallManager {
         serverThread.start();
     }
 
+    // 전화 받기
     public void receiveCall()
     {
-        class MyRunnable implements Runnable {
-            OutputStream streamOut;
-            MyRunnable(OutputStream stream) { this.streamOut = stream; }
-
+        AsyncTask.execute(new Runnable() {
+            @Override
             public void run() {
                 try {
                     TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
@@ -134,14 +172,15 @@ public class TcpRecvCallManager {
 
 
                     TcpCallSignalBody body = new TcpCallSignalBody();
-                    body.setCmd("CallResponseC2S");
+                    body.setCmd("CallAcceptC2S");
                     body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
-                    body.setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
+                    body.setCalleePhoneNum(DataManager.getInstance().getCalleePhoneNum());
                     body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
                     int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
                     body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
                     body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
                     body.setIpaddr(Util.getIPAddress());
+                    body.setCallId(DataManager.getInstance().getCallId());
 
                     callSignal.setHeader(header);
                     callSignal.setBody(body);
@@ -150,12 +189,20 @@ public class TcpRecvCallManager {
                     String input = mapper.writeValueAsString(callSignal);
 
 
-                    Log.d(TAG, "TCP Response Send : " + input);
+                    Log.d(TAG, "TCP ClientSocket Response Send : " + input);
 
-                    input = input + "\r\n";
+                    //input = input + "\r\n";
+                    input = input + "@@";
+                    OutputStream out = firstRecvSocket.getOutputStream();
+                    out.write(input.getBytes());
+                    out.flush();
 
-                    streamOut.write(input.getBytes());
-                    streamOut.flush();
+//                    out.close();
+//                    firstRecvSocket.getInputStream().close();
+//                    firstRecvSocket.getOutputStream().close();
+
+                    firstRecvSocket.close();
+                    firstRecvSocket = null;
 
                     CallStateMachine.getInstance().sendCallAccept();
                 }
@@ -163,17 +210,14 @@ public class TcpRecvCallManager {
                     e.printStackTrace();
                 }
             }
-        }
-        AsyncTask.execute(new MyRunnable(streamOut));
-
+        });
     }
 
+    // Callee 가 전화를 받지 않고 거부하는 경우
     public void rejectCall()
     {
-        class MyRunnable implements Runnable {
-            OutputStream streamOut;
-            MyRunnable(OutputStream stream) { this.streamOut = stream; }
-
+        AsyncTask.execute(new Runnable() {
+            @Override
             public void run() {
                 try {
                     TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
@@ -191,12 +235,13 @@ public class TcpRecvCallManager {
                     TcpCallSignalBody body = new TcpCallSignalBody();
                     body.setCmd("CallRejectC2S");
                     body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
-                    body.setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
+                    body.setCalleePhoneNum(DataManager.getInstance().getCalleePhoneNum());
                     body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
 //                    int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
 //                    body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
 //                    body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
 //                    body.setIpaddr(Util.getIPAddress());
+                    body.setCallId(DataManager.getInstance().getCallId());
 
                     callSignal.setHeader(header);
                     callSignal.setBody(body);
@@ -207,18 +252,23 @@ public class TcpRecvCallManager {
 
                     Log.d(TAG, "TCP Response Send : " + input);
 
-                    input = input + "\r\n";
+                    //input = input + "\r\n";
+                    input = input + "@@";
+                    OutputStream out = firstRecvSocket.getOutputStream();
+                    out.write(input.getBytes());
+                    out.flush();
 
-                    streamOut.write(input.getBytes());
-                    streamOut.flush();
+                    out.close();
+                    firstRecvSocket.close();
+                    firstRecvSocket = null;
+
                     CallStateMachine.getInstance().sendCallReject();
                 }
                 catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        AsyncTask.execute(new MyRunnable(streamOut));
+        });
 
     }
 

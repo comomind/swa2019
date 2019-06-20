@@ -11,10 +11,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:background="@drawable/sixsenses_final"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <TableRow>
+            <TextView
+                android:id="@+id/textViewSpace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_span="2"
+                android:textSize="150sp"/>
 
+        </TableRow>
         <TableRow>
             <TextView
                 android:id="@+id/textViewReg"
@@ -22,7 +32,9 @@
                 android:layout_height="wrap_content"
                 android:text="Log in"
                 android:layout_span="2"
-                android:textSize="20sp"/>
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:textSize="30sp"/>
 
         </TableRow>
         <TableRow>
@@ -31,12 +43,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email : "
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/textView2"
                 tools:layout_editor_absoluteY="132dp" />
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:background="#ffffff"
                 android:ems="10"
                 android:inputType="textEmailAddress" />
         </TableRow>
@@ -46,11 +63,16 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#ffffffff"
+                android:textSize="20sp"
+                android:textStyle="bold"
                 android:text="Password : "/>
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:background="#ffffff"
                 android:inputType="textPassword" />
         </TableRow>
         <TableRow>
@@ -74,6 +96,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
                 />
         </TableRow>
         <TableRow>
@@ -117,6 +141,16 @@
                 android:layout_height="wrap_content"
                 android:onClick="buttonLeeClick"
                 android:text="Lee" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/textViewSpace2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_span="2"
+                android:textSize="150sp"/>
+
         </TableRow>
     </TableLayout>
 

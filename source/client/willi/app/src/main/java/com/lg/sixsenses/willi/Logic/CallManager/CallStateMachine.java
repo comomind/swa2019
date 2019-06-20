@@ -53,6 +53,7 @@ public class CallStateMachine {
         UpdatedData data = new UpdatedData();
         data.setType("CallState");
         data.setData(getCallStatus(state));
+        if(getCallStatus(state)== DataManager.CallStatus.IDLE) DataManager.getInstance().clearCallInfo();
         DataManager.getInstance().NotifyUpdate(data);
     }
     private DataManager.CallStatus getCallStatus(CallState state)
