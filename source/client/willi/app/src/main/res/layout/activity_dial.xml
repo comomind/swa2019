@@ -4,6 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DialActivity">
+    tools:context=".UserInterface.DialActivity" >
+
+
+
+    <!-- 각각의 Fragment를 넣을 Container -->
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="411dp"
+        android:layout_height="609dp"
+        android:layout_gravity="top"
+        tools:layout_editor_absoluteX="3dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:layout_gravity="bottom"
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/menu_bottom"
+            tools:visibility="visible">
+
+        </android.support.design.widget.BottomNavigationView>
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

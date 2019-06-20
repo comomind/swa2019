@@ -115,6 +115,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     textViewResult.setText("Login Success!");
                     editTextEmail.setText(null);
                     editTextPassword.setText(null);
+                    Intent intent = new Intent(getApplicationContext(),DialActivity.class);
+                    startActivity(intent);
 
                 }
             });
