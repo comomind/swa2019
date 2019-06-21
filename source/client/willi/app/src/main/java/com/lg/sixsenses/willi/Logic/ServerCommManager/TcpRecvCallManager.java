@@ -327,7 +327,7 @@ public class TcpRecvCallManager {
                     header.setToken(DataManager.getInstance().getToken());
                     header.setIpaddr(Util.getIPAddress());
                     header.setTrantype("SYNC");
-                    header.setSvcid("tcpCallService");
+                    header.setSvcid("tcpCallReject");
                     header.setReqtype(1);
                     header.setSvctype(1);
 

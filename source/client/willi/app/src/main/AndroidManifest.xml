@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".UserInterface.RegisterActivity"></activity>
         <activity android:name=".UserInterface.CallStateActivity"></activity>
+        <activity android:name=".UserInterface.DialActivity"></activity>
     </application>
 
 </manifest>
