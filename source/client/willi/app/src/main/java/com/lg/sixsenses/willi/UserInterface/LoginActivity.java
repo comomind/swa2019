@@ -3,6 +3,7 @@ package com.lg.sixsenses.willi.UserInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.LoginInfo;
+import com.lg.sixsenses.willi.Logic.CallManager.CallHandler;
 import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.RestManager;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
@@ -33,8 +35,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewResult;
-    private TcpSendCallManager sender = null;
-    private TcpRecvCallManager receiver = null;
+
 
     public void buttonLoginClick(View view)
     {
@@ -78,7 +79,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sender = new TcpSendCallManager();
         DataManager.getInstance().addObserver(this);
 
         //buttonLogin         = (Button)findViewById(R.id.buttonRegister);
@@ -87,14 +87,15 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         textViewResult      = (TextView)findViewById(R.id.textViewResult);
         textViewResult.setText(null);
 
-        receiver = new TcpRecvCallManager();
-        receiver.start();
+        CallHandler.getInstance().setContext(getApplicationContext());
+        CallHandler.getInstance().startCallHandler();
+
     }
 
     @Override
     public void update(Observable o, Object arg) {
 
-        Log.d(TAG,"update in LogInActivity");
+        //Log.d(TAG,"update in LogInActivity");
         UpdatedData data = (UpdatedData)arg;
         Log.d(TAG,"updated data : "+ data.toString());
         if(data.getType().equals("LoginResult"))
@@ -121,58 +122,29 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                 }
             });
         }
-        else if(data.getType().equals("CallState"))
-        {
-            DataManager.CallStatus status = (DataManager.CallStatus)(data.getData());
-            Log.d(TAG, "CallState : "+ status.toString());
 
-            class MyRunnable implements Runnable {
-                DataManager.CallStatus status;
-                MyRunnable(DataManager.CallStatus status) { this.status = status; }
-
-                public void run() {
-
-                }
-            }
-            runOnUiThread(new MyRunnable(status) {
-                @Override
-                public void run() {
-                    textViewResult.setText("Call State : "+status.toString());
-                }
-            });
-        }
     }
 
     public void buttonSendClick(View view)
     {
-        sender.startPhoneCall("1001");
+        CallHandler.getInstance().callRequest("1001");
+        Intent intent = new Intent(getApplicationContext(),CallStateActivity.class);
+        startActivity(intent);
     }
 
-    public void buttonReceiveClick(View view)
-    {
-        receiver.receiveCall();
-    }
-    public void buttonReject1Click(View view)
-    {
-        Log.d(TAG,"Button Reject1 Click");
-//        TcpSendCallManager sender1 = new TcpSendCallManager();
-//        sender1.rejectPhoneCall("1001");
-        sender.rejectPhoneCall("1001");
-    }
-
-    public void buttonReject2Click(View view)
-    {
-        receiver.rejectCall();
-    }
 
     public void buttonParkClick(View view)
     {
         editTextEmail.setText("park@lge.com");
         editTextPassword.setText("1234");
+//        Intent intent = new Intent(getApplicationContext(),CallStateActivity.class);
+//        startActivity(intent);
+
     }
     public void buttonLeeClick(View view) {
         editTextEmail.setText("lee@lge.com");
         editTextPassword.setText("1234");
+
     }
 
 }

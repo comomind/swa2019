@@ -1,5 +1,7 @@
 package com.lg.sixsenses.willi.Logic.ServerCommManager;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
+import com.lg.sixsenses.willi.UserInterface.CallStateActivity;
 import com.lg.sixsenses.willi.Util;
 
 import java.io.IOException;
@@ -19,8 +22,13 @@ import java.net.Socket;
 
 public class TcpRecvCallManager {
     public static final String TAG = TcpRecvCallManager.class.getName().toString();
-
+    private Context context;
     private Socket firstRecvSocket = null;
+
+    public TcpRecvCallManager(Context context)
+    {
+        this.context =context;
+    }
 
     private class SocketServerThread extends Thread {
         @Override
@@ -103,7 +111,14 @@ public class TcpRecvCallManager {
                             DataManager.getInstance().setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
                             DataManager.getInstance().setCallId(recvBody.getCallId());
                             //Log.d(TAG, "SetCallID : " + recvBody.getCallId());
+
+                            Log.d(TAG, "1111111111111111111111111111111111");
                             firstRecvSocket = socket;
+                            Intent intent = new Intent(context.getApplicationContext(), CallStateActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                            Log.d(TAG, "22222222222222222222222222222222222");
+
                         } else if (recvBody.getCmd().equals("CallRejectS2C")) {
                             CallStateMachine.getInstance().recvCallReject();
                             // CallReject 명령을 통화중/Ringing 에 받는 경우..

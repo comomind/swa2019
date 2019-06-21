@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserInterface.RegisterActivity"></activity>
+        <activity android:name=".UserInterface.CallStateActivity"></activity>
     </application>
 
 </manifest>

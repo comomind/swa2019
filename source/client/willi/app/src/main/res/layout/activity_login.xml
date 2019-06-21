@@ -106,27 +106,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonSendClick"
+                android:layout_span="2"
                 android:text="Send" />
-            <Button
-                android:id="@+id/buttonReceive"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonReceiveClick"
-                android:text="Receive" />
-        </TableRow>
-        <TableRow>
-            <Button
-                android:id="@+id/buttonReject1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonReject1Click"
-                android:text="Reject1" />
-            <Button
-                android:id="@+id/buttonReject2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonReject2Click"
-                android:text="Reject2" />
         </TableRow>
         <TableRow>
             <Button
