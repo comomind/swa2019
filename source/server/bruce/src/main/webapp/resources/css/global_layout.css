@@ -1,0 +1,83 @@
+#LblockWrapper {
+	position:relative;
+}
+#LblockHeader {
+	height:125px;
+}
+#LblockHeaderIn {
+	position:relative;
+	width:1000px;
+	height:125px;
+}
+#LblockTopLogo {
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+#LblockWelcome {
+	position:absolute;
+	right:253px;
+	top:29px;
+}
+#LblockSupportMenu {
+	position:absolute;
+	right:385px;
+	top:29px;
+}
+#LblockTotalSearch {
+	position:absolute;
+	right:43px;
+	top:23px;
+}
+#LblockTopMenu {
+	position:absolute;
+	top:52px;
+	height:73px;
+}
+#LblockLeft {
+	position:absolute;
+	width:176px;
+	margin:0 0 0 36px;
+}
+#LblockLeftTitle {
+	position:relative;
+	height:46px;
+}
+#LblockLeftMenuStyle {
+	position:absolute;
+	right:10px;
+	bottom:11px;
+	height:15px;
+}
+#LblockLeftMenu {
+	margin:0 0 20px 0;
+}
+#LblockBody {
+	width:763px;
+	min-height:500px;
+	_height:500px;
+}
+#LblockFooter {
+	height:35px;
+}
+#LblockFooterIn {
+	position:relative;
+	width:1000px;
+	height:35px;
+}
+#LblockFooterLogo {
+	position:absolute;
+	left:230px;
+	top:7px;
+}
+#LblockFooterMenu {
+	position:absolute;
+	right:5px;
+	top:7px;
+}
+#LblockFooterCopyright {
+	position:absolute;
+	left:310px;
+	top:10px;
+	width:400px;
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="voip.user">
+	<!-- Call Satus -->
+	<insert id="insertUserCallInfo" parameterType="cmu.voip.repository.account.vo.UserCallInfoDTO">
+		<![CDATA[
+			INSERT INTO USERCALLSTATUS (PHONENUM,IP,PORT,STATUS) VALUES(#{phonenum},#{ip},#{port},#{status})
+		]]>
+	</insert>
+	
+	<select id="selectUserCallInfoByPhonenum" parameterType="String" resultType="cmu.voip.repository.account.vo.UserCallInfoDTO">
+		<![CDATA[
+			SELECT PHONENUM,IP,PORT,STATUS,LASTCALL FROM USERCALLSTATUS WHERE PHONENUM = #{phonenum}
+		]]>
+	</select>
+	
+	<update id="updateCallInfoByPhoneNumber" parameterType="cmu.voip.repository.account.vo.UserCallInfoDTO">
+		<![CDATA[
+			UPDATE USERCALLSTATUS SET IP=#{ip},PORT=#{port} WHERE PHONENUM = #{phonenum}
+		]]>
+	</update>
+	
+	<update id="updateCallStatusByPhoneNumber" parameterType="cmu.voip.repository.account.vo.UserCallInfoDTO">
+		<![CDATA[
+			UPDATE USERCALLSTATUS SET STATUS=#{status} WHERE PHONENUM = #{phonenum}
+		]]>
+	</update>
+	
+	<update id="updateCallLastDateByPhoneNumber" parameterType="cmu.voip.repository.account.vo.UserCallInfoDTO">
+		<![CDATA[
+			UPDATE USERCALLSTATUS SET LASTCALL=#{lastcall} WHERE PHONENUM = #{phonenum}
+		]]>
+	</update>
+	
+	<!-- Voice Call History -->
+	<select id="getSequenceCallID" resultType="long">
+		<![CDATA[
+			SELECT NEXTVAL(SEQ_VOICE_CALL_ID)
+		]]>
+	</select>
+	
+	<insert id="insertVoiceCallHistory" parameterType="cmu.voip.repository.call.vo.VoiceHistoryDTO">
+		<![CDATA[
+			INSERT INTO USERCALLHISTORY (ID,CALLER,CALLEE,STATUS,CREATED,CALLERAPORT,CALLEEAPORT,CALLERVPORT,CALLEEVPORT) VALUES(#{id},#{caller},#{callee},#{status},#{created},#{calleraport},#{calleeaport},#{callervport},#{calleevport})
+		]]>
+	</insert>
+	
+	<select id="selectVoiceCallHistoryById" parameterType="long" resultType="cmu.voip.repository.call.vo.VoiceHistoryDTO">
+		<![CDATA[
+			SELECT ID,CALLER,CALLEE,STATUS,CREATED,CLOSED,CALLERAPORT,CALLEEAPORT,CALLERVPORT,CALLEEVPORT FROM USERCALLHISTORY WHERE id = #{id}
+		]]>
+	</select>
+	
+	<update id="updateVoiceCallStatusHistory" parameterType="cmu.voip.repository.call.vo.VoiceHistoryDTO">
+		<![CDATA[
+			UPDATE USERCALLHISTORY SET STATUS=#{status} WHERE ID = #{id}
+		]]>
+	</update>
+	
+	<update id="updateVoiceCallClosedHistory" parameterType="cmu.voip.repository.call.vo.VoiceHistoryDTO">
+		<![CDATA[
+			UPDATE USERCALLHISTORY SET CLOSED=#{closed} WHERE ID = #{id}
+		]]>
+	</update>
+</mapper>

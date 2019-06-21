@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:int="http://www.springframework.org/schema/integration"
+	   xmlns:int-ip="http://www.springframework.org/schema/integration/ip"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/ip http://www.springframework.org/schema/integration/ip/spring-integration-ip.xsd">
+
+<!-- 	<int-ip:tcp-connection-factory id="bruseTcpServer"
+								   type="server"
+								   port="8081"/> -->
+	<bean id="javaSerializer"
+	      class="org.springframework.core.serializer.DefaultSerializer" />
+	<bean id="javaDeserializer"
+	      class="org.springframework.core.serializer.DefaultDeserializer" />
+	
+	<int-ip:tcp-connection-factory id="bruseTcpServer"
+	    type="server"
+	    port="8081" />
+	    
+<!-- 	    deserializer="javaDeserializer"
+    	serializer="javaSerializer"/> -->
+    
+	<int-ip:tcp-inbound-gateway id="gatewayBruceCrLf"
+								connection-factory="bruseTcpServer"
+								request-channel="toBruceInput"
+								reply-channel="payloadToWilli"
+								error-channel="bruceErrorChannel"/>
+
+	<int:channel id="toBruceInput"/>
+	<int:channel id="toBruceActivator"/>
+	<int:channel id="payloadToWilli"/>
+	<int:channel id="payloadToChannel"/>
+
+	
+
+	<!-- <int:object-to-string-transformer id="bruceBytes2String"
+									  input-channel="toBruceInput"
+									  output-channel="toBruceActivator"/> -->
+									  
+	<int:payload-deserializing-transformer input-channel="toBruceInput" output-channel="toBruceActivator"/>
+	<int:payload-serializing-transformer input-channel="payloadToChannel" output-channel="payloadToWilli"/>
+
+	
+	
+	
+    
+    <int:service-activator input-channel="toBruceActivator" output-channel="payloadToChannel"
+						   ref="bruceTcpServerCtrl"
+						   method="service"/>
+
+	<bean id="bruceTcpServerCtrl" class="cmu.voip.controller.tcp.server.BruceTcpServerCtrl"/>
+    
+    
+    <int:transformer id="bruceErrorHandler"
+					 input-channel="bruceErrorChannel"
+					 expression="payload.failedMessage.payload + ':' + payload.cause.message"/>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <!-- TEST AREA -->
+	<int-ip:tcp-connection-factory id="crLfServer"
+								   type="server"
+								   port="8888"/>
+
+	<int-ip:tcp-inbound-gateway id="gatewayCrLf"
+								connection-factory="crLfServer"
+								request-channel="serverBytes2StringChannel"
+								error-channel="errorChannel"/>
+
+	<int:channel id="toSA"/>
+
+	<int:service-activator input-channel="toSA"
+						   ref="echoService"
+						   method="test"/>
+
+	<bean id="echoService"
+		  class="cmu.voip.framework.tcpserver.EchoService"/>
+
+	<int:object-to-string-transformer id="serverBytes2String"
+									  input-channel="serverBytes2StringChannel"
+									  output-channel="toSA"/>
+
+	<int:transformer id="errorHandler"
+					 input-channel="errorChannel"
+					 expression="payload.failedMessage.payload + ':' + payload.cause.message"/>
+					 
+					 
+					 
+	<int-ip:tcp-connection-factory id="crLfServer1"
+								   type="server"
+								   port="9999"/>
+
+	<int-ip:tcp-inbound-gateway id="gatewayCrLf1"
+								connection-factory="crLfServer1"
+								request-channel="serverBytes2StringChannel1"
+								error-channel="errorChannel1"/>
+
+	<int:channel id="toSA1"/>
+
+	<int:service-activator input-channel="toSA1"
+						   ref="echoService1"
+						   method="test"/>
+
+	<bean id="echoService1"
+		  class="cmu.voip.framework.tcpserver.EchoService9"/>
+
+	<int:object-to-string-transformer id="serverBytes2String1"
+									  input-channel="serverBytes2StringChannel1"
+									  output-channel="toSA1"/>
+
+	<int:transformer id="errorHandler1"
+					 input-channel="errorChannel1"
+					 expression="payload.failedMessage.payload + ':' + payload.cause.message"/>
+					 
+
+</beans>

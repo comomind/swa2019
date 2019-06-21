@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="voip.user">
+	<select id="selectUserByEmail" parameterType="String"  resultType="cmu.voip.repository.account.vo.UserAccountDTO">
+		<![CDATA[
+			SELECT EMAIL,NAME,PASSWORD,CREATED,LEVEL,PHONENUM,SECURITYQUESTION,SECURITYANSWER FROM USERS WHERE EMAIL = #{email}
+		]]>
+	</select>
+	
+	<select id="selectUserForLogin" parameterType="cmu.voip.repository.account.vo.UserAccountDTO"  resultType="cmu.voip.repository.account.vo.UserAccountDTO">
+		<![CDATA[
+			SELECT A.EMAIL,A.NAME,A.PASSWORD,A.CREATED,A.LEVEL,A.PHONENUM,A.SECURITYQUESTION,A.SECURITYANSWER,B.STATUS FROM USERS A, USERTOKEN B
+			WHERE A.EMAIL = B.EMAIL AND A.EMAIL = #{email} AND A.PASSWORD = #{password}
+		]]>
+	</select>
+	
+	<select id="selectAllUsers" resultType="cmu.voip.repository.account.vo.UserAccountDTO">
+		<![CDATA[
+			SELECT A.EMAIL,A.NAME,A.PASSWORD,A.CREATED,A.LEVEL,A.PHONENUM,A.SECURITYQUESTION,A.SECURITYANSWER,B.STATUS FROM USERS A, USERTOKEN B
+		]]>
+	</select>
+	
+	<select id="selectCountWithPhoneNum" parameterType="String" resultType="map">
+		<![CDATA[
+			SELECT COUNT(EMAIL) AS COUNT FROM USERS WHERE PHONENUM = #{phonenum}
+		]]>
+	</select>
+	
+	<select id="selectUserByPhoneNum" parameterType="String" resultType="cmu.voip.repository.account.vo.UserAccountDTO">
+		<![CDATA[
+			SELECT EMAIL,NAME,PASSWORD,CREATED,LEVEL,PHONENUM,SECURITYQUESTION,SECURITYANSWER FROM USERS WHERE PHONENUM = #{phonenum}
+		]]>
+	</select>
+	
+	<insert id="insertUser">
+		<![CDATA[
+			INSERT INTO USERS (EMAIL,NAME,PASSWORD,CREATED,LEVEL,PHONENUM,SECURITYQUESTION,SECURITYANSWER) VALUES(#{email},#{name},#{password}, NOW(),#{level},NEXTVAL(SEQ_USER_PHONENUM),#{securityquestion},#{securityanswer})
+		]]>
+	</insert>
+	
+	<select id="selectAllUserNetworkInfo" resultType="cmu.voip.controller.http.account.vo.UserNetworkInfoVO">
+		<![CDATA[
+			SELECT A.EMAIL,A.NAME,A.PHONENUM,B.IP,B.PORT,C.STATUS,C.TOKEN
+				FROM USERS A, USERCALLSTATUS B, USERTOKEN C
+				WHERE A.EMAIL = C.EMAIL AND A.PHONENUM = B.PHONENUM
+		]]>
+	</select>
+</mapper>

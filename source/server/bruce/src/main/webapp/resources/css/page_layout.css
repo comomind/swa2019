@@ -1,0 +1,55 @@
+#LblockPageHeader {
+	position:relative;
+	height:36px;
+	margin:0 0 20px 0;
+}
+#LblockPageTitle {
+	height:100%;
+}
+#LblockPageLocation {
+	position:absolute;
+	right:10px;
+	top:0;
+}
+#LblockButton {
+	margin:0 0 10px 0;
+}
+.LblockTab {
+	margin:0 0 10px 0;
+}
+#LblockSearch {
+	margin:0 0 20px 0;
+}
+.LblockPageSubtitle {
+	margin:20px 0 5px 0;
+}
+.LblockListTable {
+	margin:0 0 10px 0;
+}
+.LblockSubbutton {
+	margin:0 0 10px 0;
+}
+.LblockDetail {
+	margin:0 0 10px 0;
+}
+.LblockTree {
+	margin:0 0 10px 0;
+}
+.LblockLeft {
+	float:left;
+	width:48%;
+}
+.LblockRight {
+	float:right;
+	width:48%;
+}
+#LblockError {
+	margin:25px 20px;
+}
+* html #LblockError { margin:35px 20px; }
+*:first-child+html #LblockError { margin:35px 20px; }
+#LblockInform {
+	margin:25px 20px;
+}
+* html #LblockInform { margin:35px 20px; }
+*:first-child+html #LblockInform { margin:35px 20px; }

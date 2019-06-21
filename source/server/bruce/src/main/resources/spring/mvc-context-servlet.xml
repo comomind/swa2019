@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+  http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<aop:aspectj-autoproxy/>
+	
+	<context:component-scan base-package="cmu.voip">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
+
+
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers>
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+
+
+	<mvc:interceptors>
+		<bean
+			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+		<!-- <mvc:interceptor>
+			<mvc:mapping path="/user/*" />
+			<mvc:mapping path="/call/*" />
+			<mvc:mapping path="/voice/*" />
+			<mvc:mapping path="/video/*" />
+			<mvc:mapping path="/conference/*" />
+			<bean id="loginCheckInterceptor"
+				class="cmu.voip.framework.interceptor.LoginCheckInterceptor">
+				<property name="skipUrls">
+					<list>
+						<value>/user/register.json</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor> -->
+		<!-- <mvc:interceptor> <mvc:mapping path="/**"/> <bean id="savedTokenInterceptor" 
+			class="devonframe.savedtoken.interceptor.SavedTokenInterceptor"> <property 
+			name="applyUrls"> <list> <value>/function/webmvc/savedtoken/updateEmployee.do</value> 
+			<value>/function/webmvc/savedtoken/insertEmployee.do</value> <value>/function/webmvc/savedtoken/deleteEmployee.do</value> 
+			</list> </property> </bean> </mvc:interceptor> -->
+		<!-- <mvc:interceptor> <mvc:mapping path="/**"/> <bean id="menuInfoInterceptor" 
+			class="devonframe.sample.office.common.menu.interceptor.MenuInfoInterceptor" 
+			/> </mvc:interceptor> -->
+
+		<!-- <mvc:interceptor> <mvc:mapping path="/**" /> <bean id="xssInterceptor" 
+			class="devonframe.web.servlet.interceptor.XssInterceptor"> <property name="messageCode" 
+			value="error.real" /> <property name="messageSourceAccessor" ref="messageSourceAccessor" 
+			/> <property name="skipUrls"> <list> <value>/hr/employee/*</value> </list> 
+			</property> </bean> </mvc:interceptor> -->
+	</mvc:interceptors>
+
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager">
+			<bean id="contentNegotiationManager"
+				class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+				<property name="mediaTypes">
+					<value>
+						xml=application/rss+xml
+						htm=text/html;charset=UTF-8
+						html=text/html;charset=UTF-8
+						ajax=text/html;charset=UTF-8
+						scr=application/x-javascript;charset=UTF-8
+						json=application/json;charset=UTF-8
+						jsonp=application/javascript;charset=UTF-8
+						xml=application/xml;charset=UTF-8
+						do=text/html;charset=UTF-8
+					</value>
+				</property>
+			</bean>
+		</property>
+		<property name="viewResolvers">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.BeanNameViewResolver" />
+				<bean
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="prefix" value="/WEB-INF/jsp/" />
+					<property name="suffix" value=".jsp" />
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- <bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver" 
+		p:order="1" /> <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" 
+		p:viewClass="org.springframework.web.servlet.view.JstlView" p:prefix="/WEB-INF/jsp/" 
+		p:suffix=".jsp" /> <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" 
+		/> -->
+
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+
+</beans>
+

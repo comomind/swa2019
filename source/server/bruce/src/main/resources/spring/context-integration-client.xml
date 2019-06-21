@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:int="http://www.springframework.org/schema/integration"
+	   xmlns:int-ip="http://www.springframework.org/schema/integration/ip"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/ip http://www.springframework.org/schema/integration/ip/spring-integration-ip.xsd">
+
+	<context:property-placeholder location="classpath:/config/voip.properties"/>
+	
+	<int:gateway id="gw"
+				 service-interface="cmu.voip.controller.tcp.client.TcpToWilliSend"
+				 default-request-channel="clientRequest"/>
+	
+	
+	<int-ip:tcp-connection-factory id="client"
+								   type="client"
+								   host="${host}"
+								   port="${port}"
+								   single-use="true"
+								   so-timeout="62000"
+								   serializer="connectionSerializeDeserialize"
+								   deserializer="connectionSerializeDeserialize"/>
+	
+	<bean id="connectionSerializeDeserialize"
+		  class="cmu.voip.controller.tcp.ByteArrayDelimeterSerializer"/>
+		  							   
+	<int:channel id="clientRequest"/>
+	
+	<int:channel id="requestOut"/>
+			   
+	<bean id="channelResolver" class="cmu.voip.controller.tcp.client.TcpToWilliClientChannelResolver" />
+	
+	
+	<int:router input-channel="clientRequest" 
+		expression="@channelResolver.resolve(headers['host'],headers['port'])"/>
+							   
+	<int-ip:tcp-outbound-gateway id="outGateway"
+								 request-channel="requestOut"
+								 reply-channel="clientResponse"
+								 connection-factory="client"
+								 request-timeout="32000"
+								 remote-timeout="30000"/>
+								 
+
+	<int:object-to-string-transformer id="clientBytes2String"
+									  input-channel="clientResponse"/>
+					 
+
+</beans>

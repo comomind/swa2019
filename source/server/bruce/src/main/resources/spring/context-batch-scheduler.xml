@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:batch="http://www.springframework.org/schema/batch" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop 
+	    http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/batch 
+        http://www.springframework.org/schema/batch/spring-batch.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee 
+        http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+	
+	<!--  Resiger Job Here !! -->
+	<job id="tokenUpdateJob" xmlns="http://www.springframework.org/schema/batch" restartable="true">
+        <step id="step1" allow-start-if-complete="true">
+            <tasklet ref="tokenUpdateTasklet">
+            </tasklet>
+        </step>
+    </job>
+    
+    <job id="healthCheckJob" xmlns="http://www.springframework.org/schema/batch" restartable="true">
+        <step id="step2" allow-start-if-complete="true">
+            <tasklet ref="healthCheckTasklet">
+            </tasklet>
+        </step>
+    </job>
+    
+    <!--  Resiger Tasklet Here !! -->
+    <bean id="tokenUpdateTasklet" class="cmu.voip.batch.security.UserTokenProcessTasklet" />
+    <bean id="healthCheckTasklet" class="cmu.voip.batch.security.UserHealthCheckTasklet" />
+    
+    
+    <!--  Resiger JobDetail Here !! -->
+    <bean id="tokenUpdateTaskletDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="cmu.voip.batch.security.UserTokenUpdateScheduler" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="jobName" value="tokenUpdateJob" />
+				<entry key="jobLocator" value-ref="jobRegistry" />
+				<entry key="jobLauncher" value-ref="jobLauncher" />
+			</map>
+		</property>
+	</bean>
+	
+	
+	<bean id="healthCheckTaskletDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="cmu.voip.batch.security.UserTokenUpdateScheduler" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="jobName" value="healthCheckJob" />
+				<entry key="jobLocator" value-ref="jobRegistry" />
+				<entry key="jobLauncher" value-ref="jobLauncher" />
+			</map>
+		</property>
+	</bean>
+	
+    <!-- Scheduler Configuration -->
+ 	
+<!--
+	<bean id="jobDetail2" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="devonframe.batch.launch.DefaultQuartzJobBean" />
+		<property name="group" value="quartz-batch" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="jobName" value="file-to-db-job" />
+				<entry key="jobLocator" value-ref="jobRegistry" />
+				<entry key="jobLauncher" value-ref="jobLauncher" />
+			</map>
+		</property>
+	</bean> -->
+
+	<!--  Resiger Trigger Here !! -->
+	<bean id="tokenUpdatecronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="tokenUpdateTaskletDetail" />
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+	
+	<bean id="healthCheckcronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="healthCheckTaskletDetail" />
+		<property name="cronExpression" value="0 0 1 * * ?" />
+	</bean>
+
+	<!-- 오후 1시50분에 처리 -->
+	<!-- <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobDetail2" />
+		<property name="cronex-pression" value="0 20 9-18 * * ?" />
+	</bean> -->
+
+	<!-- 3. Cron 실행 -->
+	<bean id="schedulerFactory"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="tokenUpdatecronTrigger" />
+				<ref bean="healthCheckcronTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

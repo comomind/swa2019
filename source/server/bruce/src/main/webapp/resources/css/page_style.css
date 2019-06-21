@@ -1,0 +1,960 @@
+/* Block : bodyMain
+---------------------------------------------------------*/
+
+/* Block : detail
+---------------------------------------------------------*/
+.LblockDetail table {
+	width:100%;
+	border-collapse:collapse;
+}
+.LblockDetail table caption {
+	display:none;
+}
+.LblockDetail th,
+.LblockDetail td {
+	border:solid 1px #c9c9c9;
+	height:28px;
+	padding:0 10px 0 5px;
+}
+.LblockDetail th {
+	background-color:#f7f7f7;
+	font-weight:bold;
+	text-align:center;
+	white-space:nowrap;
+}
+.LblockDetail td textarea {
+	margin:2px;
+}
+
+/* Block : pageLocation
+---------------------------------------------------------*/
+#LblockPageLocation {
+	font-size:0.9em;
+	padding:10px 0px 0px 0px;
+	color:#939393;
+}
+#LblockPageLocation li {
+	display:inline;
+	margin-left:4px;
+}
+#LblockPageLocation li span {
+	color:#0076B5;
+	padding-left:11px;
+	background:url(../images/pageLocation_separater.gif) no-repeat left top;
+}
+#LblockPageLocation li.Lfirst span {
+	background:none;
+}
+#LblockPageLocation li span a {
+	color:#727271;
+}
+
+/* Block : tab
+---------------------------------------------------------*/
+.LblockTab {
+	background:url(../images/tab_bg.gif) repeat-x left bottom;
+	margin-bottom:7px;
+}
+.LblockTab li {
+	float:left;
+	margin-right:5px;
+	background:url(../images/tab_l.gif) no-repeat;
+}
+.LblockTab li.Lcurrent {
+	background-position:left -33px;
+}
+.LblockTab li span {
+	display:block;
+	background:url(../images/tab_r.gif) no-repeat right top;
+}
+.LblockTab li.Lcurrent span {
+	background-position:right -33px;
+}
+.LblockTab li span a {
+	display:block;
+	line-height:24px;
+	color:#7f7f7f;
+	text-decoration:none;
+	padding:8px 25px 0px;
+}
+.LblockTab li.Lcurrent span a:link,
+.LblockTab li.Lcurrent span a:visited {
+	font-weight:bold;
+	color:#ffc539;
+}
+.LblockTab li span a:link,
+.LblockTab li span a:visited {
+	color:#7f7f7f;
+}
+.LblockTab li span a:hover,
+.LblockTab li span a:active {
+	color:#f1aa00;
+}
+.LblockTab li.Lcurrent span a:hover,
+.LblockTab li.Lcurrent span a:active {
+	color:#f1aa00;
+}
+
+/* Block : popupBody
+---------------------------------------------------------*/
+
+/* Block : tree
+---------------------------------------------------------*/
+.LblockTree {
+	border:1px solid #c9c9c9;
+	padding:5px;
+}
+.LblockTree a {
+	text-decoration:none;
+}
+.LblockTree a:link, .LblockTree a:visited {
+	color:#7F7F7F;
+}
+
+/* Block : search
+---------------------------------------------------------*/
+#LblockSearch {
+	background-color:#ffffff;
+}
+#LblockSearch div {
+	position:relative;
+	width:100%;
+}
+#LblockSearch div div div {
+	padding-bottom:29px;
+}
+#LblockSearch table caption {
+	display:none;
+}
+#LblockSearch table {
+	border-collapse:collapse;
+	width:100%;
+	border-top:solid 1px #c9c9c9;
+	border-bottom:solid 1px #c9c9c9;
+}
+#LblockSearch table th {
+	color:#7f7f7f;
+	text-align:center;
+	white-space:nowrap;
+	font-weight:bold;
+	padding:5px 25px;
+	background-color:#f7f7f7;
+	border-bottom:solid 1px #c9c9c9;
+}
+#LblockSearch table td {
+	padding:0px 10px 0px 5px;
+	border-bottom:solid 1px #c9c9c9;
+}
+#LblockSearch input.Limage {
+	position:absolute;
+	right:0px;
+	bottom:0px;
+}
+
+/* Block : button
+---------------------------------------------------------*/
+#LblockButton {
+	position:relative;
+	background:url(../images/button_bg.gif) repeat-x left top;
+	padding-top:10px;
+	text-align:right;
+}
+* html #LblockButton {
+	height:1%;
+}
+#LblockButton span.Lleft {
+	position:absolute;
+	left:0;
+}
+#LblockButton a.Lbtn {
+	margin-right:8px;
+}
+a.Lbtn,
+a.Lbtn * {
+	height:22px;
+	line-height:23px;
+	position:relative;
+	margin:0;
+	padding:0;
+	display:inline-block;
+	text-decoration:none !important;
+	border:0;
+	font-family:Gulim;
+	font-size:12px;
+	font-weight:bold;
+	white-space:nowrap;
+	background:url(../images/btn_bg1.gif) no-repeat;
+	vertical-align:top;
+	overflow:visible;
+	color:#7F7F7F;
+}
+a.Lbtn * {
+	padding:0 14px 0 11px;
+	background-position:right top;
+	left:4px;
+	cursor:pointer;
+}
+
+/* Block : pageHeader
+---------------------------------------------------------*/
+
+/* Block : tabArea
+---------------------------------------------------------*/
+
+/* Block : subbutton
+---------------------------------------------------------*/
+.LblockSubbutton {
+	text-align:right;
+}
+.LblockSubbutton a.Lbtn2 {
+	margin-right:8px;
+}
+a.Lbtn2,
+a.Lbtn2 * {
+	height:22px;
+	line-height:23px;
+	position:relative;
+	margin:0;
+	padding:0;
+	display:inline-block;
+	text-decoration:none !important;
+	border:0;
+	font-family:Gulim;
+	font-size:12px;
+	font-weight:bold;
+	white-space:nowrap;
+	background:url(../images/btn_bg2.gif) no-repeat;
+	vertical-align:top;
+	overflow:visible;
+	color:#7F7F7F;
+}
+a.Lbtn2 * {
+	padding:0 14px 0 11px;
+	background-position:right top;
+	left:4px;
+	cursor:pointer;
+}
+
+/* Block : listTable
+---------------------------------------------------------*/
+.LblockListTable .Lwrapper {
+	position:relative;
+	width:100%;
+}
+.LblockListTable .LblockListInfo {
+	position:relative;
+	height:26px;
+	border-top:solid 1px #c9c9c9;
+}
+.LblockListTable .LblockListInfo span.Ltotal {
+	position:absolute;
+	left:2px;
+	bottom:2px;
+}
+.LblockListTable .LblockListInfo span.Lsearch {
+	position:absolute;
+	right:2px;
+	bottom:2px;
+}
+.LblockListTable table {
+	border-collapse:collapse;
+	border-top:solid 2px #E1528D;
+	border-bottom:solid 1px #c9c9c9;
+	width:100%;
+}
+.LblockListTable table caption {
+	display:none;
+}
+.LblockListTable table th,
+.LblockListTable table td {
+	height:28px;
+	padding:0px 5px;
+	white-space:nowrap;
+	border:1px solid #e8e8e8;
+	text-align:center;
+}
+.LblockListTable table th {
+	background-color:#f6f6f6;
+	font-weight:bold;
+}
+.LblockListTable table tbody tr.Lhover {
+	background:#eed;
+}
+.LblockListTable ul {
+	text-align:center;
+	font-family:Tahoma;
+	font-size:0.9em;
+	margin:7px 0px 15px;
+	padding-bottom:7px;
+	border-bottom:solid 1px #c9c9c9;
+}
+.LblockListTable li {
+	display:inline;
+	margin-left:5px;
+}
+.LblockListTable li span {
+	font-weight:bold;
+	color:#f1aa00;
+}
+.LblockListTable li a {
+	font-weight:normal;
+	color:#666;
+}
+.LblockListTable li a:hover,
+.LblockListTable li a:active {
+	color:#E17A0D;
+}
+.LblockListTable li.Lbegin a,
+.LblockListTable li.Lend a {
+	font-weight:bold;
+}
+.LblockListTable a.Lbtn3 {
+	margin-right:2px;
+}
+a.Lbtn3,
+a.Lbtn3 * {
+	height:17px;
+	line-height:18px;
+	position:relative;
+	margin:0;
+	padding:0;
+	display:inline-block;
+	text-decoration:none !important;
+	border:0;
+	font-family:Gulim;
+	font-size:12px;
+	white-space:nowrap;
+	background:url(../images/btn_bg3.gif) no-repeat;
+	vertical-align:top;
+	overflow:visible;
+	color:#fff;
+}
+a.Lbtn3 * {
+	padding:0 5px 0 1px;
+	background-position:right top;
+	left:4px;
+	cursor:pointer;
+}
+
+/* Block : blank
+---------------------------------------------------------*/
+
+/* Block : error
+---------------------------------------------------------*/
+#LblockError {
+	padding:28px 20px 28px 115px;
+	border:5px solid #E0E0E0;
+	background:url(../images/error.gif) no-repeat 25px 32px;
+}
+#LblockError div {
+	padding:4px 20px;
+	border-left:1px solid #E0E0E0;
+}
+#LblockError h1 {
+	width:100%;
+	overflow:hidden;
+	height:0;
+	padding-top:21px;
+	margin-bottom:15px;
+	background:url(../images/error_text.gif) no-repeat;
+}
+#LblockError p {
+	line-height:20px;
+}
+
+/* Block : main_v
+---------------------------------------------------------*/
+div#LblockMain {
+	width:950px;
+	padding:5px 0px 10px 0px;
+	background:none;
+	margin:0 0 0 40px;
+}
+#LblockMain #LmainTitleImage {
+	float:left;
+}
+#LmainWrapper {
+	float:right;
+	width:413px;
+	margin-right:3px;
+}
+#LblockMain #LcontentBox01, #LblockMain #LtabBox01 {
+	margin-bottom:6px;
+}
+#LblockMain #Lgroup01 {
+	width:413px;
+}
+#LblockMain #Ltoday {
+	float:left;
+	width:228px;
+}
+#LblockMain #Lrelated {
+	width:177px;
+	float:right;
+}
+#LblockMain {
+	font-family:Gulim;
+	font-size:1em;
+}
+#LblockMain .LcontentBox {
+	position:relative;
+	background:url(../images/main_contentbox_l.gif) no-repeat left top;
+}
+#LblockMain .LcontentBox div {
+	position:relative;
+}
+* html #LblockMain .LcontentBox div {
+	height:1%;
+}
+html #LblockMain .LcontentBox div {
+	min-height:1%;
+}
+#LblockMain .LcontentBox div div div div {
+	padding:0;
+	background:none;
+	position:relative;
+}
+#LblockMain .LcontentBox .Ltitlebar {
+	height:32px;
+	background:url(../images/main_contentbox_r.gif) no-repeat right bottom;
+}
+#LblockMain .LcontentBox .Ltitlebar h2 {
+	height:30px;
+	float:left;
+	background:url(../images/main_contentbox_head_bg_l.gif) no-repeat left bottom;
+	margin-left:15px;
+	display:inline;
+}
+#LblockMain .LcontentBox .Ltitlebar img {
+	position:absolute;
+	top:13px;
+	right:13px;
+	cursor:pointer;
+}
+#LblockMain .LcontentBox .Ltitlebar span {
+	float:left;
+	line-height:30px;
+	color:#E1528D;
+	font-size:10pt;
+	background:url(../images/main_contentbox_head_bg_r.gif) no-repeat right bottom;
+	padding:0 13px;
+}
+#LblockMain .LcontentBox ul {
+	padding:3px 0 5px;
+}
+#LblockMain .LcontentBox li {
+	position:relative;
+	line-height:30px;
+	background:url(../images/main_contentbox_bg.gif) repeat-x left bottom;
+	margin:0 6px 0 7px;
+}
+* html #LblockMain .LcontentBox li {
+	height:1%;
+}
+html #LblockMain .LcontentBox li {
+	min-height:1%;
+}
+#LblockMain .LcontentBox li.Llast {
+	background:none;
+}
+#LblockMain .LcontentBox li a {
+	color:#6F6F6F;
+}
+#LblockMain .LcontentBox li a:hover {
+	color:#E1528D;
+	text-decoration:none;
+}
+#LblockMain .LcontentBox li span {
+	position:absolute;
+	right:0;
+	bottom:0px;
+	color:#6F6F6F;
+}
+#LblockMain .LtabBox {
+	position:relative;
+	background:url(../images/main_contentbox_l.gif) no-repeat left top;
+}
+#LblockMain .LtabBox div {
+	position:relative;
+}
+* html #LblockMain .LtabBox div {
+	height:1%;
+}
+html #LblockMain .LtabBox div {
+	min-height:1%;
+}
+#LblockMain .LtabBox div div div div {
+	padding:0;
+	background:none;
+	position:relative;
+}
+#LblockMain .LtabBox .LblockTab {
+	height:32px;
+	background:url(../images/main_contentbox_r.gif) no-repeat right top;
+}
+#LblockMain .LblockTab ul {
+	float:left;
+	padding:0 35px 0 0;
+	height:30px;
+}
+#LblockMain .LblockTab li {
+	float:left;
+	display:inline;
+}
+#LblockMain .LblockTab li span {
+	display:block;
+	float:left;
+	display:inline;
+}
+#LblockMain .LblockTab li.Lfirst {
+	margin-left:15px;
+}
+#LblockMain .LblockTab li.Lcurrent {
+	background:url(../images/main_contentbox_head_bg_l.gif) no-repeat left bottom;
+}
+#LblockMain .LblockTab li.Lcurrent span {
+	background:url(../images/main_contentbox_head_bg_r.gif) no-repeat right bottom;
+}
+#LblockMain .LblockTab li a {
+	padding:0 12px 0 12px;
+	color:#7F7F7F;
+	font-size:1.0em;
+	font-weight:bold;
+	line-height:30px;
+	text-decoration:none;
+}
+#LblockMain .LblockTab li a:hover {
+	color:#FF7BB1;
+}
+#LblockMain .LblockTab li.Lcurrent a,
+#LblockMain .LblockTab li.Lcurrent a:hover {
+	color:#E1528D;
+}
+#LblockMain .LtabBox img {
+	position:absolute;
+	top:13px;
+	right:13px;
+	cursor:pointer;
+}
+#LblockMain .LtabContent ul {
+	padding:3px 0 5px;
+}
+#LblockMain .LtabContent li {
+	position:relative;
+	line-height:30px;
+	background:url(../images/main_contentbox_bg.gif) repeat-x left bottom;
+	margin:0 6px 0 7px;
+}
+* html #LblockMain .LtabContent li {
+	height:1%;
+}
+html #LblockMain .LtabContent li {
+	min-height:1%;
+}
+#LblockMain .LtabContent li.Llast {
+	background:none;
+}
+#LblockMain .LtabContent li a {
+	color:#6F6F6F;
+	text-decoration:none;
+}
+#LblockMain .LtabContent li a:hover {
+	color:#E1528D;
+}
+#LblockMain .LtabContent li span {
+	position:absolute;
+	right:0;
+	bottom:0px;
+	color:#777777;
+}
+#LblockMain .LcontentBox2 {
+	position:relative;
+	background:url(../images/main_contentbox_l.gif) no-repeat left top;
+}
+#LblockMain .LcontentBox2 div {
+	position:relative;
+}
+* html #LblockMain .LcontentBox2 div {
+	height:1%;
+}
+html #LblockMain .LcontentBox2 div {
+	min-height:1%;
+}
+#LblockMain .LcontentBox2 div div div div {
+	padding:0;
+	background:none;
+}
+#LblockMain #Ltoday h2 {
+	line-height:32px;
+	font-size:1.0em;
+	color:#E1528D;
+	background:url(../images/main_contentbox_r.gif) no-repeat right top;
+	margin-left:15px;
+}
+#LblockMain #Ltoday h2 span {
+	padding-left:20px;
+	color:#7F7F7F;
+	font-weight:normal;
+	background:url(../images/main_today_head_bg.gif) no-repeat 10px 50%;
+}
+#LblockMain #Ltoday li {
+	float:left;
+	display:inline;
+	width:58px;
+	text-align:center;
+	padding:10px 0;
+	margin-right:12px;
+}
+#LblockMain #Ltoday li.mail {
+	margin-left:15px;
+}
+#LblockMain #Ltoday a {
+	color:#6F6F6F;
+	text-decoration:none;
+}
+#LblockMain #Ltoday img {
+	display:block;
+}
+#LblockMain #Lrelated div div div div {
+	height:64px;
+	padding:1px;
+}
+#LblockMain #Lrelated h2 {
+	line-height:32px;
+	font-size:1.0em;
+	color:#E1528D;
+	background:url(../images/main_contentbox_r.gif) no-repeat right top;
+	margin-left:15px;
+}
+#LblockMain #Lrelated select {
+	display:block;
+	margin:35px 0 0 13px;
+	width:150px;
+}
+
+/* Block : main
+---------------------------------------------------------*/
+div#LblockMain {
+	width:950px;
+	padding:5px 0px 10px 0px;
+	background:none;
+	margin:0 0 0 40px;
+}
+#LblockMain #LmainTitleImage {
+	display:block;
+	margin-bottom:10px;
+	float:left;
+}
+#LblockMain #LcontentBox01 {
+	float:left;
+	width:37%;
+	margin-right:10px;
+}
+#LblockMain #LtabBox01 {
+	float:left;
+	width:37%;
+}
+#LblockMain #Lgroup01 {
+	float:right;
+	width:226px;
+}
+#LblockMain #Ltoday {
+	position:relative;
+	margin-bottom:10px;
+}
+#LblockMain {
+	font-family:Gulim;
+	font-size:1em;
+}
+#LblockMain .LcontentBox {
+	position:relative;
+	background:url(../images/main_contentbox_l.gif) no-repeat left top;
+}
+#LblockMain .LcontentBox div div div div {
+	padding:0;
+	background:none;
+}
+#LblockMain .LcontentBox .Ltitlebar {
+	height:32px;
+	background:url(../images/main_contentbox_r.gif) no-repeat right bottom;
+}
+#LblockMain .LcontentBox .Ltitlebar h2 {
+	height:30px;
+	float:left;
+	background:url(../images/main_contentbox_head_bg_l.gif) no-repeat left bottom;
+	margin-left:15px;
+	display:inline;
+}
+#LblockMain .LcontentBox .Ltitlebar img {
+	position:absolute;
+	top:13px;
+	right:13px;
+	cursor:pointer;
+}
+#LblockMain .LcontentBox .Ltitlebar span {
+	float:left;
+	line-height:30px;
+	color:#E1528D;
+	font-size:10pt;
+	background:url(../images/main_contentbox_head_bg_r.gif) no-repeat right bottom;
+	padding:0 13px;
+}
+#LblockMain .LcontentBox ul {
+	padding:3px 0 5px;
+}
+#LblockMain .LcontentBox li {
+	position:relative;
+	line-height:30px;
+	background:url(../images/main_contentbox_bg.gif) repeat-x left bottom;
+	margin:0 6px 0 7px;
+}
+* html #LblockMain .LcontentBox li {
+	height:1%;
+}
+html #LblockMain .LcontentBox li {
+	min-height:1%;
+}
+#LblockMain .LcontentBox li.Llast {
+	background:none;
+}
+#LblockMain .LcontentBox li a {
+	color:#6F6F6F;
+}
+#LblockMain .LcontentBox li a:hover {
+	color:#E1528D;
+	text-decoration:none;
+}
+#LblockMain .LcontentBox li span {
+	position:absolute;
+	right:0;
+	bottom:0px;
+	color:#6F6F6F;
+}
+#LblockMain .LtabBox {
+	position:relative;
+	background:url(../images/main_contentbox_l.gif) no-repeat left top;
+}
+#LblockMain .LtabBox div div div div {
+	padding:0;
+	background:none;
+}
+#LblockMain .LtabBox .LblockTab {
+	height:32px;
+	background:url(../images/main_contentbox_r.gif) no-repeat right top;
+}
+#LblockMain .LblockTab ul {
+	float:left;
+	padding:0 35px 0 0;
+	height:30px;
+}
+#LblockMain .LblockTab li {
+	float:left;
+	display:inline;
+}
+#LblockMain .LblockTab li span {
+	display:block;
+	float:left;
+	display:inline;
+}
+#LblockMain .LblockTab li.Lfirst {
+	margin-left:15px;
+}
+#LblockMain .LblockTab li.Lcurrent {
+	background:url(../images/main_contentbox_head_bg_l.gif) no-repeat left bottom;
+}
+#LblockMain .LblockTab li.Lcurrent span {
+	background:url(../images/main_contentbox_head_bg_r.gif) no-repeat right bottom;
+}
+#LblockMain .LblockTab li a {
+	padding:0 12px 0 12px;
+	color:#7F7F7F;
+	font-size:1.0em;
+	font-weight:bold;
+	line-height:30px;
+	text-decoration:none;
+}
+#LblockMain .LblockTab li a:hover {
+	color:#FF7BB1;
+}
+#LblockMain .LblockTab li.Lcurrent a,
+#LblockMain .LblockTab li.Lcurrent a:hover {
+	color:#E1528D;
+}
+#LblockMain .LtabBox img {
+	position:absolute;
+	top:13px;
+	right:13px;
+	cursor:pointer;
+}
+#LblockMain .LtabContent ul {
+	padding:3px 0 5px;
+}
+#LblockMain .LtabContent li {
+	position:relative;
+	line-height:30px;
+	background:url(../images/main_contentbox_bg.gif) repeat-x left bottom;
+	margin:0 6px 0 7px;
+}
+* html #LblockMain .LtabContent li {
+	height:1%;
+}
+html #LblockMain .LtabContent li {
+	min-height:1%;
+}
+#LblockMain .LtabContent li.Llast {
+	background:none;
+}
+#LblockMain .LtabContent li a {
+	color:#6F6F6F;
+	text-decoration:none;
+}
+#LblockMain .LtabContent li a:hover {
+	color:#E1528D;
+}
+#LblockMain .LtabContent li span {
+	position:absolute;
+	right:0;
+	bottom:0px;
+	color:#777777;
+}
+#LblockMain .LcontentBox2 {
+	position:relative;
+	background:url(../images/main_contentbox_l.gif) no-repeat left top;
+}
+#LblockMain .LcontentBox2 div div div div {
+	padding:0;
+	background:none;
+}
+#LblockMain #Ltoday h2 {
+	line-height:32px;
+	font-size:1.0em;
+	color:#E1528D;
+	background:url(../images/main_contentbox_r.gif) no-repeat right top;
+	margin-left:15px;
+}
+#LblockMain #Ltoday h2 span {
+	padding-left:20px;
+	color:#7F7F7F;
+	font-weight:normal;
+	background:url(../images/main_today_head_bg.gif) no-repeat 10px 50%;
+}
+#LblockMain #Ltoday li {
+	float:left;
+	display:inline;
+	width:58px;
+	text-align:center;
+	padding:10px 0;
+	margin-right:12px;
+}
+#LblockMain #Ltoday li.mail {
+	margin-left:15px;
+}
+#LblockMain #Ltoday a {
+	color:#6F6F6F;
+	text-decoration:none;
+}
+#LblockMain #Ltoday img {
+	display:block;
+}
+#LblockMain #Lrelated div div div div {
+	height:64px;
+	padding:1px;
+}
+#LblockMain #Lrelated h2 {
+	line-height:32px;
+	font-size:1.0em;
+	color:#E1528D;
+	background:url(../images/main_contentbox_r.gif) no-repeat right top;
+	margin-left:15px;
+}
+#LblockMain #Lrelated select {
+	display:block;
+	margin:18px 0 0 20px;
+	width:180px;
+}
+
+/* Block : shuttleButton
+---------------------------------------------------------*/
+.LblockShuttleButton p {
+	margin-bottom:6px;
+}
+.LblockShuttleButton img {
+	cursor:pointer;
+}
+
+/* Block : content
+---------------------------------------------------------*/
+.LblockContent {
+	padding-left:5px;
+}
+.LblockContent ul {
+	margin:5px 0;
+}
+.LblockContent li {
+	padding-left:10px;
+	background:url(../images/content_blt.gif) no-repeat left 5px;
+}
+
+/* Block : pageSubtitle
+---------------------------------------------------------*/
+.LblockPageSubtitle h2 {
+	color:#333;
+	font-size:1em;
+	font-weight:bold;
+	padding:1px 0px 0px 21px;
+	background:url(../images/leftMenu_blt.gif) no-repeat -5px 50%;
+}
+
+/* Block : inform
+---------------------------------------------------------*/
+#LblockInform {
+	padding:28px 20px 28px 115px;
+	border:5px solid #E0E0E0;
+	background:url(../images/inform.gif) no-repeat 25px 32px;
+}
+#LblockInform div {
+	padding:4px 20px;
+	border-left:1px solid #E0E0E0;
+}
+#LblockInform h1 {
+	width:100%;
+	overflow:hidden;
+	height:0;
+	padding-top:21px;
+	margin-bottom:15px;
+	background:url(../images/inform_text.gif) no-repeat;
+}
+#LblockInform p {
+	line-height:20px;
+}
+
+/* Block : pageTitle
+---------------------------------------------------------*/
+#LblockPageTitle {
+	background:url(../images/pageTitle_bg.gif) repeat-x left bottom;
+}
+#LblockPageTitle h1 {
+	font-size:1.1em;
+	padding:8px 0px 0px 0px;
+	color:#333;
+}
+
+/* Block : content2
+---------------------------------------------------------*/
+.LblockContent2 {
+	padding-left:10px;
+}
+.LblockContent2 ul {
+	margin:5px 0;
+}
+.LblockContent2 li {
+	padding-left:7px;
+	background:url(../images/content2_blt.gif) no-repeat left 7px;
+}
+
+/* Block : comment
+---------------------------------------------------------*/
+.LblockComment {
+	color:#e00;
+}
+

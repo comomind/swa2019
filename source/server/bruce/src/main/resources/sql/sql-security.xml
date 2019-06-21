@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="voip.user">
+	<insert id="insertTokenEachUser">
+		<![CDATA[
+			INSERT INTO USERTOKEN (EMAIL,TOKEN,STATUS,CREATED,LOGOFF,DURATION) VALUES(#{email},#{token},#{status},NOW(),#{logoff},#{duration})
+		]]>
+	</insert>
+	
+	<select id="selectAllTokens" resultType="cmu.voip.repository.security.vo.UserTokenDTO">
+		<![CDATA[
+			SELECT EMAIL,TOKEN,STATUS,CREATED,LOGOFF,DURATION FROM USERTOKEN
+		]]>
+	</select>
+	
+	<select id="selectTokenByEmail" parameterType="String" resultType="cmu.voip.repository.security.vo.UserTokenDTO">
+		<![CDATA[
+			SELECT EMAIL,TOKEN,STATUS,CREATED,LOGOFF,DURATION FROM USERTOKEN WHERE EMAIL = #{email}
+		]]>
+	</select>
+	
+	<select id="selectTokenByToken" parameterType="String" resultType="cmu.voip.repository.security.vo.UserTokenDTO">
+		<![CDATA[
+			SELECT EMAIL,TOKEN,STATUS,CREATED,LOGOFF,DURATION FROM USERTOKEN WHERE TOKEN = #{token}
+		]]>
+	</select>
+	
+	<update id="updateTokenStatusByEmail" parameterType="cmu.voip.repository.security.vo.UserTokenDTO">
+		<![CDATA[
+			UPDATE USERTOKEN SET STATUS=#{status} WHERE EMAIL = #{email}
+		]]>
+	</update>
+	
+	<update id="updateTokenByEmail" parameterType="cmu.voip.repository.security.vo.UserTokenDTO">
+		<![CDATA[
+			UPDATE USERTOKEN SET CREATED=now(),TOKEN=#{token} WHERE EMAIL = #{email}
+		]]>
+	</update>
+	<update id="updateTokenLogffByEmail" parameterType="cmu.voip.repository.security.vo.UserTokenDTO">
+		<![CDATA[
+			UPDATE USERTOKEN SET STATUS=#{status},LOGOFF=#{logoff} WHERE EMAIL = #{email}
+		]]>
+	</update>
+</mapper>

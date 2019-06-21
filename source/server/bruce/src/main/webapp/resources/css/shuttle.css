@@ -1,0 +1,9 @@
+#LblockBlank01 {
+	position:relative;
+}
+#LblockShuttleButton01 {
+	position:absolute;
+	left:49.5%;
+	top:42%;
+	margin:-35px 0 0 -4px;
+}
