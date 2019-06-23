@@ -12,8 +12,8 @@
 
     <FrameLayout
         android:id="@+id/frame_layout"
-        android:layout_width="411dp"
-        android:layout_height="609dp"
+        android:layout_width="319dp"
+        android:layout_height="490dp"
         android:layout_gravity="top"
         tools:layout_editor_absoluteX="3dp"
         tools:layout_editor_absoluteY="0dp">

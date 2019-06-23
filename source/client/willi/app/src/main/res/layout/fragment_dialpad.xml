@@ -6,32 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".UserInterface.dialpadFragment">
 
+    <TextView
+        android:id="@+id/InputNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="4dp"
+        android:onClick="InputNum"
+        android:textSize="36sp"
+        android:textStyle="italic" />
+
     <TableLayout
         android:layout_width="wrap_content"
-        android:layout_height="400dp"
+        android:layout_height="354dp"
         android:layout_gravity="center_horizontal"
-        android:gravity="center">
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp">
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/dial1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial1"
                 android:src="@drawable/s_one" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/dial2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial2"
                 android:src="@drawable/s_two" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/dial3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial3"
                 android:src="@drawable/s_three" />
         </TableRow>
 
@@ -40,21 +55,24 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/dial4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial4"
                 android:src="@drawable/s_four" />
 
             <ImageButton
-                android:id="@+id/imageButton5"
+                android:id="@+id/dial5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial5"
                 android:src="@drawable/s_five" />
 
             <ImageButton
-                android:id="@+id/imageButton6"
+                android:id="@+id/dial6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial6"
                 android:src="@drawable/s_six" />
         </TableRow>
 
@@ -63,21 +81,24 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton7"
+                android:id="@+id/dial7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial7"
                 android:src="@drawable/s_seven" />
 
             <ImageButton
-                android:id="@+id/imageButton8"
+                android:id="@+id/dial8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial8"
                 android:src="@drawable/s_eight" />
 
             <ImageButton
-                android:id="@+id/imageButton9"
+                android:id="@+id/dial9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial9"
                 android:src="@drawable/s_nine" />
         </TableRow>
 
@@ -86,21 +107,24 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:id="@+id/imageButton10"
+                android:id="@+id/dialstar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dialstar"
                 android:src="@drawable/s_star" />
 
             <ImageButton
-                android:id="@+id/imageButton11"
+                android:id="@+id/dial0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dial0"
                 android:src="@drawable/s_zero" />
 
             <ImageButton
-                android:id="@+id/imageButton12"
+                android:id="@+id/dialshap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="dialshap"
                 android:src="@drawable/s_shap" />
 
         </TableRow>
@@ -116,10 +140,11 @@
                 android:src="@android:color/background_light" />
 
             <ImageButton
-                android:id="@+id/imageButton13"
+                android:id="@+id/CallButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00897B"
+                android:onClick="buttonSendClick"
                 android:src="@android:drawable/stat_sys_phone_call" />
 
             <ImageView

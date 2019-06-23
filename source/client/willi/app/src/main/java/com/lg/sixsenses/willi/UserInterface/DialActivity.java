@@ -28,7 +28,7 @@ public class DialActivity extends AppCompatActivity {
 
         // 첫 화면 지정
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout, recentsFragment).commitAllowingStateLoss();
+        transaction.replace(R.id.frame_layout, dialpadFragment).commitAllowingStateLoss();
 
         // bottomNavigationView의 아이템이 선택될 때 호출될 리스너 등록
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,6 +48,9 @@ public class DialActivity extends AppCompatActivity {
                         transaction.replace(R.id.frame_layout, dialpadFragment).commitAllowingStateLoss();
                         break;
                     }
+                    default:
+                        transaction.replace(R.id.frame_layout, dialpadFragment).commitAllowingStateLoss();
+                        break;
                 }
 
                 return true;

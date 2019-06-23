@@ -8,65 +8,84 @@
 
 
     <TableLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="345dp"
+        android:layout_height="524dp"
         android:layout_margin="8dp"
+        android:layout_marginLeft="10dp"
         android:background="@drawable/sixsenses_final"
-        android:gravity="center_vertical">
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow android:gravity="center">
+        <TableRow>
+
             <TextView
-                android:id="@+id/textViewReg"
+                android:id="@+id/textViewSpace"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Log in"
+                android:layout_height="match_parent"
                 android:layout_span="2"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:textSize="30sp"/>
+                android:text=""
+                android:textSize="150sp" />
 
         </TableRow>
-        <TableRow android:gravity="center">
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textViewReg"
+                android:layout_width="378dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:text="Log in"
+                android:textColor="#ffffff"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow>
+
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:text="Email : "
-                android:textStyle="bold"
                 android:textColor="#ffffff"
                 android:textSize="20sp"
-                android:gravity="center_vertical"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/textView2"
                 tools:layout_editor_absoluteY="132dp" />
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
                 android:background="#ffffff"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="#000000" />
         </TableRow>
 
-        <TableRow android:gravity="center">
+        <TableRow>
+
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
+                android:text="Password : "
                 android:textColor="#ffffffff"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:text="Password : "/>
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000000"
                 android:background="#ffffff"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="#000000" />
         </TableRow>
-        <TableRow android:gravity="center">
+
+        <TableRow>
 
             <Button
                 android:id="@+id/buttonRegister"
@@ -81,32 +100,38 @@
                 android:onClick="buttonLoginClick"
                 android:text="Login" />
         </TableRow>
-        <TableRow android:gravity="center">
+
+        <TableRow>
+
             <TextView
                 android:id="@+id/textViewResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
                 android:textColor="#ffffff"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
         </TableRow>
-        <TableRow android:gravity="center">
+
+        <TableRow>
+
             <Button
                 android:id="@+id/buttonCallSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="buttonSendClick"
                 android:layout_span="2"
+                android:onClick="buttonSendClick"
                 android:text="Send" />
         </TableRow>
-        <TableRow android:gravity="center">
+
+        <TableRow>
+
             <Button
                 android:id="@+id/buttonPark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonParkClick"
                 android:text="Park" />
+
             <Button
                 android:id="@+id/buttonLee"
                 android:layout_width="wrap_content"
@@ -115,6 +140,17 @@
                 android:text="Lee" />
         </TableRow>
 
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textViewSpace2"
+                android:layout_width="wrap_content"
+                android:layout_height="76dp"
+                android:layout_span="2"
+                android:text=""
+                android:textSize="150sp" />
+
+        </TableRow>
     </TableLayout>
 
 
