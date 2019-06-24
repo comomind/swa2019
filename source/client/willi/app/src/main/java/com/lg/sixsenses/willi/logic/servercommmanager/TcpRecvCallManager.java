@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.logic.callmanager.CallStateMachine;
@@ -106,7 +107,8 @@ public class TcpRecvCallManager {
                             Log.d(TAG, "Socket Closed 1");
 
 
-                        } else if (recvBody.getCmd().equals("CallRequestS2C"))
+                        }
+                        else if (recvBody.getCmd().equals("CallRequestS2C"))
                         {
                             CallStateMachine.getInstance().recvCallRequest();
                             DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
@@ -119,8 +121,8 @@ public class TcpRecvCallManager {
                             Intent intent = new Intent(context.getApplicationContext(), CallStateActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
-
-                        } else if (recvBody.getCmd().equals("CallRejectS2C")) {
+                        }
+                        else if (recvBody.getCmd().equals("CallRejectS2C")) {
                             CallStateMachine.getInstance().recvCallReject();
                             // CallReject 명령을 통화중/Ringing 에 받는 경우..
                             // 서버 에게 확인의 의미로 CallRejectC2S를 보낸다
@@ -178,6 +180,7 @@ public class TcpRecvCallManager {
                             }
 
                             CallStateMachine.getInstance().sendCallReject();
+                            CallHandler.getInstance().onReceiveCallRejectMessage();
                         }
                         else if (recvBody.getCmd().equals("CallFailS2C")) {
                             CallStateMachine.getInstance().recvCallReject();
@@ -237,6 +240,7 @@ public class TcpRecvCallManager {
                             }
 
                             CallStateMachine.getInstance().sendCallReject();
+                            CallHandler.getInstance().onReceiveCallRejectMessage();
                         }
                     }catch (IOException e) {
                         e.printStackTrace();
@@ -312,8 +316,6 @@ public class TcpRecvCallManager {
                     Log.d(TAG, "Socket Closed 6");
 
                     CallStateMachine.getInstance().sendCallAccept();
-
-
 
                 }
                 catch (IOException e) {

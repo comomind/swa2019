@@ -3,6 +3,7 @@ package com.lg.sixsenses.willi.logic.servercommmanager;
 import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.logic.callmanager.CallStateMachine;
@@ -116,9 +117,12 @@ public class TcpSendCallManager {
                         // TODO: parse body & get UDP port
                         CallStateMachine.getInstance().recvCallAccept();
                         DataManager.getInstance().setCallId(recvBody.getCallId());
+                        CallHandler.getInstance().onReceiveCallAcceptMessage();
+
                     } else if ( recvBody.getCmd().equals("CallRejectS2C") ||
                                 recvBody.getCmd().equals("CallFailS2C")) {
                         CallStateMachine.getInstance().recvCallReject();
+                        CallHandler.getInstance().onReceiveCallRejectMessage();
                     }
                     socket.close();
                 } catch (IOException e) {

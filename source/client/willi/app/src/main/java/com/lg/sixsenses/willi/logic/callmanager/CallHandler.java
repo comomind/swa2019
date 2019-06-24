@@ -1,6 +1,7 @@
 package com.lg.sixsenses.willi.logic.callmanager;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
@@ -26,6 +27,16 @@ public class CallHandler {
         // TODO: initiate UDP listen socket
 
 
+    }
+
+    public void onReceiveCallRejectMessage()
+    {
+        Log.d(TAG,"onReceiveCallRejectMessage");
+    }
+
+    public void onReceiveCallAcceptMessage()
+    {
+        Log.d(TAG,"onReceiveCallAcceptMessage");
     }
 
     public void callAccept() {
