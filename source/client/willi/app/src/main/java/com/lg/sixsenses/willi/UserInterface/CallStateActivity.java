@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.DataRepository.DataManager;
@@ -28,6 +29,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     private String phoneNum=null;
     private TcpSendCallManager sender = null;
     private TcpRecvCallManager receiver = null;
+    private ImageView imageViewState;
 
 
     @Override
@@ -40,45 +42,26 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         textViewCallstate = (TextView)findViewById(R.id.textViewCallState);
         buttonAccept = (Button)findViewById(R.id.buttonAccept);
         buttonReject = (Button)findViewById(R.id.buttonReject);
-        gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-        gifImageView.setGifImageResource(R.drawable.calling);
-        //textViewCallstate.setText("Calling with frank");
+//        gifImageView = (GifImageView) findViewById(R.id.GifImageView);
+//        gifImageView.setGifImageResource(R.drawable.calling);
+        imageViewState = (ImageView)findViewById(R.id.imageViewState);
 
+        // for test
+        imageViewState.setImageResource(R.drawable.calling);
+        buttonReject.setEnabled(true);
+        buttonAccept.setEnabled(false);
+        textViewCallstate.setText("Calling with frank");
 
-        if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CALLING)
-        {
-            gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-            gifImageView.setGifImageResource(R.drawable.calling);
-            textViewCallstate.setText("Calling to "+DataManager.getInstance().getCalleePhoneNum());
-            buttonReject.setEnabled(true);
-            buttonAccept.setEnabled(false);
-        }
-        else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CONNECTED)
-        {
-            gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-            gifImageView.setGifImageResource(R.drawable.connected);
-            String phone=null;
-            if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCalleePhoneNum())
-                phone = DataManager.getInstance().getCallerPhoneNum();
-            else if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCallerPhoneNum())
-                phone = DataManager.getInstance().getCalleePhoneNum();
-
-            textViewCallstate.setText("Connected with "+phone);
-
-            buttonReject.setEnabled(true);
-            buttonAccept.setEnabled(false);
-        }
-        else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.RINGING)
-        {
-            gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-            gifImageView.setGifImageResource(R.drawable.ringing);
-            textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
-
-            buttonReject.setEnabled(true);
-            buttonAccept.setEnabled(true);
-        }
+        ChangeUI();
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataManager.getInstance().deleteObserver(this);
+    }
+
     public void buttonAcceptClick(View view)
     {
         CallHandler.getInstance().callAccept();
@@ -123,36 +106,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                 @Override
                 public void run() {
 
-                    if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CALLING)
-                    {
-                        gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-                        gifImageView.setGifImageResource(R.drawable.calling);
-                        textViewCallstate.setText("Calling to "+DataManager.getInstance().getCalleePhoneNum());
-                        buttonReject.setEnabled(true);
-                        buttonAccept.setEnabled(false);
-                    }
-                    else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CONNECTED)
-                    {
-                        gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-                        gifImageView.setGifImageResource(R.drawable.connected);
-                        String phone=null;
-                        if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCalleePhoneNum())
-                            phone = DataManager.getInstance().getCallerPhoneNum();
-                        else if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCallerPhoneNum())
-                            phone = DataManager.getInstance().getCalleePhoneNum();
-                        buttonReject.setEnabled(true);
-                        buttonAccept.setEnabled(false);
-                        textViewCallstate.setText("Connected with "+phone);
-                    }
-                    else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.RINGING)
-                    {
-                        gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-                        gifImageView.setGifImageResource(R.drawable.ringing);
-                        textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
-                        buttonReject.setEnabled(true);
-                        buttonAccept.setEnabled(true);
-                    }
-                    else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.IDLE)
+                    ChangeUI();
+                    if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.IDLE)
                     {
                         finish();
                     }
@@ -160,6 +115,41 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             });
         }
 
+    }
+
+    public void ChangeUI()
+    {
+        if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CALLING)
+        {
+//            gifImageView = (GifImageView) findViewById(R.id.GifImageView);
+//            gifImageView.setGifImageResource(R.drawable.calling);
+            imageViewState.setImageResource(R.drawable.calling);
+            textViewCallstate.setText("Calling to "+DataManager.getInstance().getCalleePhoneNum());
+            buttonReject.setEnabled(true);
+            buttonAccept.setEnabled(false);
+        }
+        else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CONNECTED)
+        {
+            imageViewState.setImageResource(R.drawable.connected);
+            String phone=null;
+            if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCalleePhoneNum())
+                phone = DataManager.getInstance().getCallerPhoneNum();
+            else if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCallerPhoneNum())
+                phone = DataManager.getInstance().getCalleePhoneNum();
+
+            textViewCallstate.setText("Connected with "+phone);
+
+            buttonReject.setEnabled(true);
+            buttonAccept.setEnabled(false);
+        }
+        else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.RINGING)
+        {
+            imageViewState.setImageResource(R.drawable.ringing);
+            textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
+
+            buttonReject.setEnabled(true);
+            buttonAccept.setEnabled(true);
+        }
     }
 
 

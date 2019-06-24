@@ -30,9 +30,7 @@ public class CallStateMachine {
     public void sendCallRequest() {
         state.sendCallRequest();
     }
-    public void recvCallRequest() {
-        state.recvCallRequest();
-    }
+    public void recvCallRequest() { state.recvCallRequest(); }
     public void sendCallReject() {
         state.sendCallReject();
     }

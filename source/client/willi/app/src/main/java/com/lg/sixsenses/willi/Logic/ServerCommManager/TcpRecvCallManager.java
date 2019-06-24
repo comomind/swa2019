@@ -23,7 +23,7 @@ import java.net.Socket;
 public class TcpRecvCallManager {
     public static final String TAG = TcpRecvCallManager.class.getName().toString();
     private Context context;
-    private Socket firstRecvSocket = null;
+    private Socket firstRecvSocket;
 
     public TcpRecvCallManager(Context context)
     {
@@ -103,21 +103,22 @@ public class TcpRecvCallManager {
 
                             streamOut1.close();
                             socket.close();
+                            Log.d(TAG, "Socket Closed 1");
 
 
-                        } else if (recvBody.getCmd().equals("CallRequestS2C")) {
+                        } else if (recvBody.getCmd().equals("CallRequestS2C"))
+                        {
                             CallStateMachine.getInstance().recvCallRequest();
                             DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
                             DataManager.getInstance().setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
                             DataManager.getInstance().setCallId(recvBody.getCallId());
                             //Log.d(TAG, "SetCallID : " + recvBody.getCallId());
 
-                            Log.d(TAG, "1111111111111111111111111111111111");
+                            Log.d(TAG, "Client Sersocket SAVED!!!!!!!!!!!!!!!!!!!!!!1");
                             firstRecvSocket = socket;
                             Intent intent = new Intent(context.getApplicationContext(), CallStateActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
-                            Log.d(TAG, "22222222222222222222222222222222222");
 
                         } else if (recvBody.getCmd().equals("CallRejectS2C")) {
                             CallStateMachine.getInstance().recvCallReject();
@@ -156,6 +157,7 @@ public class TcpRecvCallManager {
                             //input = input + "\r\n";
                             input = input + "@@";
 
+
                             OutputStream streamOut1 = socket.getOutputStream();
                             streamOut1.write(input.getBytes());
                             streamOut1.flush();
@@ -163,6 +165,7 @@ public class TcpRecvCallManager {
 
                             streamOut1.close();
                             socket.close();
+                            Log.d(TAG, "Socket Closed 2");
 
                             if (firstRecvSocket != null) {
                                 OutputStream streamOut2 = firstRecvSocket.getOutputStream();
@@ -171,6 +174,7 @@ public class TcpRecvCallManager {
                                 streamOut2.close();
                                 firstRecvSocket.close();
                                 firstRecvSocket = null;
+                                Log.d(TAG, "Socket Closed 3");
                             }
 
                             CallStateMachine.getInstance().sendCallReject();
@@ -220,6 +224,7 @@ public class TcpRecvCallManager {
 
                             streamOut1.close();
                             socket.close();
+                            Log.d(TAG, "Socket Closed 4");
 
                             if (firstRecvSocket != null) {
                                 OutputStream streamOut2 = firstRecvSocket.getOutputStream();
@@ -228,6 +233,7 @@ public class TcpRecvCallManager {
                                 streamOut2.close();
                                 firstRecvSocket.close();
                                 firstRecvSocket = null;
+                                Log.d(TAG, "Socket Closed 5");
                             }
 
                             CallStateMachine.getInstance().sendCallReject();
@@ -303,6 +309,7 @@ public class TcpRecvCallManager {
 
                     firstRecvSocket.close();
                     firstRecvSocket = null;
+                    Log.d(TAG, "Socket Closed 6");
 
                     CallStateMachine.getInstance().sendCallAccept();
                 }
@@ -361,6 +368,7 @@ public class TcpRecvCallManager {
                     out.close();
                     firstRecvSocket.close();
                     firstRecvSocket = null;
+                    Log.d(TAG, "Socket Closed 7");
 
                     CallStateMachine.getInstance().sendCallReject();
                 }
