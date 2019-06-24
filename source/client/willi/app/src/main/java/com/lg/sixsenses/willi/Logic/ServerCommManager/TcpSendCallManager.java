@@ -1,12 +1,12 @@
-package com.lg.sixsenses.willi.Logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.ServerCommManager;
 
 import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
-import com.lg.sixsenses.willi.DataRepository.DataManager;
-import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
-import com.lg.sixsenses.willi.Util;
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
+import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.logic.CallManager.CallStateMachine;
+import com.lg.sixsenses.willi.util.Util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,6 +113,7 @@ public class TcpSendCallManager {
 
 
                     if (recvBody.getCmd().equals("CallAcceptS2C")) {
+                        // TODO: parse body & get UDP port
                         CallStateMachine.getInstance().recvCallAccept();
                         DataManager.getInstance().setCallId(recvBody.getCallId());
                     } else if ( recvBody.getCmd().equals("CallRejectS2C") ||
@@ -228,6 +229,8 @@ public class TcpSendCallManager {
                     Log.d(TAG, "Call Response" + recvBody.getCmd());
 
                     if (recvBody.getCmd().equals("CallAcceptS2C"))
+                        // TODO: parse body & get UDP port
+
                         CallStateMachine.getInstance().recvCallAccept();
                     else if (recvBody.getCmd().equals("CallRejectS2C"))
                         CallStateMachine.getInstance().recvCallReject();

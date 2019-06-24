@@ -1,11 +1,11 @@
-package com.lg.sixsenses.willi.Logic;
+package com.lg.sixsenses.willi.logic;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.lg.sixsenses.willi.Logic.CallManager.CallHandler;
+import com.lg.sixsenses.willi.logic.CallManager.CallHandler;
 
 public class CallReceiveService extends Service {
     public static final String TAG = CallReceiveService.class.getName().toString();

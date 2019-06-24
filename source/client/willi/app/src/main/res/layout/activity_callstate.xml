@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:background="#111E39"
-    tools:context=".UserInterface.CallStateActivity">
+    tools:context=".ui.CallStateActivity">
 
 
     <TableLayout

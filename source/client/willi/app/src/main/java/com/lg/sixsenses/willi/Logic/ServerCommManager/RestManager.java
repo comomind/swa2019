@@ -1,17 +1,16 @@
-package com.lg.sixsenses.willi.Logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.ServerCommManager;
 
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
-import com.lg.sixsenses.willi.DataRepository.DataManager;
-import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
-import com.lg.sixsenses.willi.DataRepository.LoginInfo;
-import com.lg.sixsenses.willi.DataRepository.UpdatedData;
-import com.lg.sixsenses.willi.DataRepository.UserInfo;
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
+import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.RegisterInfo;
+import com.lg.sixsenses.willi.repository.LoginInfo;
+import com.lg.sixsenses.willi.repository.UpdatedData;
+import com.lg.sixsenses.willi.repository.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;

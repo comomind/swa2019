@@ -16,17 +16,17 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
         <service
-            android:name=".Logic.CallReceiveService"
+            android:name=".logic.CallReceiveService"
             android:label="CallReceiveService" />
-        <activity android:name=".UserInterface.LoginActivity">
+        <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserInterface.RegisterActivity"></activity>
-        <activity android:name=".UserInterface.CallStateActivity"></activity>
-        <activity android:name=".UserInterface.DialActivity"></activity>
+        <activity android:name=".ui.RegisterActivity"></activity>
+        <activity android:name=".ui.CallStateActivity"></activity>
+        <activity android:name=".ui.DialActivity"></activity>
     </application>
 
 </manifest>

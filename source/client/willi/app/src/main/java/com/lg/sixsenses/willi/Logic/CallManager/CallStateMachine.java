@@ -1,7 +1,7 @@
-package com.lg.sixsenses.willi.Logic.CallManager;
+package com.lg.sixsenses.willi.logic.CallManager;
 
-import com.lg.sixsenses.willi.DataRepository.DataManager;
-import com.lg.sixsenses.willi.DataRepository.UpdatedData;
+import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.UpdatedData;
 
 public class CallStateMachine {
 

@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.Logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.ServerCommManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +7,11 @@ import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
-import com.lg.sixsenses.willi.DataRepository.DataManager;
-import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
-import com.lg.sixsenses.willi.UserInterface.CallStateActivity;
-import com.lg.sixsenses.willi.Util;
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
+import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.logic.CallManager.CallStateMachine;
+import com.lg.sixsenses.willi.ui.CallStateActivity;
+import com.lg.sixsenses.willi.util.Util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -312,6 +312,9 @@ public class TcpRecvCallManager {
                     Log.d(TAG, "Socket Closed 6");
 
                     CallStateMachine.getInstance().sendCallAccept();
+
+
+
                 }
                 catch (IOException e) {
                     e.printStackTrace();
