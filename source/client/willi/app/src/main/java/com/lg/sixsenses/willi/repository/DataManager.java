@@ -3,6 +3,7 @@ package com.lg.sixsenses.willi.repository;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 
 public class DataManager extends Observable {
@@ -25,6 +26,7 @@ public class DataManager extends Observable {
     private String calleePhoneNum;
     private CallStatus callStatus;
     private long callId;
+    private ArrayList<UdpInfo> peerUdpInfoList;
 
     public void clearCallInfo()
     {
@@ -32,6 +34,7 @@ public class DataManager extends Observable {
         calleePhoneNum = null;
         callStatus = CallStatus.IDLE;
         callId = 0;
+        peerUdpInfoList.clear();
     }
 
     public UserInfo getMyInfo() {
@@ -88,6 +91,14 @@ public class DataManager extends Observable {
 
     public void setCalleePhoneNum(String calleePhoneNum) {
         this.calleePhoneNum = calleePhoneNum;
+    }
+
+    public ArrayList<UdpInfo> getPeerUdpInfoList() {
+        return peerUdpInfoList;
+    }
+
+    public void setPeerUdpInfoList(ArrayList<UdpInfo> peerUdpInfoList) {
+        this.peerUdpInfoList = peerUdpInfoList;
     }
 
     public void NotifyUpdate(UpdatedData data) {

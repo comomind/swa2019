@@ -11,6 +11,7 @@ import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.logic.callmanager.CallStateMachine;
+import com.lg.sixsenses.willi.repository.UdpInfo;
 import com.lg.sixsenses.willi.ui.CallStateActivity;
 import com.lg.sixsenses.willi.util.Util;
 
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class TcpRecvCallManager {
@@ -114,6 +116,16 @@ public class TcpRecvCallManager {
                             DataManager.getInstance().setCallerPhoneNum(recvBody.getCallerPhoneNum());
                             DataManager.getInstance().setCalleePhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
                             DataManager.getInstance().setCallId(recvBody.getCallId());
+
+                            UdpInfo callerUdpInfo = new UdpInfo();
+                            callerUdpInfo.setIpaddr(recvBody.getIpaddr());
+                            callerUdpInfo.setAudioPort(recvBody.getUdpAudioPort());
+                            callerUdpInfo.setVideoPort(recvBody.getUdpVideoPort());
+                            ArrayList<UdpInfo> list = new ArrayList<UdpInfo>();
+                            list.add(callerUdpInfo);
+                            DataManager.getInstance().setPeerUdpInfoList(list);
+                            DataManager.getInstance().setCallId(recvBody.getCallId());
+
                             //Log.d(TAG, "SetCallID : " + recvBody.getCallId());
 
                             Log.d(TAG, "Client Sersocket SAVED!!!!!!!!!!!!!!!!!!!!!!1");

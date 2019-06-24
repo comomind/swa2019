@@ -15,11 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.UdpInfo;
 import com.lg.sixsenses.willi.repository.UpdatedData;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 import com.lg.sixsenses.willi.R;
+
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -137,6 +140,16 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
 
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(false);
+
+//            // For Test
+//            ArrayList<UdpInfo> list = DataManager.getInstance().getPeerUdpInfoList();
+//            int i = 0;
+//            String re;
+//            for(i=0;i<list.size();i++)
+//            {
+//                re += list.get(i).toString();
+//            }
+//            Log.d(TAG,"###################### Peer Info ######### : "+re);
         }
         else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.RINGING)
         {

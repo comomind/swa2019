@@ -7,6 +7,7 @@ import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.logic.callmanager.CallStateMachine;
+import com.lg.sixsenses.willi.repository.UdpInfo;
 import com.lg.sixsenses.willi.util.Util;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class TcpSendCallManager {
 
@@ -114,8 +116,14 @@ public class TcpSendCallManager {
 
 
                     if (recvBody.getCmd().equals("CallAcceptS2C")) {
-                        // TODO: parse body & get UDP port
                         CallStateMachine.getInstance().recvCallAccept();
+                        UdpInfo callerUdpInfo = new UdpInfo();
+                        callerUdpInfo.setIpaddr(recvBody.getIpaddr());
+                        callerUdpInfo.setAudioPort(recvBody.getUdpAudioPort());
+                        callerUdpInfo.setVideoPort(recvBody.getUdpVideoPort());
+                        ArrayList<UdpInfo> list = new ArrayList<UdpInfo>();
+                        list.add(callerUdpInfo);
+                        DataManager.getInstance().setPeerUdpInfoList(list);
                         DataManager.getInstance().setCallId(recvBody.getCallId());
                         CallHandler.getInstance().onReceiveCallAcceptMessage();
 
@@ -232,11 +240,11 @@ public class TcpSendCallManager {
 
                     Log.d(TAG, "Call Response" + recvBody.getCmd());
 
-                    if (recvBody.getCmd().equals("CallAcceptS2C"))
-                        // TODO: parse body & get UDP port
-
-                        CallStateMachine.getInstance().recvCallAccept();
-                    else if (recvBody.getCmd().equals("CallRejectS2C"))
+//                    if (recvBody.getCmd().equals("CallAcceptS2C"))
+//                        // TODO: parse body & get UDP port
+//
+//                        CallStateMachine.getInstance().recvCallAccept();
+                    if (recvBody.getCmd().equals("CallRejectS2C"))
                         CallStateMachine.getInstance().recvCallReject();
 
                     socket.close();
