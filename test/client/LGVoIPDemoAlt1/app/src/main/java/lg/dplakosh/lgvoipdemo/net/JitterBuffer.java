@@ -80,6 +80,10 @@ public class JitterBuffer implements Serializable {
         Log.w(TAG, "Packet " + rtpPacket + " is discarded by jitter buffer");
         return;
       }
+
+
+
+
     }
 
     //if RTP packet is not outstanding or reading not started yet (ready == false)

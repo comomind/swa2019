@@ -121,7 +121,7 @@ public class JitterBuffer1 implements Serializable {
 
     latency = clock.getTime(receiverTimestamp - senderTimestamp);
 
-        Log.d(TAG, "seq: " + rtpPacket.getSequenceNumber() +
+    Log.d(TAG, "seq: " + rtpPacket.getSequenceNumber() +
         " Si (timestamp): " + senderTimestamp +
         " Si (ms): " + clock.getTime(senderTimestamp) +
         " Rec(i)(ms): " + receiverTimeUnit +

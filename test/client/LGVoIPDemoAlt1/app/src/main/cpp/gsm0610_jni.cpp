@@ -33,7 +33,7 @@
 #define BLOCK_LEN       160
 #define GSM_BYTE_LEN     33
 
-#define LOG_TAG "gsmNative" // text for log tag
+#define LOG_TAG "GSMNative" // text for log tag
 
 #undef DEBUG_GSM
 
@@ -46,7 +46,7 @@ static gsm0610_state_t *gsm0610_dec_state;
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmOpenNative(JNIEnv *env, jclass type) {
+Java_lg_dplakosh_lgvoipdemo_codec_audio_GsmCodec_gsmOpenNative(JNIEnv *env, jclass type) {
     if (codec_open != 0) {
         codec_open++;
         return (jint) 0;
@@ -68,7 +68,7 @@ Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmOpenNative(JNIEnv *env, jclass ty
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmDecodeNative(JNIEnv *env, jclass type,
+Java_lg_dplakosh_lgvoipdemo_codec_audio_GsmCodec_gsmDecodeNative(JNIEnv *env, jclass type,
                                                              jbyteArray input_,
                                                              jbyteArray output_) {
     jbyte post_amp[BLOCK_LEN*2];
@@ -99,7 +99,7 @@ Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmDecodeNative(JNIEnv *env, jclass 
 
 extern "C"
 JNIEXPORT jint JNICALL
-Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmEncodeNative(JNIEnv *env, jclass type,
+Java_lg_dplakosh_lgvoipdemo_codec_audio_GsmCodec_gsmEncodeNative(JNIEnv *env, jclass type,
                                                              jbyteArray input_,
                                                              jbyteArray output_) {
     jbyte pre_amp[BLOCK_LEN*2];
@@ -141,7 +141,7 @@ Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmEncodeNative(JNIEnv *env, jclass 
 
 extern "C"
 JNIEXPORT void JNICALL
-Java_lg_dplakosh_lgvoipdemo_codec_audio_GSM_gsmCloseNative(JNIEnv *env, jclass type) {
+Java_lg_dplakosh_lgvoipdemo_codec_audio_GsmCodec_gsmCloseNative(JNIEnv *env, jclass type) {
     if (--codec_open != 0)
         return;
 
