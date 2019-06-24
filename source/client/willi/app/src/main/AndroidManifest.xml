@@ -3,6 +3,10 @@
     package="com.lg.sixsenses.willi">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +15,9 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".Logic.CallReceiveService"
+            android:label="CallReceiveService" />
         <activity android:name=".UserInterface.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

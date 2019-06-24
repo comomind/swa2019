@@ -1,7 +1,12 @@
 package com.lg.sixsenses.willi.UserInterface;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.telecom.Call;
 import android.util.Log;
@@ -14,6 +19,7 @@ import com.lg.sixsenses.willi.DataRepository.ConstantsWilli;
 import com.lg.sixsenses.willi.DataRepository.LoginInfo;
 import com.lg.sixsenses.willi.Logic.CallManager.CallHandler;
 import com.lg.sixsenses.willi.Logic.CallManager.CallStateMachine;
+import com.lg.sixsenses.willi.Logic.CallReceiveService;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.RestManager;
 import com.lg.sixsenses.willi.DataRepository.DataManager;
 import com.lg.sixsenses.willi.Logic.ServerCommManager.TcpRecvCallManager;
@@ -86,10 +92,12 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         editTextPassword    = (EditText)findViewById(R.id.editTextPassword);
         textViewResult      = (TextView)findViewById(R.id.textViewResult);
         textViewResult.setText(null);
+// Moved to CallReceiveService
+//        CallHandler.getInstance().setContext(getApplicationContext());
+//        CallHandler.getInstance().startCallHandler();
 
-        CallHandler.getInstance().setContext(getApplicationContext());
-        CallHandler.getInstance().startCallHandler();
-
+        WhiteListBatteryOptimtizations(false);
+        startService(new Intent(this, CallReceiveService.class));
     }
 
     @Override
@@ -146,5 +154,27 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         editTextPassword.setText("1234");
 
     }
+    private void WhiteListBatteryOptimtizations(boolean EnableReview) {
+        String packageName = getApplicationContext().getPackageName();
+        PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        if (pm != null && pm.isIgnoringBatteryOptimizations(packageName) && EnableReview) {
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT < 24)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(intent);
+        } else {
+            Intent intent = new Intent();
+            if (Build.VERSION.SDK_INT < 24)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setData(Uri.parse("package:" + packageName));
+            getApplicationContext().startActivity(intent);
+        }
+
+    }
+
 
 }

@@ -1,10 +1,15 @@
 package com.lg.sixsenses.willi.UserInterface;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +35,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     private TcpSendCallManager sender = null;
     private TcpRecvCallManager receiver = null;
     private ImageView imageViewState;
+    private PowerManager.WakeLock proximityWakeLock;
 
 
     @Override
@@ -84,35 +90,22 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         {
             DataManager.CallStatus status = (DataManager.CallStatus)(data.getData());
             Log.d(TAG, "CallState : "+ status.toString());
-            if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCalleePhoneNum())
-                phoneNum = DataManager.getInstance().getCallerPhoneNum();
-            else if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCallerPhoneNum())
-                phoneNum = DataManager.getInstance().getCalleePhoneNum();
 
-            class MyRunnable implements Runnable {
-                DataManager.CallStatus st;
-                String num;
-                MyRunnable(DataManager.CallStatus st, String num)
-                {
-                    this.st = st;
-                    this.num = num;
-                }
-
-                public void run() {
-
-                }
-            }
-            runOnUiThread(new MyRunnable(status,phoneNum) {
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
                     ChangeUI();
                     if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.IDLE)
                     {
+                        disableProximityWakeLock();
                         finish();
                     }
+
                 }
             });
+
+
+
         }
 
     }
@@ -130,6 +123,9 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         }
         else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CONNECTED)
         {
+            if (enableProximityWakeLock())
+                Log.e(TAG, "enableProximityWakeLock Failed already enabled!");
+
             imageViewState.setImageResource(R.drawable.connected);
             String phone=null;
             if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCalleePhoneNum())
@@ -144,11 +140,61 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         }
         else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.RINGING)
         {
+            DoPmAndBringActivityToForeground();
             imageViewState.setImageResource(R.drawable.ringing);
             textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
 
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(true);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void DoPmAndBringActivityToForeground() {
+        //Turn on screen if off
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if ((pm != null) && (!pm.isInteractive())) {
+
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, "LG:MyLock");
+            wl.acquire(10000);
+            PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "LG:MyCpuLock");
+
+            wl_cpu.acquire(10000);
+        } else if (pm == null) Log.e(TAG, "Failed to aquire PowerManager pm");
+        //Unlock if locked
+        unlockScreen();
+        //Bring Screen to forground
+        Intent intent = new Intent(this, getClass());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        getApplicationContext().startActivity(intent);
+        Log.e(TAG, "Bring Screen to forground");
+    }
+
+    @SuppressWarnings("deprecation")
+    private void unlockScreen() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+    }
+
+    @SuppressLint("WakelockTimeout")
+    private boolean enableProximityWakeLock() {
+        if (proximityWakeLock != null) {
+            return true;
+        }
+        PowerManager powerManager = (PowerManager)
+                getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        if (powerManager != null) {
+            proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "LG:ProxLock");
+            proximityWakeLock.acquire();
+        }
+        return false;
+    }
+
+    private void disableProximityWakeLock() {
+        if (proximityWakeLock != null) {
+            proximityWakeLock.release();
+            proximityWakeLock = null;
         }
     }
 
