@@ -1,9 +1,9 @@
-package com.lg.sixsenses.willi.logic.CallManager;
+package com.lg.sixsenses.willi.logic.callmanager;
 
 import android.content.Context;
 
-import com.lg.sixsenses.willi.logic.ServerCommManager.TcpRecvCallManager;
-import com.lg.sixsenses.willi.logic.ServerCommManager.TcpSendCallManager;
+import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
+import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 
 public class CallHandler {
     public static final String TAG = CallHandler.class.getName().toString();

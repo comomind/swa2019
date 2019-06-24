@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lg.sixsenses.willi.logic.CallManager.CallHandler;
+import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.R;
 
 import android.widget.ImageButton;

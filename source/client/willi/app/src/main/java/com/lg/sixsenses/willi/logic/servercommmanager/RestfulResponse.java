@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.servercommmanager;
 
 public class RestfulResponse<T> {
     private String result;

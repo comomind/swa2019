@@ -1,13 +1,13 @@
-package com.lg.sixsenses.willi.logic.CallManager;
+package com.lg.sixsenses.willi.logic.callmanager;
 
 import android.util.Log;
 
-public class ConnectedState implements CallState {
+public class RingingState implements CallState {
 
-    public static final String TAG = ConnectedState.class.getName().toString();
+    public static final String TAG = RingingState.class.getName().toString();
     CallStateMachine callStateMachine;
 
-    public ConnectedState(CallStateMachine callStateMachine) {
+    public RingingState(CallStateMachine callStateMachine) {
         this.callStateMachine = callStateMachine;
     }
 
@@ -18,15 +18,16 @@ public class ConnectedState implements CallState {
 
     }
     public void sendCallReject() {
-        Log.d(TAG,"sendCallReject : Connected -> Idle");
+        Log.d(TAG,"sendCallReject : Ringing -> Idle");
         callStateMachine.setState(callStateMachine.getIdleState());
     }
     public void recvCallReject() {
-        Log.d(TAG,"recvCallReject : Connected -> Idle");
+        Log.d(TAG,"recvCallReject : Ringing -> Idle");
         callStateMachine.setState(callStateMachine.getIdleState());
     }
     public void sendCallAccept() {
-
+        Log.d(TAG,"sendCallAccept : Ringing -> Connected");
+        callStateMachine.setState(callStateMachine.getConnectedState());
     }
     public void recvCallAccept() {
 

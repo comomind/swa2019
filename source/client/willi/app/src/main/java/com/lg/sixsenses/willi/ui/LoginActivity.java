@@ -15,9 +15,9 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.LoginInfo;
-import com.lg.sixsenses.willi.logic.CallManager.CallHandler;
+import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.logic.CallReceiveService;
-import com.lg.sixsenses.willi.logic.ServerCommManager.RestManager;
+import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.R;
 //import com.lg.sixsenses.willi.DataRepository.RegisterInfo;

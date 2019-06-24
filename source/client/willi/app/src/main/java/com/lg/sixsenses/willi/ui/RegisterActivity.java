@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.lg.sixsenses.willi.logic.ServerCommManager.RestManager;
+import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.repository.RegisterInfo;

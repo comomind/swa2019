@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UpdatedData;
-import com.lg.sixsenses.willi.logic.CallManager.CallHandler;
-import com.lg.sixsenses.willi.logic.ServerCommManager.TcpRecvCallManager;
-import com.lg.sixsenses.willi.logic.ServerCommManager.TcpSendCallManager;
+import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
+import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
+import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 import com.lg.sixsenses.willi.R;
 import java.util.Observable;
 import java.util.Observer;

@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.logic.CallManager;
+package com.lg.sixsenses.willi.logic.callmanager;
 
 import android.util.Log;
 

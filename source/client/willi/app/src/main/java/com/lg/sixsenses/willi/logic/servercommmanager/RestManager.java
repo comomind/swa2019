@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.servercommmanager;
 
 import android.os.AsyncTask;
 import android.util.Log;

@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.logic.CallManager;
+package com.lg.sixsenses.willi.logic.callmanager;
 
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UpdatedData;

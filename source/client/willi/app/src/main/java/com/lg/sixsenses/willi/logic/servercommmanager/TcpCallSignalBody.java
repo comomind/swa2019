@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.servercommmanager;
 
 public class TcpCallSignalBody {
     private String cmd;

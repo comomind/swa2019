@@ -1,4 +1,4 @@
-package com.lg.sixsenses.willi.logic.ServerCommManager;
+package com.lg.sixsenses.willi.logic.servercommmanager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
-import com.lg.sixsenses.willi.logic.CallManager.CallStateMachine;
+import com.lg.sixsenses.willi.logic.callmanager.CallStateMachine;
 import com.lg.sixsenses.willi.ui.CallStateActivity;
 import com.lg.sixsenses.willi.util.Util;
 
