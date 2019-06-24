@@ -128,14 +128,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     }
 
-    public void buttonSendClick(View view)
-    {
-        CallHandler.getInstance().callRequest("1001");
-        Intent intent = new Intent(getApplicationContext(),CallStateActivity.class);
-        startActivity(intent);
-    }
-
-
     public void buttonParkClick(View view)
     {
         editTextEmail.setText("park@lge.com");

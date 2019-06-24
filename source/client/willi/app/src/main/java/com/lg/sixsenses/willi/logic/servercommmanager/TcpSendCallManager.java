@@ -49,10 +49,8 @@ public class TcpSendCallManager {
                     body.setCalleePhoneNum(phoneNum);
                     body.setCallerPhoneNum(DataManager.getInstance().getMyInfo().getPhoneNum());
                     body.setIpaddr(Util.getIPAddress());
-
-                    int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
-                    body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
-                    body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
+                    body.setUdpAudioPort(DataManager.getInstance().getMyUdpInfo().getAudioPort());
+                    body.setUdpVideoPort(DataManager.getInstance().getMyUdpInfo().getVideoPort());
 
                     callSignal.setHeader(header);
                     callSignal.setBody(body);

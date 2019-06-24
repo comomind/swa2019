@@ -9,8 +9,10 @@ import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.RegisterInfo;
 import com.lg.sixsenses.willi.repository.LoginInfo;
+import com.lg.sixsenses.willi.repository.UdpInfo;
 import com.lg.sixsenses.willi.repository.UpdatedData;
 import com.lg.sixsenses.willi.repository.UserInfo;
+import com.lg.sixsenses.willi.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -117,6 +119,13 @@ public class RestManager {
 
                 DataManager.getInstance().setMyInfo(myInfo);
                 DataManager.getInstance().setContactList(list);
+
+                UdpInfo udpInfo = new UdpInfo();
+                udpInfo.setIpaddr(Util.getIPAddress());
+                int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
+                udpInfo.setAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
+                udpInfo.setVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
+                DataManager.getInstance().setMyUdpInfo(udpInfo);
 
                 UpdatedData data = new UpdatedData();
                 data.setType("LoginResult");

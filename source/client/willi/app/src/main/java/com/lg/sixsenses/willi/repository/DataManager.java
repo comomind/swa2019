@@ -27,6 +27,7 @@ public class DataManager extends Observable {
     private CallStatus callStatus;
     private long callId;
     private ArrayList<UdpInfo> peerUdpInfoList;
+    private UdpInfo myUdpInfo;
 
     public void clearCallInfo()
     {
@@ -95,6 +96,14 @@ public class DataManager extends Observable {
 
     public ArrayList<UdpInfo> getPeerUdpInfoList() {
         return peerUdpInfoList;
+    }
+
+    public UdpInfo getMyUdpInfo() {
+        return myUdpInfo;
+    }
+
+    public void setMyUdpInfo(UdpInfo myUdpInfo) {
+        this.myUdpInfo = myUdpInfo;
     }
 
     public void setPeerUdpInfoList(ArrayList<UdpInfo> peerUdpInfoList) {
