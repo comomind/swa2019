@@ -1,12 +1,16 @@
 package com.lg.sixsenses.willi.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +40,10 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewResult;
+
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+    private boolean permissionToRecordAccepted = false;
 
 
     public void buttonLoginClick(View view)
@@ -69,6 +77,30 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         restManager.sendLogin(loginInfo);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_RECORD_AUDIO_PERMISSION: {
+                if (grantResults.length > 0 && permissions.length == grantResults.length) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        permissionToRecordAccepted = true;
+                        Log.e(TAG, "Request for Permission To Record Audio Granted");
+                    }
+                }
+                break;
+            }
+            default: {
+
+            }
+        }
+
+        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION && !permissionToRecordAccepted) {
+            Log.e(TAG, "Request for Permission To Record Audio Not Granted");
+            finish();
+        }
+    }
+
     public void buttonRegisterClick(View view)
     {
         Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
@@ -90,6 +122,25 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 // Moved to CallReceiveService
 //        CallHandler.getInstance().setContext(getApplicationContext());
 //        CallHandler.getInstance().startCallHandler();
+
+        //ask for authorisation
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 50);
+
+
+        //If authorisation not granted for camera
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            //ask for authorisation
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 50);
+        }
+
+        if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            permissionToRecordAccepted = true;
+            Log.e(TAG, "Permission To Record Audio Granted");
+        } else {
+            Log.d(TAG, "audio permission request");
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+        }
+
 
         WhiteListBatteryOptimtizations(false);
         startService(new Intent(this, CallReceiveService.class));

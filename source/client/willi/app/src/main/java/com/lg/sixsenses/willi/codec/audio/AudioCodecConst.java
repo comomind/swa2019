@@ -1,6 +1,7 @@
 package com.lg.sixsenses.willi.codec.audio;
 
 public class AudioCodecConst {
+  public static final int MILLISECONDS_IN_A_SECOND = 1000;
 
   public enum CodecType {
     PCMU(0),

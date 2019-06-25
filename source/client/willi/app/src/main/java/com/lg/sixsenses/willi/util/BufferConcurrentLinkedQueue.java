@@ -11,12 +11,10 @@ public class BufferConcurrentLinkedQueue<T> extends ConcurrentLinkedQueue<T> {
    *
    */
   public BufferConcurrentLinkedQueue() {
-    // TODO Auto-generated constructor stub
   }
 
   public BufferConcurrentLinkedQueue(Collection<T> c) {
     super(c);
-    // TODO Auto-generated constructor stub
   }
 
   @Override
