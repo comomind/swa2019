@@ -41,8 +41,7 @@ public class CallHandler {
     public void callAccept() {
         tcpRecvCallManager.receiveCall();
 
-        audioIo.setMyPort(DataManager.getInstance().getMyUdpInfo().getAudioPort());
-        audioIo.startReceive();
+        audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
         ArrayList<UdpInfo> peerInfos = DataManager.getInstance().getPeerUdpInfoList();
         // TODO: improve this
         UdpInfo peerInfo = peerInfos.get(0);
@@ -59,8 +58,7 @@ public class CallHandler {
     // call request by caller
     public void callRequest(String phoneNumber) {
         tcpSendCallManager.startPhoneCall("1001");
-        audioIo.setMyPort(DataManager.getInstance().getMyUdpInfo().getAudioPort());
-        audioIo.startReceive();
+        audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
     }
 
     // receive call accept message from server in caller

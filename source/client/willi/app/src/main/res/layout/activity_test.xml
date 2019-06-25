@@ -64,13 +64,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonReceiveClick"
-                android:text="Receive" />
+                android:text="Receive Thread On" />
             <Button
                 android:id="@+id/buttonSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonSendClick"
-                android:text="Send" />
+                android:text="Send Thread On" />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/buttonStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonStopClick"
+                android:text="Stop" />
         </TableRow>
 
 

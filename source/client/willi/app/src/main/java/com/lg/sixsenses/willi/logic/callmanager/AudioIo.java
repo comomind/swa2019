@@ -85,7 +85,9 @@ public class AudioIo {
     this.audioCodec = audioCodec;
   }
 
-  synchronized boolean startReceive() {
+  public synchronized boolean startReceive(int port) {
+    this.myPort = port;
+
     if (isStartReceive) {
       return true;
     }
@@ -100,7 +102,7 @@ public class AudioIo {
     return false;
   }
 
-  synchronized boolean startSend(InetAddress remoteIp, int remotePort) {
+  public synchronized boolean startSend(InetAddress remoteIp, int remotePort) {
     if (isStartSend) {
       return true;
     }
@@ -113,7 +115,7 @@ public class AudioIo {
     return false;
   }
 
-  synchronized boolean stopAll() {
+  public synchronized boolean stopAll() {
     if (!isStartReceive && !isStartSend) {
       Log.d(TAG, "AudioIo already stopped");
       return true;
