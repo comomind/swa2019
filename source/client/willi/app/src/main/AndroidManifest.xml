@@ -36,6 +36,7 @@
         <activity android:name=".ui.RegisterActivity"></activity>
         <activity android:name=".ui.CallStateActivity"></activity>
         <activity android:name=".ui.DialActivity"></activity>
+        <activity android:name=".ui.TestActivity"></activity>
     </application>
 
 </manifest>
