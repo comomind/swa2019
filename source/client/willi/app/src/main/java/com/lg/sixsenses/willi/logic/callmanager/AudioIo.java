@@ -136,6 +136,7 @@ public class AudioIo {
 
     // terminate send thread
     if (sendThread != null && sendThread.isAlive()) {
+      Log.d(TAG, "sendThread join started");
       isSendThreadRun = false;
       try {
         sendThread.join();
@@ -143,6 +144,7 @@ public class AudioIo {
         e.printStackTrace();
         Log.d(TAG, "sendThread join interrupted");
       }
+      Log.d(TAG, "sendThread join success");
     }
 
     receiveThread = null;
