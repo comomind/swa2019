@@ -41,9 +41,11 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private EditText editTextPassword;
     private TextView textViewResult;
 
-    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
-    private boolean permissionToRecordAccepted = false;
+    private static final int REQUEST_CAMERA_PERMISSION = 50;
+    private static final int REQUEST_MULTIPLE_PERMISION = 124;
+
 
 
     public void buttonLoginClick(View view)
@@ -80,23 +82,16 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case REQUEST_RECORD_AUDIO_PERMISSION: {
-                if (grantResults.length > 0 && permissions.length == grantResults.length) {
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        permissionToRecordAccepted = true;
-                        Log.e(TAG, "Request for Permission To Record Audio Granted");
-                    }
-                }
-                break;
-            }
-            default: {
-
-            }
+        Log.d(TAG,"Permision Request code : " + requestCode+" Permisions : "+permissions.length+" Granted : "+grantResults.length);
+        int failCheck = 0;
+        for(int i=0;i<permissions.length;i++)
+        {
+            Log.d(TAG,"Permission : "+permissions[i]+" Grand Result : "+grantResults[i]);
+            if(grantResults[i] < 0) failCheck = 1;
         }
 
-        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION && !permissionToRecordAccepted) {
-            Log.e(TAG, "Request for Permission To Record Audio Not Granted");
+        if (failCheck == 1) {
+            Log.e(TAG, "Request for Permission Failed!!!");
             finish();
         }
     }
@@ -129,24 +124,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 //        CallHandler.getInstance().setContext(getApplicationContext());
 //        CallHandler.getInstance().startCallHandler();
 
-        //ask for authorisation
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 50);
 
-
-        //If authorisation not granted for camera
-        if (checkSelfPermission(android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            //ask for authorisation
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 50);
-        }
-
-        if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
-            permissionToRecordAccepted = true;
-            Log.e(TAG, "Permission To Record Audio Granted");
-        } else {
-            Log.d(TAG, "audio permission request");
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-        }
-
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_MULTIPLE_PERMISION);
 
         WhiteListBatteryOptimtizations(false);
         startService(new Intent(this, CallReceiveService.class));
