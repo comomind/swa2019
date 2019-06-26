@@ -39,10 +39,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.CallStateActivity" />
-        <activity android:name=".ui.DialActivity" />
-        <activity android:name=".ui.TestActivity" />
+
+        <activity android:name=".ui.RegisterActivity"></activity>
+        <activity android:name=".ui.CallStateActivity"></activity>
+        <activity android:name=".ui.DialActivity"></activity>
+        <activity android:name=".ui.TestActivity"></activity>
+        <receiver
+            android:name=".logic.BroadcastReveiverOnBoot"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
