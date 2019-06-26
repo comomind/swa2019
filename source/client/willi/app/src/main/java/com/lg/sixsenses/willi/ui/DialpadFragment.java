@@ -3,14 +3,20 @@ package com.lg.sixsenses.willi.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.R;
+import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.UpdatedData;
 
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 //import com.lg.sixsenses.willi.DataRepository.RegisterInfo;
@@ -26,6 +32,7 @@ import android.widget.TextView;
  */
 public class DialpadFragment extends Fragment {
 
+    public static final String TAG = DialpadFragment.class.getName().toString();
     String data = "";
     TextView InputNum;
     ImageButton CallButton;
@@ -182,6 +189,7 @@ public class DialpadFragment extends Fragment {
                 InputNum.setText(data);
             }
         });
+
 
         // Inflate the layout for this fragment
         return view;

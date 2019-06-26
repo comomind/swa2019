@@ -21,9 +21,8 @@
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
-            android:layout_height="89dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="?android:attr/windowBackground"
             app:menu="@menu/menu_bottom"
             tools:visibility="visible">
 

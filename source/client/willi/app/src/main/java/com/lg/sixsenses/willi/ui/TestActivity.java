@@ -5,7 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
@@ -36,7 +38,6 @@ public class TestActivity extends AppCompatActivity {
 
         textView = (TextView)findViewById(R.id.textViewIP);
         textView.setText(Util.getIPAddress());
-
         audioIo = new AudioIo(getApplicationContext());
         audioIo.setAudioCodec(AudioCodecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
     }

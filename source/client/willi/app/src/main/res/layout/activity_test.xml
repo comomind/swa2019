@@ -81,8 +81,6 @@
                 android:onClick="buttonStopClick"
                 android:text="Stop" />
         </TableRow>
-
-
     </TableLayout>
 
 

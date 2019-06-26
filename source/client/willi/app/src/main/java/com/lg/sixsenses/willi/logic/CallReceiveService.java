@@ -22,6 +22,5 @@ public class CallReceiveService extends Service {
         Log.d(TAG,"Start CallReceiveService~~~");
         CallHandler.getInstance().setContext(getApplicationContext());
         CallHandler.getInstance().startCallHandler();
-
     }
 }

@@ -4,10 +4,15 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.Vibrator;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -30,6 +35,7 @@ import com.lg.sixsenses.willi.repository.UserInfo;
 import com.lg.sixsenses.willi.util.Util;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -45,8 +51,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final int REQUEST_CAMERA_PERMISSION = 50;
     private static final int REQUEST_MULTIPLE_PERMISION = 124;
-
-
 
     public void buttonLoginClick(View view)
     {
@@ -124,11 +128,15 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 //        CallHandler.getInstance().setContext(getApplicationContext());
 //        CallHandler.getInstance().startCallHandler();
 
-
         ActivityCompat.requestPermissions(this, permissions, REQUEST_MULTIPLE_PERMISION);
-
         WhiteListBatteryOptimtizations(false);
         startService(new Intent(this, CallReceiveService.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataManager.getInstance().deleteObserver(this);
     }
 
     @Override
@@ -157,11 +165,10 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     editTextPassword.setText(null);
                     Intent intent = new Intent(getApplicationContext(),DialActivity.class);
                     startActivity(intent);
-
+                    finish();
                 }
             });
         }
-
     }
 
     public void buttonParkClick(View view)
@@ -169,6 +176,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         editTextEmail.setText("park@lge.com");
         editTextPassword.setText("1234");
 //        Intent intent = new Intent(getApplicationContext(),CallStateActivity.class);
+//        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(),DialActivity.class);
 //        startActivity(intent);
 
     }
