@@ -99,6 +99,33 @@
                 android:layout_height="wrap_content"
                 android:onClick="buttonLoginClick"
                 android:text="Login" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="126dp"
+            android:layout_height="10dp"
+            android:layout_gravity="right">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:color/transparent" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:layout_gravity="top"
+                android:background="#00FFFFFF"
+                android:text="forgot password?"
+                android:textAlignment="viewEnd"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:visibility="visible" />
         </TableRow>
 
         <TableRow>
@@ -110,6 +137,18 @@
                 android:layout_span="2"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/buttonCallSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:onClick="buttonSendClick"
+                android:text="Send" />
         </TableRow>
 
         <TableRow>

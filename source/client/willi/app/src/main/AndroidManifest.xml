@@ -24,6 +24,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+	<activity android:name=".UserInterface.ContactModifyActivity"></activity>
         <service
             android:name=".logic.CallReceiveService"
             android:label="CallReceiveService" />

@@ -144,6 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#00897B"
+                android:onClick="buttonSendClick"
                 android:src="@android:drawable/stat_sys_phone_call" />
 
             <ImageView
