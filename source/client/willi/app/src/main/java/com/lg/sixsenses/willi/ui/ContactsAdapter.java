@@ -1,5 +1,8 @@
 package com.lg.sixsenses.willi.ui;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -11,8 +14,14 @@ import java.util.ArrayList;
 
 public class ContactsAdapter extends BaseAdapter {
 
+    public static final String TAG = ContactsAdapter.class.getName().toString();
+    Context context;
     ArrayList<UserInfo> example = DataManager.getInstance().getContactList();
 
+    public ContactsAdapter(Context con)
+    {
+        this.context = con;
+    }
 
     @Override
     public int getCount() {
@@ -33,41 +42,29 @@ public class ContactsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        /*
-        String p = null;
-            ArrayList<UserInfo> contactList = (ArrayList<UserInfo>)(data.getData());
-            for(UserInfo userInfo : contactList)
-            {
-                p += userInfo.toString();
-            }
-        */
+
         String gName = null;
         String gEmail = null;
         String gNum = null;
         String gState = null;
         ContactList listItem = new ContactList(parent.getContext());
-        //   UserInfo Name;
-        //   listItem.setText1(example[position]);
-        for(UserInfo userInfo : example)
-        {
-            gName = userInfo.getName();
-            gEmail = userInfo.getEmail();
-            gNum = userInfo.getPhoneNum();
-            gState = userInfo.getLoginStatus();
-        }
-        listItem.setText1(gName);
-        listItem.setText2(gEmail);
-        listItem.setText3(gNum);
-        listItem.setText4(gState);
+        Log.d(TAG, "example list size:"+example.size());
+        UserInfo userInfo = example.get(position);
+        listItem.setText1(userInfo.getName());
+        listItem.setText2(userInfo.getEmail());
+        listItem.setText3(userInfo.getPhoneNum());
+        listItem.setText4(userInfo.getLoginStatus());
+
 
         listItem.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //     Toast.makeText(this,"Test",Toast.LENGTH_LONG);
-                // Intent intent = new Intent(getActivity(),ContactModifyActivity.class);
-                // startActivity(intent);
+                Log.d(TAG, "setOnClickListener");
+                 Intent intent = new Intent(context,ContactModifyActivity.class);
+                 context.startActivity(intent);
             }
         });
+
 
         return listItem;
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserInterface.ContactModifyActivity">
+    tools:context=".ui.ContactAddActivity">
 
     <TableLayout
         android:layout_width="0dp"
@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                android:text="Contact detail information"
+                android:text="Add a new contact"
                 android:textSize="20sp" />
 
         </TableRow>
@@ -33,7 +33,7 @@
                 android:text="Email : "
                 app:layout_constraintEnd_toEndOf="@+id/AddName"
                 tools:layout_editor_absoluteY="132dp" />
-            <TextView
+            <EditText
                 android:id="@+id/editAddEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,60 +46,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name : " />
-            <TextView
+            <EditText
                 android:id="@+id/editAddName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
         <TableRow>
 
-            <Button
-                android:id="@+id/voicecall"
-                android:layout_width="173dp"
+            <TextView
+                android:id="@+id/AddNum"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VoiceCall" />
-
-            <Button
-                android:id="@+id/videocall"
-                android:layout_width="80dp"
+                android:text="PhoneNumber : " />
+            <EditText
+                android:id="@+id/editAddNum"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VideoCall" />
-            // android:onClick="buttonCloseClick"
-
-
-            // android:onClick="buttonRegisterClick"
-
-
+                android:inputType="textPassword" />
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+        <TableRow>
+
+            <Button
+                android:id="@+id/AddClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="AddClose"
+                android:text="Close" />
 
             <Button
                 android:id="@+id/AddContact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update" />
-
-            <Button
-                android:id="@+id/deletecontact"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="Delete" />
+                android:onClick="buttonRegisterClick"
+                android:text="Add contact" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <Button
-                android:id="@+id/close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Close" />
-        </TableRow>
-
         <TableRow>
             <TextView
                 android:id="@+id/textViewResult"

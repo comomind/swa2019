@@ -27,14 +27,14 @@
         </TableRow>
         <TableRow>
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/AddEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email : "
-                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="@+id/AddName"
                 tools:layout_editor_absoluteY="132dp" />
             <EditText
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editAddEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -42,23 +42,23 @@
         </TableRow>
         <TableRow>
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/AddName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name : " />
             <EditText
-                android:id="@+id/editTextName"
+                android:id="@+id/editAddName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
         <TableRow>
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/AddNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password : "/>
             <EditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editAddNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -89,13 +89,13 @@
         </TableRow>
         <TableRow>
             <Button
-                android:id="@+id/buttonClose"
+                android:id="@+id/AddClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonCloseClick"
                 android:text="Close" />
             <Button
-                android:id="@+id/buttonRegister"
+                android:id="@+id/AddContact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonRegisterClick"
