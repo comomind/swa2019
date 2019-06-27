@@ -3,8 +3,11 @@ package com.lg.sixsenses.willi.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -40,7 +43,10 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     private TcpRecvCallManager receiver = null;
     private ImageView imageViewState;
     private PowerManager.WakeLock proximityWakeLock;
-
+    private AudioManager audioManager;
+    private MediaPlayer ring;
+    private Vibrator vibrator;
+    private final long[] vibratorPattern = {0, 300, 1000};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_callstate);
 
         DataManager.getInstance().addObserver(this);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         textViewCallstate = (TextView)findViewById(R.id.textViewCallState);
         buttonAccept = (Button)findViewById(R.id.buttonAccept);
@@ -110,6 +118,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                         startActivity(intent);
 
                         disableProximityWakeLock();
+                        EndRinger();
                         finish();
                     }
 
@@ -148,6 +157,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(false);
 
+            EndRinger();
+
 //            // For Test
 //            ArrayList<UdpInfo> list = DataManager.getInstance().getPeerUdpInfoList();
 //            int i = 0;
@@ -166,6 +177,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
 
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(true);
+            StartRinger();
+
         }
     }
 
@@ -218,6 +231,31 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    int PreviousAudioManagerMode = 0;
+    private void StartRinger() {
+        if (DataManager.getInstance().getSound() == DataManager.Sound.BELL) {
+            if (ring == null) {
+                PreviousAudioManagerMode = audioManager.getMode();
+                audioManager.setMode(AudioManager.MODE_RINGTONE);
+                ring = MediaPlayer.create(getApplicationContext(), R.raw.ring);
+                ring.setLooping(true);
+                ring.start();
+            }
+        }
+        if (DataManager.getInstance().getSound() == DataManager.Sound.VIBRATE)
+            vibrator.vibrate(vibratorPattern, 0);
+    }
+
+    private void EndRinger() {
+        if (ring != null) {
+            ring.stop();
+            ring.release();
+            ring = null;
+            audioManager.setMode(PreviousAudioManagerMode);
+        }
+        if (DataManager.getInstance().getSound() == DataManager.Sound.VIBRATE)
+            vibrator.cancel();
+    }
 
 
 }
