@@ -1,8 +1,10 @@
 package com.lg.sixsenses.willi.ui;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +32,8 @@ import com.lg.sixsenses.willi.util.Util;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 public class LoginActivity extends AppCompatActivity implements Observer {
 
@@ -123,6 +127,15 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_MULTIPLE_PERMISION);
         WhiteListBatteryOptimtizations(false);
         startService(new Intent(this, CallReceiveService.class));
+
+        if(DataManager.getInstance().isLogin())
+        {
+            Intent intent = new Intent(getApplicationContext(),DialActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+
+            finish();
+        }
     }
 
     @Override
@@ -147,6 +160,17 @@ public class LoginActivity extends AppCompatActivity implements Observer {
             }
             Log.d(TAG, "Contact List : "+p);
 
+            UserInfo myInfo = DataManager.getInstance().getMyInfo();
+            SharedPreferences sp = getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(ConstantsWilli.PREFERENCE_KEY_MY_PHONE_NUMBER, myInfo.getPhoneNum());
+            editor.putString(ConstantsWilli.PREFERENCE_KEY_MY_EMAIL, myInfo.getEmail());
+            editor.putString(ConstantsWilli.PREFERENCE_KEY_MY_NAME, myInfo.getName());
+            editor.putString(ConstantsWilli.PREFERENCE_KEY_TOKEN, DataManager.getInstance().getToken());
+            editor.commit();
+
+            DataManager.getInstance().setLogin(true);
+
             // TODO result를 표시하는 방법이 필요하다!!!!! 성공인지 실패 인지....
             runOnUiThread(new Runnable() {
                 @Override
@@ -156,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     editTextEmail.setText(null);
                     editTextPassword.setText(null);
                     Intent intent = new Intent(getApplicationContext(),DialActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
                 }

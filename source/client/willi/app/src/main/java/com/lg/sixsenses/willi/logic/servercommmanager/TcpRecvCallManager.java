@@ -343,55 +343,55 @@ public class TcpRecvCallManager {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                try {
-                    TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
+            try {
+                TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
 
-                    TcpCallSignalHeader header = new TcpCallSignalHeader();
-                    header.setType("R");
-                    header.setToken(DataManager.getInstance().getToken());
-                    header.setIpaddr(Util.getIPAddress());
-                    header.setTrantype("SYNC");
-                    header.setSvcid("tcpCallReject");
-                    header.setReqtype(1);
-                    header.setSvctype(1);
+                TcpCallSignalHeader header = new TcpCallSignalHeader();
+                header.setType("R");
+                header.setToken(DataManager.getInstance().getToken());
+                header.setIpaddr(Util.getIPAddress());
+                header.setTrantype("SYNC");
+                header.setSvcid("tcpCallReject");
+                header.setReqtype(1);
+                header.setSvctype(1);
 
 
-                    TcpCallSignalBody body = new TcpCallSignalBody();
-                    body.setCmd("CallRejectC2S");
-                    body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
-                    body.setCalleePhoneNum(DataManager.getInstance().getCalleePhoneNum());
-                    body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
+                TcpCallSignalBody body = new TcpCallSignalBody();
+                body.setCmd("CallRejectC2S");
+                body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_AUDIO);
+                body.setCalleePhoneNum(DataManager.getInstance().getCalleePhoneNum());
+                body.setCallerPhoneNum(DataManager.getInstance().getCallerPhoneNum());
 //                    int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
 //                    body.setUdpAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
 //                    body.setUdpVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
 //                    body.setIpaddr(Util.getIPAddress());
-                    body.setCallId(DataManager.getInstance().getCallId());
+                body.setCallId(DataManager.getInstance().getCallId());
 
-                    callSignal.setHeader(header);
-                    callSignal.setBody(body);
+                callSignal.setHeader(header);
+                callSignal.setBody(body);
 
-                    ObjectMapper mapper = new ObjectMapper();
-                    String input = mapper.writeValueAsString(callSignal);
+                ObjectMapper mapper = new ObjectMapper();
+                String input = mapper.writeValueAsString(callSignal);
 
 
-                    Log.d(TAG, "TCP Response Send : " + input);
+                Log.d(TAG, "TCP Response Send : " + input);
 
-                    //input = input + "\r\n";
-                    input = input + "@@";
-                    OutputStream out = firstRecvSocket.getOutputStream();
-                    out.write(input.getBytes());
-                    out.flush();
+                //input = input + "\r\n";
+                input = input + "@@";
+                OutputStream out = firstRecvSocket.getOutputStream();
+                out.write(input.getBytes());
+                out.flush();
 
-                    out.close();
-                    firstRecvSocket.close();
-                    firstRecvSocket = null;
-                    Log.d(TAG, "Socket Closed 7");
+                out.close();
+                firstRecvSocket.close();
+                firstRecvSocket = null;
+                Log.d(TAG, "Socket Closed 7");
 
-                    CallStateMachine.getInstance().sendCallReject();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                CallStateMachine.getInstance().sendCallReject();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
             }
         });
 

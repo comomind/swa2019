@@ -1,5 +1,7 @@
 package com.lg.sixsenses.willi.logic.servercommmanager;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 

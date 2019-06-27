@@ -1,7 +1,9 @@
 package com.lg.sixsenses.willi.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.lg.sixsenses.willi.R;
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UpdatedData;
 import com.lg.sixsenses.willi.repository.UserInfo;
@@ -39,6 +42,7 @@ public class DialActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dial);
 
+        Log.d(TAG,"DialActivity Created !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         DataManager.getInstance().addObserver(this);
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -109,6 +113,20 @@ public class DialActivity extends AppCompatActivity implements Observer {
                 audioManager.setBluetoothScoOn(true);
                 audioManager.startBluetoothSco();
             }
+
+            SharedPreferences sp = getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(ConstantsWilli.PREFERENCE_KEY_AUDIOOUTPUT, audioOutput.toString());
+            editor.commit();
+        }
+        else if(data.getType().equals("Sound"))
+        {
+            DataManager.Sound sound = (DataManager.Sound)(data.getData());
+
+            SharedPreferences sp = getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString(ConstantsWilli.PREFERENCE_KEY_SOUND, sound.toString());
+            editor.commit();
         }
 
     }

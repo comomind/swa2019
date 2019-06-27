@@ -93,7 +93,7 @@ public class SettingFragment extends Fragment {
                     DataManager.getInstance().setSound(selectedSound);
                     UpdatedData data = new UpdatedData();
                     data.setType("Sound");
-                    data.setData(selected);
+                    data.setData(selectedSound);
                     DataManager.getInstance().NotifyUpdate(data);
                 }
             }

@@ -32,6 +32,7 @@ public class DataManager extends Observable {
     private UdpInfo myUdpInfo;
     private AudioOutput audioOutput;
     private Sound sound;
+    private boolean isLogin;
 
     public void clearCallInfo()
     {
@@ -39,7 +40,7 @@ public class DataManager extends Observable {
         calleePhoneNum = null;
         callStatus = CallStatus.IDLE;
         callId = 0;
-        peerUdpInfoList.clear();
+        if(peerUdpInfoList != null) peerUdpInfoList.clear();
     }
 
     public UserInfo getMyInfo() {
@@ -129,6 +130,15 @@ public class DataManager extends Observable {
     public void setSound(Sound sound) {
         this.sound = sound;
     }
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
+    }
+
 
     public void NotifyUpdate(UpdatedData data) {
         Log.d(TAG,"NotifyUpdate");

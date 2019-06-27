@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
 public class CallStateActivity extends AppCompatActivity implements Observer {
 
     public static final String TAG = CallStateActivity.class.getName().toString();
@@ -83,6 +85,11 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     }
 
     @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
+    @Override
     public void update(Observable o, Object arg) {
         UpdatedData data = (UpdatedData)arg;
         Log.d(TAG,"CallStateActivity - updated data : "+ data.toString());
@@ -97,6 +104,11 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                     ChangeUI();
                     if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.IDLE)
                     {
+                        // IDLE시에 DialActivity를 띄운다. 부팅하자마자 전화 받았을때를 위한 조치
+                        Intent intent = new Intent(getApplicationContext(),DialActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+
                         disableProximityWakeLock();
                         finish();
                     }
@@ -173,7 +185,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         unlockScreen();
         //Bring Screen to forground
         Intent intent = new Intent(this, getClass());
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_SINGLE_TOP);
         getApplicationContext().startActivity(intent);
         Log.e(TAG, "Bring Screen to forground");
     }
