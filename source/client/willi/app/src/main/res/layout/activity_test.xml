@@ -82,6 +82,14 @@
                 android:text="Stop" />
         </TableRow>
 
+        <TableRow>
+            <Button
+                android:id="@+id/buttonMixPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonMixPlayClick"
+                android:text="Play 2 files" />
+        </TableRow>
 
     </TableLayout>
 
