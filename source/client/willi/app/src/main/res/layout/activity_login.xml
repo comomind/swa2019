@@ -46,17 +46,17 @@
         <TableRow>
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/AddEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email : "
                 android:textColor="#ffffff"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textView2"
+                app:layout_constraintEnd_toEndOf="@+id/AddName"
                 tools:layout_editor_absoluteY="132dp" />
             <EditText
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editAddEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
@@ -68,7 +68,7 @@
         <TableRow>
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/AddNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password : "
@@ -77,7 +77,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editAddNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
@@ -88,7 +88,7 @@
         <TableRow>
 
             <Button
-                android:id="@+id/buttonRegister"
+                android:id="@+id/AddContact"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonRegisterClick"
@@ -99,6 +99,33 @@
                 android:layout_height="wrap_content"
                 android:onClick="buttonLoginClick"
                 android:text="Login" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="126dp"
+            android:layout_height="10dp"
+            android:layout_gravity="right">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@android:color/transparent" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:layout_gravity="top"
+                android:background="#00FFFFFF"
+                android:text="forgot password?"
+                android:textAlignment="viewEnd"
+                android:textAllCaps="false"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:visibility="visible" />
         </TableRow>
 
         <TableRow>
@@ -110,6 +137,18 @@
                 android:layout_span="2"
                 android:textColor="#ffffff"
                 android:textStyle="bold" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/buttonCallSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:onClick="buttonSendClick"
+                android:text="Send" />
         </TableRow>
 
         <TableRow>

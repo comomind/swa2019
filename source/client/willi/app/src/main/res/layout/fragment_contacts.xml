@@ -7,8 +7,39 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello_contacts_list" />
+        android:id="@+id/contactlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="4dp"
+        android:text="Contact List"
+        android:textSize="36sp"
+        android:textStyle="italic" />
+
+    <ListView
+        android:id="@+id/contact_list"
+        android:layout_width="348dp"
+        android:layout_height="285dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="60dp" >
+
+    </ListView>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="350dp">
+
+        <Button
+            android:id="@+id/AddButton"
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:onClick="AddContact"
+            android:text="Add" />
+
+    </TableRow>
+
 
 </FrameLayout>

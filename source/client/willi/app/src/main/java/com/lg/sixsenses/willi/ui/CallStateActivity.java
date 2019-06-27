@@ -29,7 +29,6 @@ import java.util.Observer;
 public class CallStateActivity extends AppCompatActivity implements Observer {
 
     public static final String TAG = CallStateActivity.class.getName().toString();
-    private GifImageView gifImageView;
     private TextView textViewCallstate;
     private Button buttonAccept;
     private Button buttonReject;
@@ -51,8 +50,6 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         textViewCallstate = (TextView)findViewById(R.id.textViewCallState);
         buttonAccept = (Button)findViewById(R.id.buttonAccept);
         buttonReject = (Button)findViewById(R.id.buttonReject);
-//        gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-//        gifImageView.setGifImageResource(R.drawable.calling);
         imageViewState = (ImageView)findViewById(R.id.imageViewState);
 
         // for test
@@ -117,8 +114,6 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     {
         if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CALLING)
         {
-//            gifImageView = (GifImageView) findViewById(R.id.GifImageView);
-//            gifImageView.setGifImageResource(R.drawable.calling);
             imageViewState.setImageResource(R.drawable.calling);
             textViewCallstate.setText("Calling to "+DataManager.getInstance().getCalleePhoneNum());
             buttonReject.setEnabled(true);

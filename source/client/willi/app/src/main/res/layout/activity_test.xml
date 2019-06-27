@@ -81,8 +81,8 @@
                 android:onClick="buttonStopClick"
                 android:text="Stop" />
         </TableRow>
-
-        <TableRow>
+        
+	<TableRow>
             <Button
                 android:id="@+id/buttonMixPlay"
                 android:layout_width="wrap_content"

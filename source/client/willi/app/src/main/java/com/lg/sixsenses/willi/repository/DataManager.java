@@ -15,6 +15,8 @@ public class DataManager extends Observable {
     }
 
     public enum CallStatus {IDLE, CALLING, RINGING, CONNECTED}
+    public enum AudioOutput {BLUETOOTH, SPEAKER, EARPIECE }
+    public enum Sound {BELL, VIBRATE, MUTE }
 
     private DataManager() {
     }
@@ -28,6 +30,8 @@ public class DataManager extends Observable {
     private long callId;
     private ArrayList<UdpInfo> peerUdpInfoList;
     private UdpInfo myUdpInfo;
+    private AudioOutput audioOutput;
+    private Sound sound;
 
     public void clearCallInfo()
     {
@@ -108,6 +112,22 @@ public class DataManager extends Observable {
 
     public void setPeerUdpInfoList(ArrayList<UdpInfo> peerUdpInfoList) {
         this.peerUdpInfoList = peerUdpInfoList;
+    }
+
+    public AudioOutput getAudioOutput() {
+        return audioOutput;
+    }
+
+    public void setAudioOutput(AudioOutput audioOutput) {
+        this.audioOutput = audioOutput;
+    }
+
+    public Sound getSound() {
+        return sound;
+    }
+
+    public void setSound(Sound sound) {
+        this.sound = sound;
     }
 
     public void NotifyUpdate(UpdatedData data) {

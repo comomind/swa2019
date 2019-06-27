@@ -3,7 +3,6 @@ package com.lg.sixsenses.willi.ui;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.LoginInfo;
-import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.logic.CallReceiveService;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
 import com.lg.sixsenses.willi.repository.DataManager;
@@ -45,8 +43,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
     private static final int REQUEST_CAMERA_PERMISSION = 50;
     private static final int REQUEST_MULTIPLE_PERMISION = 124;
-
-
 
     public void buttonLoginClick(View view)
     {
@@ -116,19 +112,23 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         DataManager.getInstance().addObserver(this);
 
         //buttonLogin         = (Button)findViewById(R.id.buttonRegister);
-        editTextEmail       = (EditText)findViewById(R.id.editTextEmail);
-        editTextPassword    = (EditText)findViewById(R.id.editTextPassword);
+        editTextEmail       = (EditText)findViewById(R.id.editAddEmail);
+        editTextPassword    = (EditText)findViewById(R.id.editAddNum);
         textViewResult      = (TextView)findViewById(R.id.textViewResult);
         textViewResult.setText(null);
 // Moved to CallReceiveService
 //        CallHandler.getInstance().setContext(getApplicationContext());
 //        CallHandler.getInstance().startCallHandler();
 
-
         ActivityCompat.requestPermissions(this, permissions, REQUEST_MULTIPLE_PERMISION);
-
         WhiteListBatteryOptimtizations(false);
         startService(new Intent(this, CallReceiveService.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DataManager.getInstance().deleteObserver(this);
     }
 
     @Override
@@ -157,11 +157,10 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     editTextPassword.setText(null);
                     Intent intent = new Intent(getApplicationContext(),DialActivity.class);
                     startActivity(intent);
-
+                    finish();
                 }
             });
         }
-
     }
 
     public void buttonParkClick(View view)
@@ -169,6 +168,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         editTextEmail.setText("park@lge.com");
         editTextPassword.setText("1234");
 //        Intent intent = new Intent(getApplicationContext(),CallStateActivity.class);
+//        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(),DialActivity.class);
 //        startActivity(intent);
 
     }

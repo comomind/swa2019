@@ -85,10 +85,10 @@ public class RegisterActivity extends AppCompatActivity implements Observer{
 
         DataManager.getInstance().addObserver(this);
 
-        buttonRegister              = (Button)findViewById(R.id.buttonRegister);
-        editTextEmail               = (EditText)findViewById(R.id.editTextEmail);
-        editTextName                = (EditText)findViewById(R.id.editTextName);
-        editTextPassword            = (EditText)findViewById(R.id.editTextPassword);
+        buttonRegister              = (Button)findViewById(R.id.AddContact);
+        editTextEmail               = (EditText)findViewById(R.id.editAddEmail);
+        editTextName                = (EditText)findViewById(R.id.editAddName);
+        editTextPassword            = (EditText)findViewById(R.id.editAddNum);
         //editTextSecurityQuestion    = (EditText)findViewById(R.id.editTextSecurityQuestion);
         editTextSecurityAnswer      = (EditText)findViewById(R.id.editTextSecurityAnswer);
 
