@@ -57,7 +57,7 @@ public class CallHandler {
 
     // call request by caller
     public void callRequest(String phoneNumber) {
-        tcpSendCallManager.startPhoneCall("phoneNumber");
+        tcpSendCallManager.startPhoneCall(phoneNumber);
         audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
     }
 

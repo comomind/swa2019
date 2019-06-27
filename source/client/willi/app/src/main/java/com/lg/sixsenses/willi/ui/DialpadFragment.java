@@ -75,7 +75,8 @@ public class DialpadFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                CallHandler.getInstance().callRequest("1001");
+                //CallHandler.getInstance().callRequest("1001");
+                CallHandler.getInstance().callRequest(InputNum.getText().toString());
                 Intent intent = new Intent(getActivity(),CallStateActivity.class);
                 startActivity(intent);
                 data = "";
