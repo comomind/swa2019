@@ -16,7 +16,8 @@ public class ContactsAdapter extends BaseAdapter {
 
     public static final String TAG = ContactsAdapter.class.getName().toString();
     Context context;
-    ArrayList<UserInfo> example = DataManager.getInstance().getContactList();
+    ArrayList<UserInfo> example;
+
 
     public ContactsAdapter(Context con)
     {
@@ -26,13 +27,15 @@ public class ContactsAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         //    return example.length;
+        example = DataManager.getInstance().getContactList();
         return example.size();
     }
 
     @Override
     public Object getItem(int position) {
         //    return example[position];
-        return example.toString();
+        example = DataManager.getInstance().getContactList();
+        return example.get(position);
     }
 
     @Override
@@ -43,30 +46,21 @@ public class ContactsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String gName = null;
-        String gEmail = null;
-        String gNum = null;
-        String gState = null;
+        example = DataManager.getInstance().getContactList();
         ContactList listItem = new ContactList(parent.getContext());
         Log.d(TAG, "example list size:"+example.size());
         UserInfo userInfo = example.get(position);
         listItem.setText1(userInfo.getName());
         listItem.setText2(userInfo.getEmail());
         listItem.setText3(userInfo.getPhoneNum());
-        listItem.setText4(userInfo.getLoginStatus());
-
-
-        listItem.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "setOnClickListener");
-                 Intent intent = new Intent(context,ContactModifyActivity.class);
-                 context.startActivity(intent);
-            }
-        });
 
 
         return listItem;
 
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

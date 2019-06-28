@@ -22,7 +22,7 @@ public class ContactList extends LinearLayout{
         text1 = (TextView)findViewById(R.id.textName);
         text2 = (TextView)findViewById(R.id.textEmail);
         text3 = (TextView)findViewById(R.id.textNum);
-        text4 = (TextView)findViewById(R.id.textState);
+
     }
 
     private void inflation_init(Context context){
@@ -42,8 +42,5 @@ public class ContactList extends LinearLayout{
         text3.setText(example);
     }
 
-    public void setText4(String example){
-        text4.setText(example);
-    }
 
 }

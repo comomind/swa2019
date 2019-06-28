@@ -17,34 +17,37 @@
             android:layout_weight="1"
             app:srcCompat="@android:drawable/ic_menu_myplaces" />
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="269dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:onClick="ContactSelectClick"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textName"
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+            <TableRow>
+                <TextView
+                    android:id="@+id/textName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:layout_span="3"/>
 
-            <TextView
-                android:id="@+id/textEmail"
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:id="@+id/textNum"
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-            <TextView
-                android:id="@+id/textState"
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-
-        </LinearLayout>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/textEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=" / " />
+                <TextView
+                    android:id="@+id/textNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp" />
+            </TableRow>
+        </TableLayout>
 
     </LinearLayout>
 

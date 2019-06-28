@@ -1,5 +1,6 @@
 package com.lg.sixsenses.willi.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
+import com.lg.sixsenses.willi.repository.UserInfo;
 
 
 public class ContactAddActivity extends AppCompatActivity {
@@ -22,13 +24,15 @@ public class ContactAddActivity extends AppCompatActivity {
     private EditText editAddNum;
 
     private TextView textViewResult;
-
     public void AddClose(View view)
     {
+        Intent intent = new Intent(this, DialActivity.class);
+        startActivity(intent);
+
         finish();
     }
 
-    public void AddContact(View view)
+    public void buttonAddClick(View view)
     {
         if(editAddEmail.getText().toString().length() == 0)
         {
@@ -42,12 +46,23 @@ public class ContactAddActivity extends AppCompatActivity {
             textViewResult.setText("Please enter Name!");
             return;
         }
-        if(editAddNum.getText().toString().length() == 0)
-        {
-            // Toast.makeText(getApplicationContext(),"Please enter Password!",Toast.LENGTH_SHORT).show();
-            textViewResult.setText("Please enter PhoneNumber!");
-            return;
-        }
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEmail(editAddEmail.getText().toString());
+        userInfo.setName(editAddName.getText().toString());
+
+        restManager.sendFriendCommand(userInfo,RestManager.CMD_FRIEND_ADD);
+
+        Intent intent = new Intent(this, DialActivity.class);
+        startActivity(intent);
+
+        finish();
+//        if(editAddNum.getText().toString().length() == 0)
+//        {
+//            // Toast.makeText(getApplicationContext(),"Please enter Password!",Toast.LENGTH_SHORT).show();
+//            textViewResult.setText("Please enter PhoneNumber!");
+//            return;
+//        }
 
   //      RegisterInfo registerInfo = new RegisterInfo();
   //      registerInfo.setEmail(editAddEmail.getText().toString());

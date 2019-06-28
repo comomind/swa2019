@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserInterface.ContactModifyActivity">
+    tools:context=".ui.ContactModifyActivity">
 
     <TableLayout
         android:layout_width="0dp"
@@ -17,89 +17,53 @@
         <TableRow>
 
             <TextView
-                android:id="@+id/textViewReg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                android:text="Contact detail information"
+                android:text="Update contact"
                 android:textSize="20sp" />
 
         </TableRow>
         <TableRow>
             <TextView
-                android:id="@+id/Email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email : "
-                app:layout_constraintEnd_toEndOf="@+id/AddName"
                 tools:layout_editor_absoluteY="132dp" />
             <TextView
-                android:id="@+id/editAddEmail"
+                android:id="@+id/textViewContactUpdateEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:ems="10" />
         </TableRow>
         <TableRow>
             <TextView
-                android:id="@+id/AddName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name : " />
-            <TextView
-                android:id="@+id/editAddName"
+            <EditText
+                android:id="@+id/editUpdateName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
+
+
         <TableRow>
 
             <Button
-                android:id="@+id/voicecall"
-                android:layout_width="173dp"
-                android:layout_height="wrap_content"
-                android:text="VoiceCall" />
-
-            <Button
-                android:id="@+id/videocall"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="VideoCall" />
-            // android:onClick="buttonCloseClick"
-
-
-            // android:onClick="buttonRegisterClick"
-
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <Button
-                android:id="@+id/updatebutton"
+                android:id="@+id/buttonContactUpdateClose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update" />
-
-            <Button
-                android:id="@+id/deletecontact"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="Delete" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <Button
-                android:id="@+id/close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:onClick="buttonContactUpdateCloseClick"
                 android:text="Close" />
-        </TableRow>
 
+            <Button
+                android:id="@+id/buttonContactUpdateUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonContactUpdateClick"
+                android:text="Update" />
+        </TableRow>
         <TableRow>
             <TextView
                 android:id="@+id/textViewResult"

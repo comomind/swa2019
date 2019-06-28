@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".contactsFragment">
+    tools:context=".ui.ContactsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:id="@+id/contactlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -20,26 +19,58 @@
     <ListView
         android:id="@+id/contact_list"
         android:layout_width="348dp"
-        android:layout_height="285dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="60dp" >
-
-    </ListView>
+        android:layout_height="210dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="60dp"></ListView>
 
     <TableRow
         android:layout_width="wrap_content"
-        android:layout_height="84dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="350dp">
+        android:layout_marginTop="300dp">
 
         <Button
-            android:id="@+id/AddButton"
-            android:layout_width="355dp"
-            android:layout_height="wrap_content"
-            android:onClick="AddContact"
+            android:id="@+id/buttonContactAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:text="Add" />
+
+        <Button
+            android:id="@+id/buttonContactDel"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Del" />
+        <Button
+            android:id="@+id/buttonContactUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Edit" />
+    </TableRow>
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="340dp">
+        <Button
+            android:id="@+id/buttonContactCall"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Call" />
+        <Button
+            android:id="@+id/buttonConferenceCall"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="C.C" />
 
     </TableRow>
 
+    <TextView
+        android:id="@+id/textViewContactResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="390dp"
+        />
 
 </FrameLayout>

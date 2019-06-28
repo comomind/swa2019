@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ContactAddActivity">
+    tools:context=".ui.ContactDelActivity">
 
     <TableLayout
         android:layout_width="0dp"
@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                android:text="Add a new contact"
+                android:text="Delete contact"
                 android:textSize="20sp" />
 
         </TableRow>
@@ -31,40 +31,46 @@
                 android:layout_height="wrap_content"
                 android:text="Email : "
                 tools:layout_editor_absoluteY="132dp" />
-            <EditText
-                android:id="@+id/editAddEmail"
+            <TextView
+                android:id="@+id/textViewContactDelEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:ems="10"/>
         </TableRow>
         <TableRow>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name : " />
-            <EditText
-                android:id="@+id/editAddName"
+            <TextView
+                android:id="@+id/textViewContactDelName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </TableRow>
 
-
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:text="Are you sure to delete?"
+                />
+        </TableRow>
         <TableRow>
 
             <Button
-                android:id="@+id/close"
+                android:id="@+id/buttonContactDelCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="AddClose"
-                android:text="Close" />
+                android:onClick="buttonContactDelCancelClick"
+                android:text="Cancel" />
 
             <Button
-                android:id="@+id/AddButton"
+                android:id="@+id/buttonContactDelConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="buttonAddClick"
-                android:text="Add contact" />
+                android:onClick="buttonContactDelConfirmClick"
+                android:text="Yes" />
         </TableRow>
         <TableRow>
             <TextView

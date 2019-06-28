@@ -1,6 +1,19 @@
 package com.lg.sixsenses.willi.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.lg.sixsenses.willi.R;
+import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
+import com.lg.sixsenses.willi.repository.UserInfo;
+
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,23 +25,23 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
-import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.RegisterInfo;
 import com.lg.sixsenses.willi.repository.UserInfo;
 
-import java.util.Observable;
-import java.util.Observer;
 
-public class ContactModifyActivity extends AppCompatActivity {
-
+public class ContactDelActivity extends AppCompatActivity {
     public static final String TAG = RegisterActivity.class.getName().toString();
     private RestManager restManager;
 
-    private EditText editUpdateName;
-    private String email;
-    private TextView textViewResult;
-    private TextView textViewContactUpdateEmail;
+    String email;
+    String name;
 
-    public void buttonContactUpdateCloseClick(View view)
+    private TextView textViewContactDelEmail;
+    private TextView textViewContactDelName;
+
+    private TextView textViewResult;
+
+    public void buttonContactDelCancelClick(View view)
     {
         Intent intent = new Intent(this, DialActivity.class);
         startActivity(intent);
@@ -36,27 +49,21 @@ public class ContactModifyActivity extends AppCompatActivity {
         finish();
     }
 
-    public void buttonContactUpdateClick(View view)
+    public void buttonContactDelConfirmClick(View view)
     {
-        if(editUpdateName.getText().toString().length() == 0)
-        {
-            //Toast.makeText(getApplicationContext(),"Please enter Name!",Toast.LENGTH_SHORT).show();
-            textViewResult.setText("Please enter Name!");
-            return;
-        }
+
 
 
         UserInfo userInfo = new UserInfo();
-        userInfo.setName(editUpdateName.getText().toString());
         userInfo.setEmail(email);
+        Log.d(TAG, "Delete contact : " + userInfo.getEmail());
+        restManager.sendFriendCommand(userInfo, RestManager.CMD_FRIEND_DEL);
 
-        restManager.sendFriendCommand(userInfo,RestManager.CMD_FRIEND_EDIT);
 
         Intent intent = new Intent(this, DialActivity.class);
         startActivity(intent);
 
         finish();
-
 //        if(editAddNum.getText().toString().length() == 0)
 //        {
 //            // Toast.makeText(getApplicationContext(),"Please enter Password!",Toast.LENGTH_SHORT).show();
@@ -75,22 +82,20 @@ public class ContactModifyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_modify);
+        setContentView(R.layout.activity_contact_delete);
 
-        Intent intent = getIntent();
-        email = intent.getStringExtra("Email");
+        Intent in = getIntent();
+        email = in.getStringExtra("Email");
+        name = in.getStringExtra("Name");
 
-        textViewContactUpdateEmail = (TextView)findViewById(R.id.textViewContactUpdateEmail);
-        textViewContactUpdateEmail.setText(email);
-
-
-        editUpdateName   = (EditText)findViewById(R.id.editUpdateName);
+        textViewContactDelEmail = (TextView) findViewById(R.id.textViewContactDelEmail);
+        textViewContactDelName = (TextView) findViewById(R.id.textViewContactDelName);
+        textViewContactDelEmail.setText(email);
+        textViewContactDelName.setText(name);
 
         textViewResult = (TextView)findViewById(R.id.textViewResult);
         textViewResult.setText(null);
 
         restManager = new RestManager();
-
     }
 }
-

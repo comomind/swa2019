@@ -28,8 +28,8 @@
         <activity android:name=".ui.MyInfoActivity"></activity>
         <activity android:name=".ui.ForgotPWActivity" />
         <activity android:name=".ui.ContactAddActivity" />
-        <activity android:name=".UserInterface.ContactModifyActivity" />
-
+        <activity android:name=".ui.ContactModifyActivity" />
+        <activity android:name=".ui.ContactDelActivity" />
         <service
             android:name=".logic.CallReceiveService"
             android:label="CallReceiveService" />

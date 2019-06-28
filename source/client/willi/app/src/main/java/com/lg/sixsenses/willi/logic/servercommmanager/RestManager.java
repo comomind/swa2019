@@ -37,6 +37,10 @@ public class RestManager {
     public static final String PORT = "8080";
     public static final String CMD_REGISTER = "user/register.json";
     public static final String CMD_LOGIN = "user/login.json";
+    public static final String CMD_FRIEND_ADD = "user/friendAdd.json";
+    public static final String CMD_FRIEND_DEL = "user/friendDelete.json";
+    public static final String CMD_FRIEND_EDIT = "user/friendUpdate.json";
+
 
     public HttpURLConnection setupRestfulConnection(String cmd)
     {
@@ -64,6 +68,7 @@ public class RestManager {
 
             RestfulRequest restfulRequest = new RestfulRequest();
             restfulRequest.setBody(req);
+            restfulRequest.setToken(DataManager.getInstance().getToken());
             String input = mapper.writeValueAsString(restfulRequest);
 
             Log.d(TAG,"Send : "+ input);
@@ -139,7 +144,40 @@ public class RestManager {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("FriendResult"))
+        {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference ref = new TypeReference<RestfulResponse<LoginResult>>() {};
+                RestfulResponse restfulResponse = mapper.readValue(recv, ref);
+                Log.d(TAG, restfulResponse.toString());
+                String token = restfulResponse.getToken();
+                DataManager.getInstance().setToken(token);
+                LoginResult result = (LoginResult) (restfulResponse.getBody());
 
+                UserInfo myInfo = result.getMyInfo();
+                ArrayList<UserInfo> list = result.getList();
+
+                DataManager.getInstance().setMyInfo(myInfo);
+                DataManager.getInstance().setContactList(list);
+
+                UdpInfo udpInfo = new UdpInfo();
+                udpInfo.setIpaddr(Util.getIPAddress());
+                int pNum = Integer.parseInt(DataManager.getInstance().getMyInfo().getPhoneNum());
+                udpInfo.setAudioPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_AUDIO_PORT);
+                udpInfo.setVideoPort(pNum + ConstantsWilli.CLIENT_BASE_UDP_VIDEO_PORT);
+                DataManager.getInstance().setMyUdpInfo(udpInfo);
+
+                UpdatedData data = new UpdatedData();
+                data.setType("LoginResult");
+                data.setData(list);
+                Log.d(TAG, "Notify contact list : " + list.toString());
+                DataManager.getInstance().NotifyUpdate(data);
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
     }
 
     public void recvRestfulResponse(HttpURLConnection conn)
@@ -212,5 +250,23 @@ public class RestManager {
             }
         }
         AsyncTask.execute(new MyRunnable(loginInfo));
+    }
+
+    public void sendFriendCommand(UserInfo userInfo,String cmd)
+    {
+        class MyRunnable implements Runnable {
+            UserInfo userInfo;
+            String command;
+            //RegisterInfo registerInfo;
+            MyRunnable(UserInfo info, String com) { userInfo = info; command = com;}
+
+            public void run() {
+                HttpURLConnection conn = setupRestfulConnection(command);
+                sendRestfulRequest(conn,userInfo);
+                recvRestfulResponse(conn);
+                conn.disconnect();
+            }
+        }
+        AsyncTask.execute(new MyRunnable(userInfo, cmd));
     }
 }
