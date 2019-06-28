@@ -102,6 +102,12 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         startActivity(intent);
     }
 
+    public void forgotPassword(View view)
+    {
+        Intent intent = new Intent(getApplicationContext(),ForgotPWActivity.class);
+        startActivity(intent);
+    }
+
     public void buttonTestClick(View view)
     {
         Intent intent = new Intent(getApplicationContext(),TestActivity.class);

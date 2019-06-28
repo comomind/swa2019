@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.ContactAddActivity"></activity>
+        <activity android:name=".ui.ForgotPWActivity"></activity>
+        <activity android:name=".ui.ContactAddActivity" />
         <activity android:name=".UserInterface.ContactModifyActivity" />
 
         <service
@@ -39,11 +40,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.CallStateActivity" />
+        <activity android:name=".ui.DialActivity" />
+        <activity android:name=".ui.TestActivity" />
 
-        <activity android:name=".ui.RegisterActivity"></activity>
-        <activity android:name=".ui.CallStateActivity"></activity>
-        <activity android:name=".ui.DialActivity"></activity>
-        <activity android:name=".ui.TestActivity"></activity>
         <receiver
             android:name=".logic.BroadcastReveiverOnBoot"
             android:enabled="true"

@@ -89,13 +89,13 @@
         </TableRow>
         <TableRow>
             <Button
-                android:id="@+id/AddClose"
+                android:id="@+id/close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonCloseClick"
                 android:text="Close" />
             <Button
-                android:id="@+id/AddContact"
+                android:id="@+id/ForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonRegisterClick"

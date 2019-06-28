@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/navigation_menu1"
-        android:icon="@android:drawable/ic_menu_recent_history"
-        android:title="Recents" />
+        android:id="@+id/navigation_menu3"
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="Dialpad"  />
+
+    <item
+        android:id="@+id/navigation_menu4"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="Message" />
 
     <item
         android:id="@+id/navigation_menu2"
@@ -11,9 +16,9 @@
         android:title="Contacts" />
 
     <item
-        android:id="@+id/navigation_menu3"
-        android:icon="@android:drawable/ic_dialog_dialer"
-        android:title="Dialpad" />
+        android:id="@+id/navigation_menu1"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Setting" />
 
 
 </menu>

@@ -3,15 +3,12 @@ package com.lg.sixsenses.willi.ui;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
-import com.lg.sixsenses.willi.repository.RegisterInfo;
 
 
 public class ContactAddActivity extends AppCompatActivity {
@@ -65,7 +62,7 @@ public class ContactAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_add);
 
-        AddContact     = (Button)findViewById(R.id.AddContact);
+        AddContact     = (Button)findViewById(R.id.ForgotPassword);
         editAddEmail   = (EditText)findViewById(R.id.editAddEmail);
         editAddName    = (EditText)findViewById(R.id.editAddName);
         editAddNum     = (EditText)findViewById(R.id.editAddNum);
