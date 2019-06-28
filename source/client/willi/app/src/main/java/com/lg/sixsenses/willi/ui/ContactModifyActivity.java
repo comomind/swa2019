@@ -21,7 +21,7 @@ public class ContactModifyActivity extends AppCompatActivity {
     private RestManager restManager;
     private Button voicecall;
     private Button videocall;
-    private Button updatecontact;
+    private Button updatebutton;
     private Button deletecontact;
     private Button close;
 

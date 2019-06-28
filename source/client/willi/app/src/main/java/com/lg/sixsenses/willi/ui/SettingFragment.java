@@ -34,6 +34,7 @@ public class SettingFragment extends Fragment {
     private Spinner spinnerAudioOutput;
     private Spinner spinnerSound;
     private Button buttonSave;
+    private Button myInfobutton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -73,6 +74,16 @@ public class SettingFragment extends Fragment {
         else if (so == DataManager.Sound.VIBRATE) indexSound = 1;
         else if (so == DataManager.Sound.MUTE) indexSound = 2;
         spinnerSound.setSelection(indexSound);
+
+        myInfobutton = (Button)view.findViewById(R.id.myInfobutton);
+        myInfobutton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),MyInfoActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonSave = (Button)view.findViewById(R.id.buttonSave);
         buttonSave.setOnClickListener(new View.OnClickListener()

@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.ForgotPWActivity"></activity>
+        <activity android:name=".ui.MyInfoActivity"></activity>
+        <activity android:name=".ui.ForgotPWActivity" />
         <activity android:name=".ui.ContactAddActivity" />
         <activity android:name=".UserInterface.ContactModifyActivity" />
 

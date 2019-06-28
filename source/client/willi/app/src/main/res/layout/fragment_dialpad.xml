@@ -147,11 +147,12 @@
                 android:onClick="buttonSendClick"
                 android:src="@android:drawable/stat_sys_phone_call" />
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <ImageButton
+                android:id="@+id/dialdel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="?attr/colorBackgroundFloating" />
+                android:layout_height="match_parent"
+                android:onClick="deleteclick"
+                android:src="@android:drawable/ic_input_delete" />
         </TableRow>
 
     </TableLayout>

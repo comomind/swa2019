@@ -49,6 +49,7 @@ public class DialpadFragment extends Fragment {
     ImageButton dial0;
     ImageButton dialstar;
     ImageButton dialshap;
+    ImageButton dialdel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,6 +58,8 @@ public class DialpadFragment extends Fragment {
 
         InputNum = (TextView)view.findViewById(R.id.InputNum);
         CallButton = (ImageButton)view.findViewById(R.id.CallButton);
+        dialdel = (ImageButton)view.findViewById(R.id.dialdel);
+
         dial1 = (ImageButton)view.findViewById(R.id.dial1);
         dial2 = (ImageButton)view.findViewById(R.id.dial2);
         dial3 = (ImageButton)view.findViewById(R.id.dial3);
@@ -70,7 +73,6 @@ public class DialpadFragment extends Fragment {
         dialstar = (ImageButton)view.findViewById(R.id.dialstar);
         dialshap = (ImageButton)view.findViewById(R.id.dialshap);
 
-
         CallButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -80,6 +82,17 @@ public class DialpadFragment extends Fragment {
                 Intent intent = new Intent(getActivity(),CallStateActivity.class);
                 startActivity(intent);
                 data = "";
+            }
+        });
+
+        dialdel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                if(data.length() != 0) {
+                    data = data.substring(0, data.length() - 1);
+                }
+                InputNum.setText(data);
             }
         });
 

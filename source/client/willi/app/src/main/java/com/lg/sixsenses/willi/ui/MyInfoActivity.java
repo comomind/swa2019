@@ -11,15 +11,18 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
+import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.RegisterInfo;
+import com.lg.sixsenses.willi.repository.UserInfo;
 
-public class ForgotPWActivity extends AppCompatActivity {
+public class MyInfoActivity extends AppCompatActivity {
     private RestManager restManager;
-    private Button close;
-    private Button ForgotPassword;
-    private EditText editTextEmail;
+    private Button MyInfoSave;
+
+    private TextView TextEmail;
+    private TextView viewnumber;
     private EditText editTextName;
-    private EditText editTextPassword;
+
     private Spinner spinnerSecurityQuestion;
     private EditText editTextSecurityAnswer;
     private TextView textViewResult;
@@ -29,20 +32,9 @@ public class ForgotPWActivity extends AppCompatActivity {
         finish();
     }
 
-    public void ForgotPassword(View view)
+    public void MyInfoSave(View view)
     {
-        if(editTextEmail.getText().toString().length() == 0)
-        {
-            //Toast.makeText(getApplicationContext(),"Please enter Email!",Toast.LENGTH_SHORT).show();
-            textViewResult.setText("Please enter Email!");
-            return;
-        }
-        if(editTextSecurityAnswer.getText().toString().length() == 0)
-        {
-            //Toast.makeText(getApplicationContext(),"Please enter Security Answer!",Toast.LENGTH_SHORT).show();
-            textViewResult.setText("Please enter Security Answer!");
-            return;
-        }
+
 
 
     }
@@ -50,10 +42,18 @@ public class ForgotPWActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_pw);
+        setContentView(R.layout.activity_my_info);
 
-        ForgotPassword              = (Button)findViewById(R.id.forgotpassword);
-        editTextEmail               = (EditText)findViewById(R.id.editAddEmail);
+        UserInfo myInfo = DataManager.getInstance().getMyInfo();
+
+        MyInfoSave = (Button)findViewById(R.id.MyInfoSave);
+        TextEmail = (TextView)findViewById(R.id.TextEmail);
+        TextEmail.setText(myInfo.getEmail());
+        editTextName = (EditText)findViewById(R.id.editnewname);
+        editTextName.setText(myInfo.getName());
+        viewnumber = (TextView)findViewById(R.id.viewnumber);
+        viewnumber.setText(myInfo.getPhoneNum());
+
         editTextSecurityAnswer      = (EditText)findViewById(R.id.editTextSecurityAnswer);
 
         spinnerSecurityQuestion = (Spinner)findViewById(R.id.spinnerSecurityQuestion);

@@ -27,7 +27,7 @@
         </TableRow>
         <TableRow>
             <TextView
-                android:id="@+id/AddEmail"
+                android:id="@+id/Email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Email : "
@@ -75,10 +75,10 @@
                 android:text="Close" />
 
             <Button
-                android:id="@+id/ForgotPassword"
+                android:id="@+id/AddButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="buttonRegisterClick"
+                android:onClick="AddContact"
                 android:text="Add contact" />
         </TableRow>
         <TableRow>

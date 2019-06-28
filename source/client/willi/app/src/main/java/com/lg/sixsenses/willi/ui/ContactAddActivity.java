@@ -62,7 +62,7 @@ public class ContactAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_add);
 
-        AddContact     = (Button)findViewById(R.id.ForgotPassword);
+        AddContact     = (Button)findViewById(R.id.AddButton);
         editAddEmail   = (EditText)findViewById(R.id.editAddEmail);
         editAddName    = (EditText)findViewById(R.id.editAddName);
         editAddNum     = (EditText)findViewById(R.id.editAddNum);
