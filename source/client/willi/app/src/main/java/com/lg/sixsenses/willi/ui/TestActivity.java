@@ -39,6 +39,7 @@ public class TestActivity extends AppCompatActivity implements Observer {
 
     private AudioIo audioIo;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,11 +166,7 @@ public class TestActivity extends AppCompatActivity implements Observer {
                             short outputSample = (short)(mixed * 32768.0f);
                             mixedShort[i] = outputSample;
                         }
-
-
                         outputTrack.write(mixedShort, 0, mixedShort.length);
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

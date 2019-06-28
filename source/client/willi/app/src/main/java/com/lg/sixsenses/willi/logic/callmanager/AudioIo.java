@@ -45,6 +45,15 @@ public class AudioIo {
   private DatagramSocket receiveSocket;
   private InetAddress remoteIp;
   private int remotePort = 0;
+
+  public int getMyPort() {
+    return myPort;
+  }
+
+  public void setMyPort(int myPort) {
+    this.myPort = myPort;
+  }
+
   private int myPort = 0;
 
   private boolean isBoostAudio = false;
@@ -73,21 +82,11 @@ public class AudioIo {
     isBoostAudio = boostAudio;
   }
 
-  public void setMyPort(int myPort) {
-    this.myPort = myPort;
-  }
-
-  public AudioCodec getAudioCodec() {
-    return audioCodec;
-  }
-
   public void setAudioCodec(AudioCodec audioCodec) {
     this.audioCodec = audioCodec;
   }
 
   public synchronized boolean startReceive(int port) {
-    this.myPort = port;
-
     if (isStartReceive) {
       return true;
     }
@@ -95,6 +94,8 @@ public class AudioIo {
     if (audioCodec.open() == 0) {
       Log.i(TAG, "codec open success");
     }
+
+    bindSocket(port);
 
     // start receive thread
     startReceiveThread();
@@ -110,29 +111,11 @@ public class AudioIo {
     this.remoteIp = remoteIp;
     this.remotePort = remotePort;
 
-    bindSocket();
-
     startSendThread();
     isStartSend = true;
     return false;
   }
 
-  private void bindSocket() {
-    boolean isBind = false;
-    Log.d(TAG, "bindSocket try, port: " + myPort);
-    while (!isBind) {
-      try {
-        receiveSocket = new DatagramSocket(null);
-        receiveSocket.setReuseAddress(true);
-        receiveSocket.bind(new InetSocketAddress(myPort));
-        isBind = true;
-      } catch (SocketException e) {
-        e.printStackTrace();
-        myPort++;
-      }
-    }
-    Log.d(TAG, "bindSocket success, port: " + myPort);
-  }
 
   public synchronized boolean stopAll() {
     if (!isStartReceive && !isStartSend) {
@@ -141,6 +124,17 @@ public class AudioIo {
     }
 
     // terminate receive thread
+    stopReceiveThread();
+
+    // terminate send thread
+    stopSendThread();
+
+    audioCodec.close();
+
+    return false;
+  }
+
+  public void stopReceiveThread() {
     if (receiveThread != null && receiveThread.isAlive()) {
       isReceiveThreadRun = false;
       receiveSocket.close();
@@ -155,7 +149,13 @@ public class AudioIo {
       Log.d(TAG, "receiveThread join success");
     }
 
-    // terminate send thread
+    receiveThread = null;
+    receiveSocket = null;
+
+    isStartReceive = false;
+  }
+
+  public void stopSendThread() {
     if (sendThread != null && sendThread.isAlive()) {
       Log.d(TAG, "sendThread join started");
       isSendThreadRun = false;
@@ -168,15 +168,8 @@ public class AudioIo {
       Log.d(TAG, "sendThread join success");
     }
 
-    receiveThread = null;
     sendThread = null;
-
-    receiveSocket = null;
-    audioCodec.close();
-
     isStartSend = false;
-    isStartReceive = false;
-    return false;
   }
 
   private void startReceiveThread() {
@@ -341,4 +334,23 @@ public class AudioIo {
     });
     sendThread.start();
   }
+
+  private void bindSocket(int port) {
+    boolean isBind = false;
+    Log.d(TAG, "bindSocket try, port: " + port);
+    while (!isBind) {
+      try {
+        receiveSocket = new DatagramSocket(null);
+        receiveSocket.setReuseAddress(true);
+        receiveSocket.bind(new InetSocketAddress(port));
+        isBind = true;
+      } catch (SocketException e) {
+        e.printStackTrace();
+        port++;
+      }
+    }
+    myPort = port;
+    Log.d(TAG, "bindSocket success, port: " + myPort);
+  }
+
 }

@@ -80,15 +80,21 @@
                 android:layout_height="wrap_content"
                 android:onClick="buttonStopClick"
                 android:text="Stop" />
-        </TableRow>
-        
-	<TableRow>
             <Button
                 android:id="@+id/buttonMixPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="buttonMixPlayClick"
                 android:text="Play 2 files" />
+        </TableRow>
+
+        <TableRow>
+            <ImageView
+                android:id="@+id/imageViewVideo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/VideoFrame"/>
         </TableRow>
 
     </TableLayout>
