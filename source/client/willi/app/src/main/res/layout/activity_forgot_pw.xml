@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Password : " />
             <EditText
-                android:id="@+id/editAddNum"
+                android:id="@+id/newPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -89,7 +89,7 @@
                 android:id="@+id/forgotpassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="ForgotPassword"
+                android:onClick="ForgotPassword_Forgot"
                 android:text="Forgot Password"
                 android:textAllCaps="false" />
         </TableRow>

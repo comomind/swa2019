@@ -17,8 +17,8 @@ public class ForgotPWActivity extends AppCompatActivity {
     private RestManager restManager;
     private Button close;
     private Button ForgotPassword;
+
     private EditText editTextEmail;
-    private EditText editTextName;
     private EditText editTextPassword;
     private Spinner spinnerSecurityQuestion;
     private EditText editTextSecurityAnswer;
@@ -29,7 +29,7 @@ public class ForgotPWActivity extends AppCompatActivity {
         finish();
     }
 
-    public void ForgotPassword(View view)
+    public void ForgotPassword_Forgot(View view)
     {
         if(editTextEmail.getText().toString().length() == 0)
         {
@@ -43,7 +43,20 @@ public class ForgotPWActivity extends AppCompatActivity {
             textViewResult.setText("Please enter Security Answer!");
             return;
         }
+        if(editTextPassword.getText().toString().length() == 0)
+        {
+            //Toast.makeText(getApplicationContext(),"Please enter Security Answer!",Toast.LENGTH_SHORT).show();
+            textViewResult.setText("Please enter New Password!");
+            return;
+        }
 
+        RegisterInfo registerInfo = new RegisterInfo();
+        registerInfo.setEmail(editTextEmail.getText().toString());
+        registerInfo.setPassword(editTextPassword.getText().toString());
+        registerInfo.setSecurityQuestion(spinnerSecurityQuestion.getSelectedItem().toString());
+        registerInfo.setSecurityAnswer(editTextSecurityAnswer.getText().toString());
+
+        restManager.sendUpdatePasswordUser(registerInfo);
 
     }
 
@@ -55,6 +68,7 @@ public class ForgotPWActivity extends AppCompatActivity {
         ForgotPassword              = (Button)findViewById(R.id.forgotpassword);
         editTextEmail               = (EditText)findViewById(R.id.editAddEmail);
         editTextSecurityAnswer      = (EditText)findViewById(R.id.editTextSecurityAnswer);
+        editTextPassword            = (EditText)findViewById(R.id.newPassword);
 
         spinnerSecurityQuestion = (Spinner)findViewById(R.id.spinnerSecurityQuestion);
         String[] items = new String[]{"What is your favorite color?", "What is your mother's maiden name?", "Where you were born?"};

@@ -41,6 +41,7 @@ public class RestManager {
     public static final String CMD_FRIEND_DEL = "user/friendDelete.json";
     public static final String CMD_FRIEND_EDIT = "user/friendUpdate.json";
     public static final String CMD_UPDATE = "user/update.json";
+    public static final String CMD_UPDATEPW = "user/passwordRestore.json";
 
 
     public HttpURLConnection setupRestfulConnection(String cmd)
@@ -279,6 +280,22 @@ public class RestManager {
 
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATE);
+                sendRestfulRequest(conn,registerInfo);
+                recvRestfulResponse(conn);
+                conn.disconnect();
+            }
+        }
+        AsyncTask.execute(new MyRunnable(registerInfo));
+    }
+
+    public void sendUpdatePasswordUser(RegisterInfo registerInfo)
+    {
+        class MyRunnable implements Runnable {
+            RegisterInfo registerInfo;
+            MyRunnable(RegisterInfo info) { registerInfo = info; }
+
+            public void run() {
+                HttpURLConnection conn = setupRestfulConnection(CMD_UPDATEPW);
                 sendRestfulRequest(conn,registerInfo);
                 recvRestfulResponse(conn);
                 conn.disconnect();
