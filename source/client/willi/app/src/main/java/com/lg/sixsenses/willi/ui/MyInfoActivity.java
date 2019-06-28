@@ -34,9 +34,22 @@ public class MyInfoActivity extends AppCompatActivity {
 
     public void MyInfoSave(View view)
     {
+        UserInfo myInfo = DataManager.getInstance().getMyInfo();
 
+        if(editTextSecurityAnswer.getText().toString().length() == 0)
+        {
+            //Toast.makeText(getApplicationContext(),"Please enter Security Answer!",Toast.LENGTH_SHORT).show();
+            textViewResult.setText("Please enter Security Answer!");
+            return;
+        }
 
+        RegisterInfo registerInfo = new RegisterInfo();
+        registerInfo.setEmail(TextEmail.getText().toString());
+        registerInfo.setName(editTextName.getText().toString());
+        registerInfo.setSecurityQuestion(spinnerSecurityQuestion.getSelectedItem().toString());
+        registerInfo.setSecurityAnswer(editTextSecurityAnswer.getText().toString());
 
+        restManager.sendUpdateUser(registerInfo);
     }
 
     @Override

@@ -40,6 +40,7 @@ public class RestManager {
     public static final String CMD_FRIEND_ADD = "user/friendAdd.json";
     public static final String CMD_FRIEND_DEL = "user/friendDelete.json";
     public static final String CMD_FRIEND_EDIT = "user/friendUpdate.json";
+    public static final String CMD_UPDATE = "user/update.json";
 
 
     public HttpURLConnection setupRestfulConnection(String cmd)
@@ -268,5 +269,21 @@ public class RestManager {
             }
         }
         AsyncTask.execute(new MyRunnable(userInfo, cmd));
+    }
+
+    public void sendUpdateUser(RegisterInfo registerInfo)
+    {
+        class MyRunnable implements Runnable {
+            RegisterInfo registerInfo;
+            MyRunnable(RegisterInfo info) { registerInfo = info; }
+
+            public void run() {
+                HttpURLConnection conn = setupRestfulConnection(CMD_UPDATE);
+                sendRestfulRequest(conn,registerInfo);
+                recvRestfulResponse(conn);
+                conn.disconnect();
+            }
+        }
+        AsyncTask.execute(new MyRunnable(registerInfo));
     }
 }

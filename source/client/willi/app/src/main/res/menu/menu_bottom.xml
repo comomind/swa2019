@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/navigation_menu2"
+        android:icon="@android:drawable/sym_contact_card"
+        android:title="Contacts" />
+
+    <item
         android:id="@+id/navigation_menu3"
         android:icon="@android:drawable/ic_dialog_dialer"
         android:title="Dialpad"  />
@@ -9,11 +14,6 @@
         android:id="@+id/navigation_menu4"
         android:icon="@android:drawable/ic_dialog_email"
         android:title="Message" />
-
-    <item
-        android:id="@+id/navigation_menu2"
-        android:icon="@android:drawable/sym_contact_card"
-        android:title="Contacts" />
 
     <item
         android:id="@+id/navigation_menu1"
