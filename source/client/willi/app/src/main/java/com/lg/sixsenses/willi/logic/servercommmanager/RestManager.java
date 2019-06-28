@@ -290,17 +290,21 @@ public class RestManager {
         AsyncTask.execute(new MyRunnable(userInfo, cmd));
     }
 
-<<<<<<< e5a3a01af039c11e358a19d0d7a08cd70adbc2eb
-    public void sendUpdateUser(RegisterInfo registerInfo)
-    {
+    public void sendUpdateUser(RegisterInfo registerInfo) {
         class MyRunnable implements Runnable {
             RegisterInfo registerInfo;
-            MyRunnable(RegisterInfo info) { registerInfo = info; }
+
+            MyRunnable(RegisterInfo info) {
+                registerInfo = info;
+            }
 
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATE);
-                sendRestfulRequest(conn,registerInfo);
-=======
+                sendRestfulRequest(conn, registerInfo);
+                AsyncTask.execute(new MyRunnable(registerInfo));
+            }
+        }
+    }
     public void sendCCRegister(CCRegisterBody register)
     {
         class MyRunnable implements Runnable {
@@ -311,26 +315,28 @@ public class RestManager {
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_CC_REGISTER);
                 sendRestfulRequest(conn,registerBody);
->>>>>>> [willi] add Conference call Register function
                 recvRestfulResponse(conn);
                 conn.disconnect();
             }
         }
-<<<<<<< e5a3a01af039c11e358a19d0d7a08cd70adbc2eb
-        AsyncTask.execute(new MyRunnable(registerInfo));
+        AsyncTask.execute(new MyRunnable(register));
     }
 
     public void sendUpdatePasswordUser(RegisterInfo registerInfo)
     {
         class MyRunnable implements Runnable {
             RegisterInfo registerInfo;
-            MyRunnable(RegisterInfo info) { registerInfo = info; }
+
+            MyRunnable(RegisterInfo info) {
+                registerInfo = info;
+            }
 
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATEPW);
-                sendRestfulRequest(conn,registerInfo);
-=======
-        AsyncTask.execute(new MyRunnable(register));
+                sendRestfulRequest(conn, registerInfo);
+            }
+        }
+        AsyncTask.execute(new MyRunnable(registerInfo));
     }
 
     public void sendGetCCMsg()
@@ -339,17 +345,11 @@ public class RestManager {
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_CC_GET_MSG);
                 sendRestfulRequest(conn,null);
->>>>>>> [willi] add Conference call Register function
                 recvRestfulResponse(conn);
                 conn.disconnect();
             }
         }
-<<<<<<< e5a3a01af039c11e358a19d0d7a08cd70adbc2eb
-        AsyncTask.execute(new MyRunnable(registerInfo));
-    }
-=======
         AsyncTask.execute(new MyRunnable());
     }
 
->>>>>>> [willi] add Conference call Register function
 }
