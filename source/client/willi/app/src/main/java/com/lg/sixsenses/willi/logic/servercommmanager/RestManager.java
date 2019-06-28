@@ -42,7 +42,8 @@ public class RestManager {
     public static final String CMD_FRIEND_EDIT = "user/friendUpdate.json";
     public static final String CMD_UPDATE = "user/update.json";
     public static final String CMD_UPDATEPW = "user/passwordRestore.json";
-
+    public static final String CMD_CC_REGISTER = "cc/register.json";
+    public static final String CMD_CC_GET_MSG = "cc/getcc.json";
 
     public HttpURLConnection setupRestfulConnection(String cmd)
     {
@@ -180,6 +181,23 @@ public class RestManager {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("CcRegisterResult"))
+        {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference ref = new TypeReference<RestfulResponse<String>>() {};
+                RestfulResponse restfulResponse = mapper.readValue(recv, ref);
+                Log.d(TAG, restfulResponse.toString());
+
+                String token = restfulResponse.getToken();
+                DataManager.getInstance().setToken(token);
+                String ccNum = (String)(restfulResponse.getBody());
+                Log.d(TAG, "Conference Call Number : " + ccNum);
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
     }
 
     public void recvRestfulResponse(HttpURLConnection conn)
@@ -272,6 +290,7 @@ public class RestManager {
         AsyncTask.execute(new MyRunnable(userInfo, cmd));
     }
 
+<<<<<<< e5a3a01af039c11e358a19d0d7a08cd70adbc2eb
     public void sendUpdateUser(RegisterInfo registerInfo)
     {
         class MyRunnable implements Runnable {
@@ -281,10 +300,23 @@ public class RestManager {
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATE);
                 sendRestfulRequest(conn,registerInfo);
+=======
+    public void sendCCRegister(CCRegisterBody register)
+    {
+        class MyRunnable implements Runnable {
+            CCRegisterBody registerBody;
+            //RegisterInfo registerInfo;
+            MyRunnable(CCRegisterBody registerBody) { this.registerBody = registerBody; }
+
+            public void run() {
+                HttpURLConnection conn = setupRestfulConnection(CMD_CC_REGISTER);
+                sendRestfulRequest(conn,registerBody);
+>>>>>>> [willi] add Conference call Register function
                 recvRestfulResponse(conn);
                 conn.disconnect();
             }
         }
+<<<<<<< e5a3a01af039c11e358a19d0d7a08cd70adbc2eb
         AsyncTask.execute(new MyRunnable(registerInfo));
     }
 
@@ -297,10 +329,27 @@ public class RestManager {
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATEPW);
                 sendRestfulRequest(conn,registerInfo);
+=======
+        AsyncTask.execute(new MyRunnable(register));
+    }
+
+    public void sendGetCCMsg()
+    {
+        class MyRunnable implements Runnable {
+            public void run() {
+                HttpURLConnection conn = setupRestfulConnection(CMD_CC_GET_MSG);
+                sendRestfulRequest(conn,null);
+>>>>>>> [willi] add Conference call Register function
                 recvRestfulResponse(conn);
                 conn.disconnect();
             }
         }
+<<<<<<< e5a3a01af039c11e358a19d0d7a08cd70adbc2eb
         AsyncTask.execute(new MyRunnable(registerInfo));
     }
+=======
+        AsyncTask.execute(new MyRunnable());
+    }
+
+>>>>>>> [willi] add Conference call Register function
 }

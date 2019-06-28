@@ -20,9 +20,12 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
+import com.lg.sixsenses.willi.logic.servercommmanager.CCRegisterBody;
+import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
 import com.lg.sixsenses.willi.repository.UserInfo;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ContactsFragment extends Fragment {
     public static final String TAG = ContactsFragment.class.getName().toString();
@@ -161,6 +164,43 @@ public class ContactsFragment extends Fragment {
 
                     getActivity().finish();
 
+                }
+            }
+        });
+
+
+        buttonConferenceCall = (Button)view.findViewById(R.id.buttonConferenceCall);
+        buttonConferenceCall.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                if(selected.size() < 2 || selected.size() > 3)
+                {
+                    textViewContactResult.setText("Please select 2 or 3 people!");
+                }
+                else {
+//                    Intent intent = new Intent(getActivity(), ContactDelActivity.class);
+//                    intent.putExtra("Email", selected.get(0).getEmail());
+//                    intent.putExtra("Name",selected.get(0).getName());
+//                    startActivity(intent);
+//
+//                    getActivity().finish();
+
+                    // For test
+                    CCRegisterBody ccRegisterBody = new CCRegisterBody();
+                    Date date = new Date();
+                    date.setTime(System.currentTimeMillis());
+                    ccRegisterBody.setStartDate(date);
+                    ccRegisterBody.setDuration(60);
+                    ArrayList<String> emailList = new ArrayList<String>();
+                    for(UserInfo info : selected)
+                    {
+                        emailList.add(info.getEmail());
+                    }
+                    ccRegisterBody.setaList(emailList);
+
+                    RestManager rest = new RestManager();
+                    rest.sendCCRegister(ccRegisterBody);
                 }
             }
         });

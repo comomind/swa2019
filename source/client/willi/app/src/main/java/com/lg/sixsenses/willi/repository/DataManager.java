@@ -33,6 +33,7 @@ public class DataManager extends Observable {
     private AudioOutput audioOutput;
     private Sound sound;
     private boolean isLogin;
+    private ArrayList<CcInfo> ccList;
 
     public void clearCallInfo()
     {
@@ -139,6 +140,13 @@ public class DataManager extends Observable {
         isLogin = login;
     }
 
+    public ArrayList<CcInfo> getCcList() {
+        return ccList;
+    }
+
+    public void setCcList(ArrayList<CcInfo> ccList) {
+        this.ccList = ccList;
+    }
 
     public void NotifyUpdate(UpdatedData data) {
         Log.d(TAG,"NotifyUpdate");
