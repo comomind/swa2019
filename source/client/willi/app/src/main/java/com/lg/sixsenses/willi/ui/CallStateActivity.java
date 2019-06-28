@@ -18,14 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.repository.DataManager;
-import com.lg.sixsenses.willi.repository.UdpInfo;
 import com.lg.sixsenses.willi.repository.UpdatedData;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 import com.lg.sixsenses.willi.R;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -68,7 +66,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         buttonAccept.setEnabled(false);
         textViewCallstate.setText("Calling with frank");
 
-        ChangeUI();
+        changeUI();
 
     }
 
@@ -109,7 +107,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ChangeUI();
+                    changeUI();
                     if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.IDLE)
                     {
                         // IDLE시에 DialActivity를 띄운다. 부팅하자마자 전화 받았을때를 위한 조치
@@ -124,14 +122,10 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
 
                 }
             });
-
-
-
         }
-
     }
 
-    public void ChangeUI()
+    public void changeUI()
     {
         if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CALLING)
         {

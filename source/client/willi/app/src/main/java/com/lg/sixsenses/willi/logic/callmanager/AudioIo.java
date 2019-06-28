@@ -110,9 +110,28 @@ public class AudioIo {
     this.remoteIp = remoteIp;
     this.remotePort = remotePort;
 
+    bindSocket();
+
     startSendThread();
     isStartSend = true;
     return false;
+  }
+
+  private void bindSocket() {
+    boolean isBind = false;
+    Log.d(TAG, "bindSocket try, port: " + myPort);
+    while (!isBind) {
+      try {
+        receiveSocket = new DatagramSocket(null);
+        receiveSocket.setReuseAddress(true);
+        receiveSocket.bind(new InetSocketAddress(myPort));
+        isBind = true;
+      } catch (SocketException e) {
+        e.printStackTrace();
+        myPort++;
+      }
+    }
+    Log.d(TAG, "bindSocket success, port: " + myPort);
   }
 
   public synchronized boolean stopAll() {

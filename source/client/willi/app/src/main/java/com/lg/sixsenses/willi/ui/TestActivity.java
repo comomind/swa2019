@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
+import com.lg.sixsenses.willi.codec.audio.AbstractAudioCodecFactory;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
 import com.lg.sixsenses.willi.logic.callmanager.AudioIo;
@@ -28,8 +29,10 @@ import java.io.InputStream;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Observable;
+import java.util.Observer;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity implements Observer {
     public static final String TAG = TestActivity.class.getName().toString();
     private EditText editTextIP;
     private TextView textView;
@@ -48,7 +51,9 @@ public class TestActivity extends AppCompatActivity {
         textView = (TextView)findViewById(R.id.textViewIP);
         textView.setText(Util.getIPAddress());
         audioIo = new AudioIo(getApplicationContext());
-        audioIo.setAudioCodec(AudioCodecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+
+        AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
+        audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
     }
 
     public void buttonSendClick(View view) {
@@ -69,6 +74,11 @@ public class TestActivity extends AppCompatActivity {
     public void buttonStopClick(View view) {
         Log.d(TAG, "stopAll");
         audioIo.stopAll();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 
     public void buttonMixPlayClick(View view) {

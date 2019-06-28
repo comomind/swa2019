@@ -3,6 +3,7 @@ package com.lg.sixsenses.willi.logic.callmanager;
 import android.content.Context;
 import android.util.Log;
 
+import com.lg.sixsenses.willi.codec.audio.AbstractAudioCodecFactory;
 import com.lg.sixsenses.willi.codec.audio.AudioCodec;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
@@ -104,10 +105,9 @@ public class CallHandler {
         tcpRecvCallManager.start();
 
         audioIo = new AudioIo(context);
-        // TODO: (REMOVE THIS) set hard coded codec
-        AudioCodec codec = AudioCodecFactory.getCodec(AudioCodecConst.CodecType.OPUS);
-        audioIo.setAudioCodec(codec);
 
+        AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
+        audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
     }
 
 }

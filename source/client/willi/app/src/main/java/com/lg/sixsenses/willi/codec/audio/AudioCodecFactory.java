@@ -2,10 +2,11 @@ package com.lg.sixsenses.willi.codec.audio;
 
 import android.util.Log;
 
-public class AudioCodecFactory {
+public class AudioCodecFactory extends AbstractAudioCodecFactory {
   public static final String TAG = AudioCodecFactory.class.getSimpleName();
-
-  public static AudioCodec getCodec(AudioCodecConst.CodecType codecType) {
+  
+  @Override
+  public AudioCodec getCodec(AudioCodecConst.CodecType codecType) {
     if (codecType == AudioCodecConst.CodecType.GSM) {
       Log.d(TAG, "return GsmCodec instance");
       return new GsmCodec();
