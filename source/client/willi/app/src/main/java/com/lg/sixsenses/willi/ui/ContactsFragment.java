@@ -182,33 +182,35 @@ public class ContactsFragment extends Fragment {
                 {
                     textViewContactResult.setText("Please select 2 or 3 people!");
                 }
-                else {
-                      Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
-                      for(UserInfo info : selected)
-                      {
-                          intent.putExtra("Email"+size, selected.get(size).getEmail());
-                          size += 1;
-                      }
-
-                      startActivity(intent);
+                else
+                {
+                    // for test
+//                      Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
+//                      for(UserInfo info : selected)
+//                      {
+//                          intent.putExtra("Email"+size, selected.get(size).getEmail());
+//                          size += 1;
+//                      }
+//
+//                      startActivity(intent);
 //
 //                    // For test
-//                    /*
-//                    CCRegisterBody ccRegisterBody = new CCRegisterBody();
-//                    Date date = new Date();
-//                    date.setTime(System.currentTimeMillis());
-//                    ccRegisterBody.setStartDate(date);
-//                    ccRegisterBody.setDuration(60);
-//                    ArrayList<String> emailList = new ArrayList<String>();
-//                    for(UserInfo info : selected)
-//                    {
-//                        emailList.add(info.getEmail());
-//                    }
-//                    ccRegisterBody.setaList(emailList);
-//
-//                    RestManager rest = new RestManager();
-//                    rest.sendCCRegister(ccRegisterBody);
-//                    */
+
+                    CCRegisterBody ccRegisterBody = new CCRegisterBody();
+                    Date date = new Date();
+                    date.setTime(System.currentTimeMillis());
+                    ccRegisterBody.setStartDate(date);
+                    ccRegisterBody.setDuration(60);
+                    ArrayList<String> emailList = new ArrayList<String>();
+                    for(UserInfo info : selected)
+                    {
+                        emailList.add(info.getEmail());
+                    }
+                    ccRegisterBody.setaList(emailList);
+
+                    RestManager rest = new RestManager();
+                    rest.sendCCRegister(ccRegisterBody);
+
                 }
             }
         });

@@ -111,7 +111,7 @@ public class CcActivity extends AppCompatActivity {
             VideoIo videoIo = videoIoList.get(0);
             videoIo.stopAll();
         }
-
+        Log.d(TAG,"Disconnect CC : "+ccNumber);
         CallHandler.getInstance().rejectCc(ccNumber);
     }
 

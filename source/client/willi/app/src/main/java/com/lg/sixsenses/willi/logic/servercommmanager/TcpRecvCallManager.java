@@ -149,6 +149,63 @@ public class TcpRecvCallManager {
                             TcpCcSignalBody recvBody = (TcpCcSignalBody) (receive.getBody());
 
 
+                            if (recvBody.getCmd().equals("CcRequestS2C")) {
+
+                                // 새로운 사람이 CC에 들어 온 경우
+
+                                Log.d(TAG, "CcRequestS2C.................");
+                                TcpCcSignalMessage ccSignalMessage = new TcpCcSignalMessage();
+
+                                TcpCallSignalHeader header = new TcpCallSignalHeader();
+                                header.setType("R");
+                                header.setToken(DataManager.getInstance().getToken());
+                                header.setIpaddr(Util.getIPAddress());
+                                header.setTrantype("SYNC");
+                                header.setReqtype(1);
+                                header.setSvctype(3);
+
+
+                                TcpCcSignalBody body = new TcpCcSignalBody();
+                                body.setCmd("CallAcceptC2S");
+                                body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_CC);
+                                body.setCcNumber(recvBody.getCcNumber());
+
+                                ccSignalMessage.setHeader(header);
+                                ccSignalMessage.setBody(body);
+
+                                ObjectMapper mapper = new ObjectMapper();
+                                String input = mapper.writeValueAsString(ccSignalMessage);
+
+
+                                Log.d(TAG, "TCP ServerSocket Response for CcRequest : " + input);
+
+                                //input = input + "\r\n";
+                                input = input + "@@";
+
+
+                                OutputStream streamOut1 = socket.getOutputStream();
+                                streamOut1.write(input.getBytes());
+                                streamOut1.flush();
+
+                                streamOut1.close();
+                                socket.close();
+                                Log.d(TAG, "Socket Closed 2");
+
+                                // TODO CC 들어온 놈의 port 정보를 CcActivity에 알려주어, AV send start 해야 함.
+
+                                //CallHandler.getInstance().onReceiveCallRejectMessage();
+                            }
+                        }
+                        else if(svcid.equals("tcpConferenceReject"))
+                        {
+                            ObjectMapper mapper2 = new ObjectMapper();
+                            TypeReference ref = new TypeReference<TcpCcSignalMessage>() { };
+
+                            TcpCcSignalMessage receive = mapper2.readValue(buf.toString(), ref);
+                            TcpCallSignalHeader recvHeader = receive.getHeader();
+                            TcpCcSignalBody recvBody = (TcpCcSignalBody) (receive.getBody());
+
+
                             if (recvBody.getCmd().equals("CcRejectS2C")) {
 
                                 // TO DO : CC StateMachine  바로 끊으면 안되고, CC 연결 개수가 없을 때 끊음
@@ -196,54 +253,10 @@ public class TcpRecvCallManager {
                                 socket.close();
                                 Log.d(TAG, "Socket Closed 2");
 
-                                // TODO CC 들어온 놈의 port 정보를 CcActivity에 알려주어, AV send start 해야 함.
-                                //CallHandler.getInstance().onReceiveCallRejectMessage();
-                            }
-                            else if (recvBody.getCmd().equals("CcRequestS2C")) {
-
-                                // 새로운 사람이 CC에 들어 온 경우
-
-                                Log.d(TAG, "CcRequestS2C.................");
-                                TcpCcSignalMessage ccSignalMessage = new TcpCcSignalMessage();
-
-                                TcpCallSignalHeader header = new TcpCallSignalHeader();
-                                header.setType("R");
-                                header.setToken(DataManager.getInstance().getToken());
-                                header.setIpaddr(Util.getIPAddress());
-                                header.setTrantype("SYNC");
-                                header.setReqtype(1);
-                                header.setSvctype(3);
-
-
-                                TcpCcSignalBody body = new TcpCcSignalBody();
-                                body.setCmd("CallAcceptC2S");
-                                body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_CC);
-                                body.setCcNumber(recvBody.getCcNumber());
-
-                                ccSignalMessage.setHeader(header);
-                                ccSignalMessage.setBody(body);
-
-                                ObjectMapper mapper = new ObjectMapper();
-                                String input = mapper.writeValueAsString(ccSignalMessage);
-
-
-                                Log.d(TAG, "TCP ServerSocket Response for CcRequest : " + input);
-
-                                //input = input + "\r\n";
-                                input = input + "@@";
-
-
-                                OutputStream streamOut1 = socket.getOutputStream();
-                                streamOut1.write(input.getBytes());
-                                streamOut1.flush();
-
-                                streamOut1.close();
-                                socket.close();
-                                Log.d(TAG, "Socket Closed 2");
-
                                 // TODO CC 끊은 놈이 누구인지  CcActivity에 알려주어, AV send stop 해야 함.
                                 //CallHandler.getInstance().onReceiveCallRejectMessage();
                             }
+
                         }
                         // TCP Call Signal Messages
                         else

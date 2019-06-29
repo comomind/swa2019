@@ -338,8 +338,7 @@ public class TcpSendCallManager {
                     Log.d(TAG, "TCP ClientSocket CC Recved : " + response);
 
                     ObjectMapper mapper2 = new ObjectMapper();
-                    TypeReference ref = new TypeReference<TcpCcSignalMessage>() {
-                    };
+                    TypeReference ref = new TypeReference<TcpCcSignalMessage>() {};
 
                     TcpCcSignalMessage receive = mapper2.readValue(response, ref);
                     TcpCallSignalHeader recvHeader = receive.getHeader();
@@ -408,6 +407,7 @@ public class TcpSendCallManager {
                     body.setCmd("CallRejectC2S");
                     body.setType(ConstantsWilli.CALL_REQUEST_BODY_TYPE_CC);
                     body.setRejecter(DataManager.getInstance().getMyInfo().getEmail());
+                    body.setCcNumber(phoneNum);
 
 
                     callSignal.setHeader(header);
@@ -420,7 +420,7 @@ public class TcpSendCallManager {
                     String input = mapper.writeValueAsString(callSignal);
 
 
-                    Log.d(TAG, "TCP ClientSocket CC Send : " + input);
+                    Log.d(TAG, "TCP ClientSocket CC Reject Send : " + input);
 
                     //input = input + "\r\n";
                     input = input + "@@";
@@ -432,7 +432,7 @@ public class TcpSendCallManager {
                     CallStateMachine.getInstance().sendCallReject();
 
                     String output;
-                    //Log.d(TAG, "TCP Respose from Server .... \n");
+                    Log.d(TAG, "TCP ClientSocket CC Reject Respose from Server .... \n");
 
                     StringBuffer buf = new StringBuffer();
                     InputStream streamIn = socket.getInputStream();
@@ -457,18 +457,18 @@ public class TcpSendCallManager {
                     else
                         response = result;
 
-                    ObjectMapper mapper2 = new ObjectMapper();
-                    TypeReference ref = new TypeReference<TcpCallSignalReceive<TcpCallSignalBody>>() {
-                    };
+                    Log.d(TAG,"TCP ClientSocket CC Recv : "+response);
+//                    ObjectMapper mapper2 = new ObjectMapper();
+//                    TypeReference ref = new TypeReference<TcpCcSignalMessage>() {};
+//
+//                    TcpCcSignalMessage receive = mapper2.readValue(response, ref);
+//                    TcpCallSignalHeader recvHeader = receive.getHeader();
+//                    TcpCcSignalBody recvBody = (TcpCcSignalBody) (receive.getBody());
 
-                    TcpCallSignalReceive receive = mapper2.readValue(response, ref);
-                    TcpCallSignalHeader recvHeader = receive.getHeader();
-                    TcpCallSignalBody recvBody = (TcpCallSignalBody) (receive.getBody());
-
-                    Log.d(TAG, "TCP ClientSocket CC Recv Header : " + recvHeader.toString());
-                    Log.d(TAG, "TCP ClientSocket CC Recv Body : " + recvBody.toString());
-
-                    Log.d(TAG, "Call Response : " + recvBody.getCmd());
+//                    Log.d(TAG, "TCP ClientSocket CC Recv Header : " + recvHeader.toString());
+//                    Log.d(TAG, "TCP ClientSocket CC Recv Body : " + recvBody.toString());
+//
+//                    Log.d(TAG, "Call Response : " + recvBody.getCmd());
 
 //
 //
