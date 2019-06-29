@@ -3,9 +3,12 @@ package com.lg.sixsenses.willi.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +38,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     private TextView textViewCallstate;
     private Button buttonAccept;
     private Button buttonReject;
+
+    private CallStateActivityHandler handler;
 
     private String phoneNum=null;
     private TcpSendCallManager sender = null;
@@ -68,6 +73,9 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
 
         changeUI();
 
+        handler = new CallStateActivityHandler();
+        CallHandler.getInstance().setHandler(handler);
+        CallHandler.getInstance().setImageView(imageViewState);
     }
 
     @Override
@@ -249,6 +257,39 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         }
         if (DataManager.getInstance().getSound() == DataManager.Sound.VIBRATE)
             vibrator.cancel();
+    }
+
+    public class CallStateActivityHandler extends Handler {
+        // for Message.what
+        public static final int CMD_VIEW_UPDATE = 1;
+
+        // for Message kdy
+        public static final String KEY_IMAGEVIEW = "image_view";
+        public static final String KEY_IMAGE = "image";
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case CMD_VIEW_UPDATE: {
+                    Bundle bundle = msg.getData();
+                    ImageView view = (ImageView) bundle.get(KEY_IMAGEVIEW);
+                    final Bitmap image = (Bitmap) bundle.get(KEY_IMAGE);
+                    view.setImageBitmap(image);
+                }
+                break;
+
+                default: {
+                    Log.d(TAG, "CallStateActivityHandler received suspicious msg!");
+                }
+                break;
+            }
+
+
+
+        }
     }
 
 

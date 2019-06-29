@@ -95,7 +95,7 @@ public class AudioIo {
       Log.i(TAG, "codec open success");
     }
 
-    bindSocket(port);
+    receiveSocket = bindSocket(port);
 
     // start receive thread
     startReceiveThread();
@@ -180,10 +180,6 @@ public class AudioIo {
         Log.d(TAG, "receive thread started, tid: " + Thread.currentThread().getId());
 
         try {
-          receiveSocket = new DatagramSocket(null);
-          receiveSocket.setReuseAddress(true);
-          receiveSocket.bind(new InetSocketAddress(myPort));
-
           AudioClock clock = new AudioClock();
 
           jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD);
@@ -335,14 +331,15 @@ public class AudioIo {
     sendThread.start();
   }
 
-  private void bindSocket(int port) {
+  private DatagramSocket bindSocket(int port) {
     boolean isBind = false;
+    DatagramSocket socket = null;
     Log.d(TAG, "bindSocket try, port: " + port);
     while (!isBind) {
       try {
-        receiveSocket = new DatagramSocket(null);
-        receiveSocket.setReuseAddress(true);
-        receiveSocket.bind(new InetSocketAddress(port));
+        socket = new DatagramSocket(null);
+        socket.setReuseAddress(true);
+        socket.bind(new InetSocketAddress(port));
         isBind = true;
       } catch (SocketException e) {
         e.printStackTrace();
@@ -351,6 +348,7 @@ public class AudioIo {
     }
     myPort = port;
     Log.d(TAG, "bindSocket success, port: " + myPort);
+    return socket;
   }
 
 }

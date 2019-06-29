@@ -2,6 +2,7 @@ package com.lg.sixsenses.willi.logic.callmanager;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.lg.sixsenses.willi.codec.audio.AbstractAudioCodecFactory;
 import com.lg.sixsenses.willi.codec.audio.AudioCodec;
@@ -11,6 +12,7 @@ import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UdpInfo;
+import com.lg.sixsenses.willi.ui.CallStateActivity;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -32,6 +34,25 @@ public class CallHandler {
     private Context context;
 
     private AudioIo audioIo;
+    private CallStateActivity.CallStateActivityHandler handler;
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    private ImageView imageView;
+
+    public CallStateActivity.CallStateActivityHandler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(CallStateActivity.CallStateActivityHandler handler) {
+        this.handler = handler;
+    }
 
     public void setContext(Context context)
     {

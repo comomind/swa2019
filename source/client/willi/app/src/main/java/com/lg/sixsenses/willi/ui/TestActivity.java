@@ -1,19 +1,23 @@
 package com.lg.sixsenses.willi.ui;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.AudioAttributes;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
@@ -21,23 +25,24 @@ import com.lg.sixsenses.willi.codec.audio.AbstractAudioCodecFactory;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
 import com.lg.sixsenses.willi.logic.callmanager.AudioIo;
+import com.lg.sixsenses.willi.logic.callmanager.VideoIo;
 import com.lg.sixsenses.willi.util.Util;
-
-import org.w3c.dom.Text;
 
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Observable;
-import java.util.Observer;
 
-public class TestActivity extends AppCompatActivity implements Observer {
+public class TestActivity extends AppCompatActivity {
     public static final String TAG = TestActivity.class.getName().toString();
     private EditText editTextIP;
     private TextView textView;
+    private ImageView imageView;
 
     private AudioIo audioIo;
+    private VideoIo videoIo;
+
+    private TestActivityHandler handler;
 
 
     @Override
@@ -51,16 +56,23 @@ public class TestActivity extends AppCompatActivity implements Observer {
 
         textView = (TextView)findViewById(R.id.textViewIP);
         textView.setText(Util.getIPAddress());
-        audioIo = new AudioIo(getApplicationContext());
 
+        imageView = (ImageView)findViewById(R.id.imageViewVideo);
+
+        handler = new TestActivityHandler();
+
+        audioIo = new AudioIo(getApplicationContext());
         AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
         audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+
+        videoIo = new VideoIo(getApplicationContext(), handler, imageView.getId());
     }
 
     public void buttonSendClick(View view) {
         try {
             InetAddress remoteIp = InetAddress.getByName(editTextIP.getText().toString());
             audioIo.startSend(remoteIp, 60001);
+            videoIo.startSend(remoteIp, 61001);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,17 +81,63 @@ public class TestActivity extends AppCompatActivity implements Observer {
 
     public void buttonReceiveClick(View view) {
         audioIo.startReceive(60001);
-
+        videoIo.startReceive(61001);
     }
 
     public void buttonStopClick(View view) {
         Log.d(TAG, "stopAll");
         audioIo.stopAll();
+        videoIo.stopAll();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
+    public class TestActivityHandler extends Handler {
+        // for Message.what
+        public static final int CMD_VIEW_UPDATE = 1;
+        public static final int CMD_VIEW_CLEAR = 2;
 
+        // for Message kdy
+        public static final String KEY_IMAGE_VIEW_ID = "image_view_id";
+        public static final String KEY_IMAGE_BYTES = "image_bytes";
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            Log.d(TAG, "handleMessage: " + msg.what);
+
+            switch (msg.what) {
+                case CMD_VIEW_UPDATE: {
+                    Bundle bundle = msg.getData();
+
+                    int viewId = bundle.getInt(KEY_IMAGE_VIEW_ID);
+                    Log.d(TAG, "viewId: " + imageView.getId() + " viewId(msg)" + viewId);
+
+                    byte[] imageBytes = bundle.getByteArray(KEY_IMAGE_BYTES);
+
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    final Matrix matrix = new Matrix();
+                    matrix.postRotate(-90);
+                    final Bitmap rotator = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), matrix,
+                        true);
+
+                    // TODO: get image view by id
+                    imageView.setImageBitmap(rotator);
+                }
+                break;
+
+                case CMD_VIEW_CLEAR: {
+                    imageView.setImageBitmap(null);
+                }
+                break;
+
+                default: {
+                    Log.d(TAG, "CallStateActivityHandler received suspicious msg!");
+                }
+                break;
+            }
+        }
     }
 
     public void buttonMixPlayClick(View view) {
