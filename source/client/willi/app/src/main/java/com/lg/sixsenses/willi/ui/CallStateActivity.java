@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -75,7 +77,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
 
         handler = new CallStateActivityHandler();
         CallHandler.getInstance().setHandler(handler);
-        CallHandler.getInstance().setImageView(imageViewState);
+        CallHandler.getInstance().setViewId(imageViewState.getId());
     }
 
     @Override
@@ -262,22 +264,42 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     public class CallStateActivityHandler extends Handler {
         // for Message.what
         public static final int CMD_VIEW_UPDATE = 1;
+        public static final int CMD_VIEW_CLEAR = 2;
 
         // for Message kdy
-        public static final String KEY_IMAGEVIEW = "image_view";
-        public static final String KEY_IMAGE = "image";
+        public static final String KEY_IMAGE_VIEW_ID = "image_view_id";
+        public static final String KEY_IMAGE_BYTES = "image_bytes";
 
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
+            Log.d(TAG, "handleMessage: " + msg.what);
+
             switch (msg.what) {
                 case CMD_VIEW_UPDATE: {
                     Bundle bundle = msg.getData();
-                    ImageView view = (ImageView) bundle.get(KEY_IMAGEVIEW);
-                    final Bitmap image = (Bitmap) bundle.get(KEY_IMAGE);
-                    view.setImageBitmap(image);
+
+                    int viewId = bundle.getInt(KEY_IMAGE_VIEW_ID);
+                    Log.d(TAG, "viewId: " + imageViewState.getId() + " viewId(msg)" + viewId);
+
+                    byte[] imageBytes = bundle.getByteArray(KEY_IMAGE_BYTES);
+
+                    final Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    final Matrix matrix = new Matrix();
+                    matrix.postRotate(-90);
+                    final Bitmap rotator = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), matrix,
+                        true);
+
+                    // TODO: get image view by id
+                    imageViewState.setImageBitmap(rotator);
+                }
+                break;
+
+                case CMD_VIEW_CLEAR: {
+                    imageViewState.setImageBitmap(null);
                 }
                 break;
 
@@ -286,7 +308,6 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                 }
                 break;
             }
-
 
 
         }

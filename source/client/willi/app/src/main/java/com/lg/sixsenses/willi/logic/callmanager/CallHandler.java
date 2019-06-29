@@ -35,17 +35,17 @@ public class CallHandler {
     private Context context;
 
     private AudioIo audioIo;
+    private VideoIo videoIo;
     private CallStateActivity.CallStateActivityHandler handler;
+    private int viewId;
 
-    public ImageView getImageView() {
-        return imageView;
+    public int getViewId() {
+        return viewId;
     }
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
+    public void setViewId(int viewId) {
+        this.viewId = viewId;
     }
-
-    private ImageView imageView;
 
     public CallStateActivity.CallStateActivityHandler getHandler() {
         return handler;
@@ -73,6 +73,7 @@ public class CallHandler {
         try {
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
             audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+            videoIo.startSend(remoteIp, peerInfo.getVideoPort());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -81,7 +82,12 @@ public class CallHandler {
     // call request by caller
     public void callRequest(String phoneNumber) {
         tcpSendCallManager.startPhoneCall(phoneNumber);
+
         audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
+
+        videoIo.setHandler(handler);
+        videoIo.setViewId(viewId);
+        videoIo.startReceive(DataManager.getInstance().getMyUdpInfo().getVideoPort());
     }
 
     // receive call accept message from server in caller
@@ -126,10 +132,13 @@ public class CallHandler {
         tcpRecvCallManager = new TcpRecvCallManager(context);
         tcpRecvCallManager.start();
 
+        // create audio
         audioIo = new AudioIo(context);
-
         AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
         audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+
+        // create video
+        videoIo = new VideoIo(context);
     }
 
 
