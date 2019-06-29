@@ -20,7 +20,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class CallHandler {
-    public static final String TAG = CallHandler.class.getName().toString();
+    public static final String TAG = CallHandler.class.getSimpleName();
     private static CallHandler instance = new CallHandler();
     public static CallHandler getInstance() {
         return instance;
@@ -45,6 +45,7 @@ public class CallHandler {
 
     public void setViewId(int viewId) {
         this.viewId = viewId;
+        videoIo.setViewId(viewId);
     }
 
     public CallStateActivity.CallStateActivityHandler getHandler() {
@@ -53,6 +54,7 @@ public class CallHandler {
 
     public void setHandler(CallStateActivity.CallStateActivityHandler handler) {
         this.handler = handler;
+        videoIo.setHandler(handler);
     }
 
     public void setContext(Context context)
@@ -65,6 +67,8 @@ public class CallHandler {
         tcpRecvCallManager.receiveCall();
 
         audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
+        videoIo.startReceive(DataManager.getInstance().getMyUdpInfo().getVideoPort());
+
         ArrayList<UdpInfo> peerInfos = DataManager.getInstance().getPeerUdpInfoList();
         // TODO: improve this
         UdpInfo peerInfo = peerInfos.get(0);
@@ -84,9 +88,6 @@ public class CallHandler {
         tcpSendCallManager.startPhoneCall(phoneNumber);
 
         audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
-
-        videoIo.setHandler(handler);
-        videoIo.setViewId(viewId);
         videoIo.startReceive(DataManager.getInstance().getMyUdpInfo().getVideoPort());
     }
 
@@ -103,6 +104,7 @@ public class CallHandler {
         try {
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
             audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+            videoIo.startSend(remoteIp, peerInfo.getVideoPort());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -111,19 +113,19 @@ public class CallHandler {
     public void onReceiveCallRejectMessage()
     {
         Log.d(TAG,"onReceiveCallRejectMessage");
-        audioIo.stopAll();
+        stopAudioVideo();
     }
 
     public void callRejectForIncomingCall() {
         // incoming call request reject (before accepted)
         tcpRecvCallManager.rejectCall();
-        audioIo.stopAll();
+        stopAudioVideo();
     }
     public void callRejectForConnectedCall(String phoneNum)
     {
         // call reject in call (rejected by me)
         tcpSendCallManager.rejectPhoneCall(phoneNum);
-        audioIo.stopAll();
+        stopAudioVideo();
     }
 
     public void startCallHandler()
@@ -152,4 +154,8 @@ public class CallHandler {
         tcpSendCallManager.rejectCc(phone);
     }
 
+    private void stopAudioVideo() {
+        audioIo.stopAll();
+        videoIo.stopAll();
+    }
 }

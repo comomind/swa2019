@@ -19,8 +19,8 @@
             android:gravity="center">
             <ImageView
                 android:id="@+id/imageViewState"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="500px"
+                android:layout_height="500px"
                 android:layout_span="2"
                 android:layout_centerInParent="true" />
         </TableRow>

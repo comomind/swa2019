@@ -60,7 +60,6 @@ public class TestActivity extends AppCompatActivity {
         imageView = (ImageView)findViewById(R.id.imageViewVideo);
 
         handler = new TestActivityHandler();
-
         audioIo = new AudioIo(getApplicationContext());
         AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
         audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));

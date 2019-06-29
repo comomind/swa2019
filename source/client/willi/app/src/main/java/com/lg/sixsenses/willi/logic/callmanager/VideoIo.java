@@ -168,6 +168,10 @@ public class VideoIo implements Camera.PreviewCallback {
   }
 
   public void sendMessage(int cmd, byte[] imageBytes) {
+    if (handler == null) {
+      Log.d(TAG, "sendMessage, handler is null");
+      return;
+    }
     Message message = handler.obtainMessage();
 
     Bundle bundle = new Bundle();
