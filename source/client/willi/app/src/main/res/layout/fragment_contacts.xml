@@ -61,6 +61,11 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="C.C" />
+        <Button
+            android:id="@+id/buttonCCStart"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="CC Start" />
 
     </TableRow>
 

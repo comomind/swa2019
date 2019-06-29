@@ -3,10 +3,12 @@ package com.lg.sixsenses.willi.logic.servercommmanager;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lg.sixsenses.willi.repository.CcInfo;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.RegisterInfo;
@@ -198,6 +200,27 @@ public class RestManager {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("GetCcResult"))
+        {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference ref = new TypeReference<RestfulResponse<ArrayList<CcInfo>>>() {};
+                RestfulResponse restfulResponse = mapper.readValue(recv, ref);
+                Log.d(TAG, restfulResponse.toString());
+
+                String token = restfulResponse.getToken();
+                DataManager.getInstance().setToken(token);
+                ArrayList<CcInfo> list = (ArrayList<CcInfo>) (restfulResponse.getBody());
+                if(list != null)
+                {
+                    Log.d(TAG, "CC Info List: " + list.toString());
+                    DataManager.getInstance().setCcList(list);
+                }
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
     }
 
     public void recvRestfulResponse(HttpURLConnection conn)
@@ -320,6 +343,8 @@ public class RestManager {
             }
         }
         AsyncTask.execute(new MyRunnable(register));
+
+        sendGetCCMsg();
     }
 
     public void sendUpdatePasswordUser(RegisterInfo registerInfo)

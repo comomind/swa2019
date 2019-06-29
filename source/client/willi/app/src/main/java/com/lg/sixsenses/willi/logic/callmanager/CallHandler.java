@@ -11,6 +11,7 @@ import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UdpInfo;
+import com.lg.sixsenses.willi.repository.UdpPort;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -108,6 +109,17 @@ public class CallHandler {
 
         AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
         audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+    }
+
+
+    public void startCc(String phoneNum, ArrayList<UdpPort> portList)
+    {
+        tcpSendCallManager.startCc(phoneNum, portList);
+    }
+
+    public void rejectCc(String phone)
+    {
+        tcpSendCallManager.rejectCc(phone);
     }
 
 }
