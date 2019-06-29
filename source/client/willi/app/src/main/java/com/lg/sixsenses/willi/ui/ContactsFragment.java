@@ -39,6 +39,7 @@ public class ContactsFragment extends Fragment {
 
     ArrayList<UserInfo> selected;
     ContactsAdapter adapter;
+    int size = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -179,28 +180,32 @@ public class ContactsFragment extends Fragment {
                     textViewContactResult.setText("Please select 2 or 3 people!");
                 }
                 else {
-//                    Intent intent = new Intent(getActivity(), ContactDelActivity.class);
-//                    intent.putExtra("Email", selected.get(0).getEmail());
-//                    intent.putExtra("Name",selected.get(0).getName());
-//                    startActivity(intent);
+                      Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
+                      for(UserInfo info : selected)
+                      {
+                          intent.putExtra("Email"+size, selected.get(size).getEmail());
+                          size += 1;
+                      }
+
+                      startActivity(intent);
 //
-//                    getActivity().finish();
-
-                    // For test
-                    CCRegisterBody ccRegisterBody = new CCRegisterBody();
-                    Date date = new Date();
-                    date.setTime(System.currentTimeMillis());
-                    ccRegisterBody.setStartDate(date);
-                    ccRegisterBody.setDuration(60);
-                    ArrayList<String> emailList = new ArrayList<String>();
-                    for(UserInfo info : selected)
-                    {
-                        emailList.add(info.getEmail());
-                    }
-                    ccRegisterBody.setaList(emailList);
-
-                    RestManager rest = new RestManager();
-                    rest.sendCCRegister(ccRegisterBody);
+//                    // For test
+//                    /*
+//                    CCRegisterBody ccRegisterBody = new CCRegisterBody();
+//                    Date date = new Date();
+//                    date.setTime(System.currentTimeMillis());
+//                    ccRegisterBody.setStartDate(date);
+//                    ccRegisterBody.setDuration(60);
+//                    ArrayList<String> emailList = new ArrayList<String>();
+//                    for(UserInfo info : selected)
+//                    {
+//                        emailList.add(info.getEmail());
+//                    }
+//                    ccRegisterBody.setaList(emailList);
+//
+//                    RestManager rest = new RestManager();
+//                    rest.sendCCRegister(ccRegisterBody);
+//                    */
                 }
             }
         });

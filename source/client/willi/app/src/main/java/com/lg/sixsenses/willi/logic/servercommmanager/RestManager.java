@@ -301,9 +301,9 @@ public class RestManager {
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATE);
                 sendRestfulRequest(conn, registerInfo);
-                AsyncTask.execute(new MyRunnable(registerInfo));
             }
         }
+        AsyncTask.execute(new MyRunnable(registerInfo));
     }
     public void sendCCRegister(CCRegisterBody register)
     {

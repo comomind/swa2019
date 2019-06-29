@@ -25,11 +25,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.MyInfoActivity"></activity>
+        <activity android:name=".ui.ContactConferenceCallActivity"></activity>
+        <activity android:name=".ui.MyInfoActivity" />
         <activity android:name=".ui.ForgotPWActivity" />
         <activity android:name=".ui.ContactAddActivity" />
         <activity android:name=".ui.ContactModifyActivity" />
         <activity android:name=".ui.ContactDelActivity" />
+
         <service
             android:name=".logic.CallReceiveService"
             android:label="CallReceiveService" />
