@@ -202,7 +202,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 //        startActivity(intent);
 //        Intent intent = new Intent(getApplicationContext(),DialActivity.class);
 //        startActivity(intent);
-
     }
     public void buttonLeeClick(View view) {
         editTextEmail.setText("lee@lge.com");

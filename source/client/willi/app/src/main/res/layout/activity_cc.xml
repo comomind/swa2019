@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="#111E39"
+    tools:context=".ui.CcActivity">
+
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical">
+
+        <TableRow
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/imageViewCc1"
+                android:layout_width="500px"
+                android:layout_height="500px"
+                android:layout_centerInParent="true" />
+            <ImageView
+                android:id="@+id/imageViewCc2"
+                android:layout_width="500px"
+                android:layout_height="500px"
+                android:layout_centerInParent="true" />
+
+        </TableRow>
+        <TableRow
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/imageViewCc3"
+                android:layout_width="500px"
+                android:layout_height="500px"
+                android:layout_centerInParent="true" />
+            <ImageView
+                android:id="@+id/imageViewCc4"
+                android:layout_width="500px"
+                android:layout_height="500px"
+                android:layout_centerInParent="true" />
+
+        </TableRow>
+        <TableRow
+            android:gravity="center">
+            <Button
+                android:id="@+id/buttonCcStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonCcStartClick"
+                android:text="start" />
+            <Button
+                android:id="@+id/buttonCcDisconnect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonCcDisconnectClick"
+                android:text="Disconnect" />
+
+        </TableRow>
+    </TableLayout>
+</android.support.constraint.ConstraintLayout>

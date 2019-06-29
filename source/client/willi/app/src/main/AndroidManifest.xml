@@ -47,6 +47,7 @@
         <activity android:name=".ui.CallStateActivity" />
         <activity android:name=".ui.DialActivity" />
         <activity android:name=".ui.TestActivity" />
+        <activity android:name=".ui.CcActivity" />
 
         <receiver
             android:name=".logic.BroadcastReveiverOnBoot"

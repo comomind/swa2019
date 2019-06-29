@@ -22,6 +22,8 @@ import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.logic.servercommmanager.CCRegisterBody;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
+import com.lg.sixsenses.willi.repository.CcInfo;
+import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UserInfo;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class ContactsFragment extends Fragment {
     Button buttonContactUpdate;
     Button buttonContactCall;
     Button buttonConferenceCall;
+    Button buttonCCStart;
     TextView textViewContactResult;
 
     ArrayList<UserInfo> selected;
@@ -207,6 +210,19 @@ public class ContactsFragment extends Fragment {
 //                    rest.sendCCRegister(ccRegisterBody);
 //                    */
                 }
+            }
+        });
+
+        // TEST CODE
+        buttonCCStart = (Button)view.findViewById(R.id.buttonCCStart);
+        buttonCCStart.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                // Test Code
+                //
+                Intent intent = new Intent(getActivity(),CcActivity.class);
+                startActivity(intent);
             }
         });
 
