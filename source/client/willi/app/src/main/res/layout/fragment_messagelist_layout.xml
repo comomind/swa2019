@@ -27,16 +27,16 @@
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="96dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="fill_vertical"
                     android:text="Start time : " />
 
                 <TextView
                     android:id="@+id/starttimelist"
-                    android:layout_width="100dp"
+                    android:layout_width="133dp"
                     android:layout_height="wrap_content"
-                    android:layout_span="3"
+                    android:layout_span="4"
                     android:textSize="14dp"
                     android:textStyle="bold" />
 
@@ -48,15 +48,15 @@
 
                 <TextView
                     android:id="@+id/textView6"
-                    android:layout_width="88dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Duration : " />
 
                 <TextView
                     android:id="@+id/durationlayout"
-                    android:layout_width="98dp"
+                    android:layout_width="142dp"
                     android:layout_height="match_parent"
-                    android:inputType="number"/>
+                    android:inputType="number" />
             </TableRow>
 
             <TableRow

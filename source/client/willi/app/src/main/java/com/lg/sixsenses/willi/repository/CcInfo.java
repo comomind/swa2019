@@ -2,19 +2,21 @@ package com.lg.sixsenses.willi.repository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class CcInfo
 {
-    String startDate;
+    //String startDate;
+    Date startDate;
     int duration;
     ArrayList<String> aList;
     String ccNumber;
 
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 

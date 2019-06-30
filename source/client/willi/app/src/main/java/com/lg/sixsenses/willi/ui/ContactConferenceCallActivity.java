@@ -3,6 +3,7 @@ package com.lg.sixsenses.willi.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,10 +20,14 @@ import com.lg.sixsenses.willi.repository.UserInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
 public class ContactConferenceCallActivity extends AppCompatActivity {
+    public static final String TAG = MessageAdapter.class.getName().toString();
+ //   SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
     private RestManager restManager;
     private Button Confirm;
     DatePicker mDate;
@@ -66,16 +71,22 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
         CCRegisterBody ccRegisterBody = new CCRegisterBody();
         Date date = new Date();
 
-        date.setYear(mDate.getYear());
-        date.setMonth(mDate.getMonth());
-        date.setDate(mDate.getDayOfMonth());
+        Log.d(TAG, "mDate.getYear() !!!"+mDate.getYear());
+        Log.d(TAG, "mDate.getMonth() !!!"+mDate.getMonth()+1);
+        Log.d(TAG, "mDate.getDayOfMonth() !!!"+mDate.getDayOfMonth());
+
         nhour = Integer.parseInt(hour.getText().toString());
-        date.setHours(nhour);
         nmin = Integer.parseInt(min.getText().toString());
-        date.setMinutes(nmin);
-        date.setSeconds(0);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(mDate.getYear(),mDate.getMonth(),mDate.getDayOfMonth()+1,nhour,nmin);
+        date = calendar.getTime();
+
+  //      mFormat.format(date);
+
+        Log.d(TAG, "nhour !!!"+nhour);
+        Log.d(TAG, "nmin !!!"+nmin);
         nduration = Integer.parseInt(Duration.getText().toString());
-        date.setHours(nduration);
+        Log.d(TAG, "nduration!!!"+nduration);
 
         ccRegisterBody.setStartDate(date);
         ccRegisterBody.setDuration(nduration);

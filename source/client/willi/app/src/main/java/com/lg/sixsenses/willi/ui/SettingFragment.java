@@ -35,6 +35,7 @@ public class SettingFragment extends Fragment {
     private Spinner spinnerSound;
     private Button buttonSave;
     private Button myInfobutton;
+    private Button logoutbutton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -81,6 +82,16 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),MyInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        logoutbutton = (Button)view.findViewById(R.id.logoutbutton);
+        logoutbutton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),LoginActivity.class);
                 startActivity(intent);
             }
         });

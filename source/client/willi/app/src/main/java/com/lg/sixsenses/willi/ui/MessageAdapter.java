@@ -7,18 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.lg.sixsenses.willi.logic.servercommmanager.CCRegisterBody;
+import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
 import com.lg.sixsenses.willi.repository.CcInfo;
 import com.lg.sixsenses.willi.repository.UserInfo;
 import com.lg.sixsenses.willi.repository.DataManager;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MessageAdapter extends BaseAdapter{
     public static final String TAG = MessageAdapter.class.getName().toString();
     Context context;
     ArrayList<CcInfo> example;
     int duration_display;
-
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public MessageAdapter(Context con)
     {
@@ -29,8 +34,7 @@ public class MessageAdapter extends BaseAdapter{
     public int getCount() {
         //    return example.length;
         example = DataManager.getInstance().getCcList();
-        return 10;
-        //return example.size();
+        return example.size();
     }
 
     @Override
@@ -51,18 +55,13 @@ public class MessageAdapter extends BaseAdapter{
         example = DataManager.getInstance().getCcList();
         ConferenceList listItem = new ConferenceList(parent.getContext());
 
-       // CcInfo ccInfo = example.get(position);
-        CcInfo ccInfo = new CcInfo();
-        ccInfo.setStartDate("20190701");
-        ccInfo.setDuration(60);
-        ccInfo.setCcNumber("1004");
-        duration_display = ccInfo.getDuration();
+        CcInfo ccInfo = example.get(position);
 
-        listItem.setText1(ccInfo.getStartDate());
-       // listItem.setText2((duration_display));
+        listItem.setText1(mFormat.format(ccInfo.getStartDate()));
+        listItem.setText2(""+ccInfo.getDuration());
         listItem.setText3(ccInfo.getCcNumber());
 
-        Log.d(TAG, "CC String : !!!"+example);
+       // Log.d(TAG, "mFormat.format(ccInfo) : !!!"+mFormat.format(ccInfo));
         Log.d(TAG, "getStartDate() : !!!"+ccInfo.getStartDate());
         Log.d(TAG, "getCcNumber() : !!!"+ccInfo.getCcNumber());
         Log.d(TAG, "getaList() : !!!"+ccInfo.getaList());
