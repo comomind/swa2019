@@ -10,13 +10,15 @@ import com.lg.sixsenses.willi.R;
 public class ConferenceList extends LinearLayout{
     TextView text1;
     TextView text2;
+    TextView text3;
 
     public ConferenceList(Context context) {
         super(context);
         inflation_init(context);
 
         text1 = (TextView)findViewById(R.id.starttimelist);
-        text2 = (TextView)findViewById(R.id.durationlist);
+        text2 = (TextView)findViewById(R.id.durationlayout);
+        text3 = (TextView)findViewById(R.id.ccNum);
     }
 
     private void inflation_init(Context context){
@@ -29,5 +31,8 @@ public class ConferenceList extends LinearLayout{
     }
     public void setText2(String example){
         text2.setText(example);
+    }
+    public void setText3(String example){
+        text3.setText(example);
     }
 }

@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="0dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
         android:text="Conference List"
         android:textSize="36sp"
@@ -19,8 +19,8 @@
     <ListView
         android:id="@+id/conference_list"
         android:layout_width="343dp"
-        android:layout_height="196dp"
-        android:layout_marginLeft="5dp"
+        android:layout_height="273dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="60dp"></ListView>
 
     <TableRow

@@ -12,10 +12,10 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="91dp"
-            android:layout_height="94dp"
+            android:layout_width="116dp"
+            android:layout_height="60dp"
             android:layout_weight="1"
-            app:srcCompat="@android:drawable/stat_notify_chat" />
+            app:srcCompat="@drawable/conference" />
 
         <TableLayout
             android:layout_width="269dp"
@@ -23,15 +23,40 @@
             android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TableRow>
+            <TableRow android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="96dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="fill_vertical"
+                    android:text="Start time : " />
+
                 <TextView
                     android:id="@+id/starttimelist"
-                    android:layout_width="match_parent"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
-                    android:textStyle="bold"
-                    android:layout_span="3"/>
+                    android:layout_span="3"
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
 
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="88dp"
+                    android:layout_height="wrap_content"
+                    android:text="Duration : " />
+
+                <TextView
+                    android:id="@+id/durationlayout"
+                    android:layout_width="98dp"
+                    android:layout_height="match_parent"
+                    android:inputType="number"/>
             </TableRow>
 
             <TableRow
@@ -40,8 +65,14 @@
 
                 <TextView
                     android:id="@+id/durationlist"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp" />
+                    android:layout_width="77dp"
+                    android:layout_height="match_parent"
+                    android:text="CC Num : " />
+
+                <TextView
+                    android:id="@+id/ccNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </TableRow>
         </TableLayout>
 

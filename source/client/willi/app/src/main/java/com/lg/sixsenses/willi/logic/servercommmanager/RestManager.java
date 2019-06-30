@@ -293,6 +293,7 @@ public class RestManager {
             }
         }
         AsyncTask.execute(new MyRunnable(loginInfo));
+        sendGetCCMsg();
     }
 
     public void sendFriendCommand(UserInfo userInfo,String cmd)

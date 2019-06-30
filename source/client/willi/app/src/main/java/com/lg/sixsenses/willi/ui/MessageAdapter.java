@@ -17,6 +17,7 @@ public class MessageAdapter extends BaseAdapter{
     public static final String TAG = MessageAdapter.class.getName().toString();
     Context context;
     ArrayList<CcInfo> example;
+    int duration_display;
 
 
     public MessageAdapter(Context con)
@@ -28,7 +29,8 @@ public class MessageAdapter extends BaseAdapter{
     public int getCount() {
         //    return example.length;
         example = DataManager.getInstance().getCcList();
-        return example.size();
+        return 10;
+        //return example.size();
     }
 
     @Override
@@ -48,10 +50,26 @@ public class MessageAdapter extends BaseAdapter{
 
         example = DataManager.getInstance().getCcList();
         ConferenceList listItem = new ConferenceList(parent.getContext());
-        Log.d(TAG, "example list size:"+example.size());
-        CcInfo ccInfo = example.get(position);
+
+       // CcInfo ccInfo = example.get(position);
+        CcInfo ccInfo = new CcInfo();
+        ccInfo.setStartDate("20190701");
+        ccInfo.setDuration(60);
+        ccInfo.setCcNumber("1004");
+        duration_display = ccInfo.getDuration();
+
         listItem.setText1(ccInfo.getStartDate());
-        listItem.setText2(ccInfo.getCcNumber());
+       // listItem.setText2((duration_display));
+        listItem.setText3(ccInfo.getCcNumber());
+
+        Log.d(TAG, "CC String : !!!"+example);
+        Log.d(TAG, "getStartDate() : !!!"+ccInfo.getStartDate());
+        Log.d(TAG, "getCcNumber() : !!!"+ccInfo.getCcNumber());
+        Log.d(TAG, "getaList() : !!!"+ccInfo.getaList());
+        Log.d(TAG, "getDuration() : !!!"+ccInfo.getDuration());
+        Log.d(TAG, "DataManager.getInstance().getCcList() : !!!"+DataManager.getInstance().getCcList());
+        Log.d(TAG, "example.size() : !!!"+example.size());
+
 
         return listItem;
     }
