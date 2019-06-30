@@ -33,7 +33,7 @@ public class DialActivity extends AppCompatActivity implements Observer {
     private SettingFragment settingFragment = new SettingFragment();
     private ContactsFragment contactsFragment = new ContactsFragment();
     private DialpadFragment dialpadFragment = new DialpadFragment();
-    private messageFragment messageFragment = new messageFragment();
+    private MessageFragment messageFragment = new MessageFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.servercommmanager.CCRegisterBody;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
+import com.lg.sixsenses.willi.repository.CcInfo;
 import com.lg.sixsenses.willi.repository.RegisterInfo;
 import com.lg.sixsenses.willi.repository.UserInfo;
 
@@ -42,7 +43,7 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
     private String email0;
     private String email1;
     private String email2;
-    ArrayList<UserInfo> selected;
+    ArrayList<CcInfo> selected;
 
     public void close(View view)
     {
@@ -50,7 +51,7 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
     }
 
     public void Confirm(View view) {
-        selected = new ArrayList<UserInfo>();
+        selected = new ArrayList<CcInfo>();
 
         if (hour.getText().toString().length() == 0) {
             //Toast.makeText(getApplicationContext(),"Please enter Email!",Toast.LENGTH_SHORT).show();
@@ -81,7 +82,6 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
         calendar.set(mDate.getYear(),mDate.getMonth(),mDate.getDayOfMonth()+1,nhour,nmin);
         date = calendar.getTime();
 
-  //      mFormat.format(date);
 
         Log.d(TAG, "nhour !!!"+nhour);
         Log.d(TAG, "nmin !!!"+nmin);
@@ -93,7 +93,7 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArrayList<String> emailList = new ArrayList<String>();
-        for(UserInfo info : selected)
+        for(CcInfo info : selected)
         {
             emailList.add(info.getEmail());
         }

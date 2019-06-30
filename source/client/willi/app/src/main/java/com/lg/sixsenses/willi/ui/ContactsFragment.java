@@ -57,6 +57,7 @@ public class ContactsFragment extends Fragment {
 
 
         selected = new ArrayList<UserInfo>();
+        Log.d(TAG, "onCreateView_contacts !!!!: " );
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             /**
