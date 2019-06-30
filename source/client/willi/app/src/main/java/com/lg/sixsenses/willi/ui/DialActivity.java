@@ -33,7 +33,7 @@ public class DialActivity extends AppCompatActivity implements Observer {
     private SettingFragment settingFragment = new SettingFragment();
     private ContactsFragment contactsFragment = new ContactsFragment();
     private DialpadFragment dialpadFragment = new DialpadFragment();
-    private MessageFragment messageFragment = new MessageFragment();
+    private ConferenceFragment conferenceFragment = new ConferenceFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class DialActivity extends AppCompatActivity implements Observer {
                         break;
                     }
                     case R.id.navigation_menu4: {
-                        transaction.replace(R.id.frame_layout, messageFragment).commitAllowingStateLoss();
+                        transaction.replace(R.id.frame_layout, conferenceFragment).commitAllowingStateLoss();
                         break;
                     }
                     default:

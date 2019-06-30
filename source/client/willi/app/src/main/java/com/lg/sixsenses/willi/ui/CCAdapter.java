@@ -18,28 +18,26 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MessageAdapter extends BaseAdapter{
-    public static final String TAG = MessageAdapter.class.getName().toString();
+public class CCAdapter extends BaseAdapter{
+    public static final String TAG = CCAdapter.class.getName().toString();
     Context context;
     ArrayList<CcInfo> example;
     int duration_display;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    public MessageAdapter(Context con)
+    public CCAdapter(Context con)
     {
         this.context = con;
     }
 
     @Override
     public int getCount() {
-        //    return example.length;
         example = DataManager.getInstance().getCcList();
         return example.size();
     }
 
     @Override
     public Object getItem(int position) {
-        //    return example[position];
         example = DataManager.getInstance().getCcList();
         return example.get(position);
     }
@@ -51,9 +49,8 @@ public class MessageAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         example = DataManager.getInstance().getCcList();
-        ConferenceList listItem = new ConferenceList(parent.getContext());
+        CCList listItem = new CCList(parent.getContext());
 
         CcInfo ccInfo = example.get(position);
 
@@ -61,20 +58,6 @@ public class MessageAdapter extends BaseAdapter{
         listItem.setText2(""+ccInfo.getDuration());
         listItem.setText3(ccInfo.getCcNumber());
 
-       // Log.d(TAG, "mFormat.format(ccInfo) : !!!"+mFormat.format(ccInfo));
-        Log.d(TAG, "getStartDate() : !!!"+ccInfo.getStartDate());
-        Log.d(TAG, "getCcNumber() : !!!"+ccInfo.getCcNumber());
-        Log.d(TAG, "getaList() : !!!"+ccInfo.getaList());
-        Log.d(TAG, "getDuration() : !!!"+ccInfo.getDuration());
-        Log.d(TAG, "DataManager.getInstance().getCcList() : !!!"+DataManager.getInstance().getCcList());
-        Log.d(TAG, "example.size() : !!!"+example.size());
-
-
         return listItem;
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
     }
 }

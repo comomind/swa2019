@@ -26,7 +26,7 @@ import java.util.Date;
 
 
 public class ContactConferenceCallActivity extends AppCompatActivity {
-    public static final String TAG = MessageAdapter.class.getName().toString();
+    public static final String TAG = ConferenceFragment.class.getName().toString();
  //   SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     private RestManager restManager;

@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 
-public class ConferenceList extends LinearLayout{
+public class CCList extends LinearLayout{
     TextView text1;
     TextView text2;
     TextView text3;
 
-    public ConferenceList(Context context) {
+    public CCList(Context context) {
         super(context);
         inflation_init(context);
 
@@ -23,7 +23,7 @@ public class ConferenceList extends LinearLayout{
 
     private void inflation_init(Context context){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.fragment_messagelist_layout, this, true);
+        inflater.inflate(R.layout.fragment_cclist_layout, this, true);
     }
 
     public void setText1(String example){

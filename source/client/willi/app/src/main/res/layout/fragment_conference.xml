@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MessageFragment">
+    tools:context=".ui.ConferenceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginTop="4dp"
         android:text="Conference List"
         android:textSize="36sp"
         android:textStyle="italic" />
 
     <ListView
-        android:id="@+id/conference_list"
-        android:layout_width="343dp"
-        android:layout_height="273dp"
-        android:layout_marginLeft="25dp"
+        android:id="@+id/cc_xml_list"
+        android:layout_width="348dp"
+        android:layout_height="210dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="60dp"></ListView>
 
     <TableRow
@@ -28,11 +27,13 @@
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="340dp">
+
         <Button
-            android:id="@+id/buttonContactCall"
+            android:id="@+id/cccall"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Call" />
+
     </TableRow>
 
     <TextView
