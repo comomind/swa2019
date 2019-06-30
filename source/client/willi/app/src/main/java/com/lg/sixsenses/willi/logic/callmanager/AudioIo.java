@@ -73,6 +73,11 @@ public class AudioIo {
   public AudioIo(Context context) {
     this.context = context;
   }
+  
+  public AudioIo(Context context, AudioCodec audioCodec) {
+    this.context = context;
+    this.audioCodec = audioCodec;
+  }
 
   public boolean getIsBoostAudio() {
     return isBoostAudio;
@@ -180,11 +185,7 @@ public class AudioIo {
         Log.d(TAG, "receive thread started, tid: " + Thread.currentThread().getId());
 
         try {
-          AudioClock clock = new AudioClock();
-
-          jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD);
-          jitterBuffer.setSampleRate(audioCodec.getSampleRate());
-          jitterBuffer.setClock(clock);
+          jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
 
           while (isReceiveThreadRun) {
             byte[] rtpBuffer = new byte[RtpPacket.HEADER_SIZE + audioCodec.getEncodedBufferSize()];

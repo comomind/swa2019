@@ -24,9 +24,17 @@ public class JitterBuffer implements Serializable {
 
   Object lock = new Object();
 
-  public JitterBuffer(int jitter, int period) {
+//  public JitterBuffer(int jitter, int period) {
+//    this.period = period;
+//    setJitter(jitter);
+//  }
+
+  public JitterBuffer(int jitter, int period, int sampleRate) {
     this.period = period;
+    setClock(new AudioClock(sampleRate));
+
     setJitter(jitter);
+    setSampleRate(sampleRate);
   }
 
   public void setClock(RtpClock clock) {

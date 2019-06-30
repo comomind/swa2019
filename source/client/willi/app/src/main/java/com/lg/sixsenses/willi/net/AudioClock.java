@@ -3,6 +3,10 @@ package com.lg.sixsenses.willi.net;
 public class AudioClock extends RtpClock {
   private double samplesPerMillisecond;
 
+  public AudioClock(int sampleRate) {
+    super(sampleRate);
+  }
+
   @Override
   public void setSampleRate(int SampleRate) {
     super.setSampleRate(SampleRate);

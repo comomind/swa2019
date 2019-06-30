@@ -60,13 +60,13 @@ public class VideoIo implements Camera.PreviewCallback {
   private boolean isReceiveThreadRun = false;
 //  private boolean isSendThreadRun = false;
 
-  public VideoIo(Context context) {
-    this.context = context;
-  }
-
   public void setViewId(int viewId) {
     Log.d(TAG, "viewId: " + viewId);
     this.viewId = viewId;
+  }
+
+  public VideoIo(Context context) {
+    this.context = context;
   }
 
   public VideoIo(Context context, Handler handler, int viewId) {

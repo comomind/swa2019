@@ -8,7 +8,8 @@ public abstract class RtpClock {
   protected long now;
   private boolean isSynchronized;
 
-  public RtpClock() {
+  public RtpClock(int sampleRate) {
+    this.sampleRate = sampleRate;
   }
 
   public int getSampleRate() {

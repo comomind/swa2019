@@ -22,19 +22,27 @@ import android.widget.TextView;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.codec.audio.AbstractAudioCodecFactory;
+import com.lg.sixsenses.willi.codec.audio.AudioCodec;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
 import com.lg.sixsenses.willi.logic.callmanager.AudioIo;
 import com.lg.sixsenses.willi.logic.callmanager.VideoIo;
+import com.lg.sixsenses.willi.net.AudioClock;
+import com.lg.sixsenses.willi.net.JitterBuffer;
 import com.lg.sixsenses.willi.util.Util;
 
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TestActivity extends AppCompatActivity {
     public static final String TAG = TestActivity.class.getName().toString();
+
+    private final int JITTER_BUFFER_JITTER = 30;
+    private final int JITTER_BUFFER_PERIOD = 200;
+
     private EditText editTextIP;
     private TextView textView;
     private ImageView imageView;
@@ -43,6 +51,7 @@ public class TestActivity extends AppCompatActivity {
     private VideoIo videoIo;
 
     private TestActivityHandler handler;
+    private AudioCodec audioCodec;
 
 
     @Override
@@ -59,12 +68,27 @@ public class TestActivity extends AppCompatActivity {
 
         imageView = (ImageView)findViewById(R.id.imageViewVideo);
 
-        handler = new TestActivityHandler();
-        audioIo = new AudioIo(getApplicationContext());
-        AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
-        audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+        /*
+            create resource
+                audio codec for audioio, player, recorder
+                (per thread) concurrent queue for recorder, audioio
+                (per thread) jitterbuffer for player, audioio
 
+                handler for videoio
+                (per thread) view id for videoio
+         */
+        AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
+        audioCodec = codecFactory.getCodec(AudioCodecConst.CodecType.OPUS);
+        handler = new TestActivityHandler();
+
+        ConcurrentLinkedQueue<byte[]> recorderQueue = new ConcurrentLinkedQueue<byte[]>();
+
+        JitterBuffer jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
+
+        audioIo = new AudioIo(getApplicationContext(), audioCodec);
         videoIo = new VideoIo(getApplicationContext(), handler, imageView.getId());
+
+
     }
 
     public void buttonSendClick(View view) {

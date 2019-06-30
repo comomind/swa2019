@@ -73,7 +73,7 @@ public class JitterBuffer implements Serializable {
       //if buffer's ready flag equals true then it means that reading
       //starting and we should compare timestamp of arrived packet with time of
       //last reading.
-      Log.i(TAG, "RX packet: rx ts = " + t + ", local ts = " + timestamp + ", diff = " + (t - timestamp));
+//      Log.i(TAG, "RX packet: rx ts = " + t + ", diff = " + (t - timestamp) + ", (modified)ts = " + (timestamp + (t - timestamp)));
 //      if (ready && t > timestamp + jitterSamples) {
       if (ready && t > timestamp + jitter) {
         //silently discard outstanding packet
