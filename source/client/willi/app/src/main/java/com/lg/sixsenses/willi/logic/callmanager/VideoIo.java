@@ -15,6 +15,8 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.lg.sixsenses.willi.repository.UdpPort;
+import com.lg.sixsenses.willi.ui.CcActivity;
 import com.lg.sixsenses.willi.ui.TestActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -24,6 +26,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 public class VideoIo implements Camera.PreviewCallback {
   private static final String TAG = VideoIo.class.getSimpleName();
@@ -39,6 +42,8 @@ public class VideoIo implements Camera.PreviewCallback {
   private Context context;
   private Handler handler;
   private int viewId;
+
+  private int myViewId = 0;
 
   private Camera camera;
   private SurfaceTexture texture;
@@ -60,19 +65,30 @@ public class VideoIo implements Camera.PreviewCallback {
   private boolean isReceiveThreadRun = false;
 //  private boolean isSendThreadRun = false;
 
-  public void setViewId(int viewId) {
-    Log.d(TAG, "viewId: " + viewId);
-    this.viewId = viewId;
-  }
+
+  private boolean isRealSender = false;
 
   public VideoIo(Context context) {
     this.context = context;
+  }
+
+  public void setViewId(int viewId) {
+    Log.d(TAG, "viewId: " + viewId);
+    this.viewId = viewId;
   }
 
   public VideoIo(Context context, Handler handler, int viewId) {
     this.context = context;
     this.handler = handler;
     this.viewId = viewId;
+  }
+
+  public int getMyViewId() {
+    return myViewId;
+  }
+
+  public void setMyViewId(int myViewId) {
+    this.myViewId = myViewId;
   }
 
   public void setHandler(Handler handler) {
@@ -112,13 +128,14 @@ public class VideoIo implements Camera.PreviewCallback {
       return true;
     }
 
-    Log.d(TAG, "VideoIo start send request: remote: " + remoteIp + " " + remotePort);
+    Log.d(TAG, "VideoIo start send request: isRealSender: "+isRealSender+" remote: " + remoteIp + " " + remotePort);
 
     this.remoteIp = remoteIp;
     this.remotePort = remotePort;
 
     // start send thread
-    startSendThread();
+    if(isRealSender)
+      startSendThread();
 
     isStartSend = true;
 
@@ -133,7 +150,7 @@ public class VideoIo implements Camera.PreviewCallback {
       return true;
     }
 
-    Log.d(TAG, "VideoIo stop request: remote:  " + remoteIp + " " + remotePort);
+    Log.d(TAG, "VideoIo stop request: isRealSender : "+isRealSender+" remote:  " + remoteIp + " " + remotePort);
 
     sendMessage(TestActivity.TestActivityHandler.CMD_VIEW_CLEAR, null);
 
@@ -141,7 +158,8 @@ public class VideoIo implements Camera.PreviewCallback {
     stopReceiveThread();
 
     // terminate send thread
-    stopSendThread();
+    if(isRealSender)
+      stopSendThread();
 
     Log.d(TAG, "VideoIo stop done: remote: " + remoteIp + " " + remotePort);
 
@@ -198,6 +216,23 @@ public class VideoIo implements Camera.PreviewCallback {
     message.what = cmd;
     handler.sendMessage(message);
   }
+
+   public void sendMessageForMyView(int cmd, byte[] imageBytes) {
+    if (handler == null) {
+      Log.d(TAG, "sendMessage, handler is null");
+      return;
+    }
+    Message message = handler.obtainMessage();
+
+    Bundle bundle = new Bundle();
+    bundle.putInt(CcActivity.CcActivityHandler.KEY_IMAGE_VIEW_ID, myViewId);
+    bundle.putByteArray(CcActivity.CcActivityHandler.KEY_IMAGE_BYTES, imageBytes);
+
+    message.setData(bundle);
+    message.what = cmd;
+    handler.sendMessage(message);
+  }
+
 
   public void stopReceiveThread() {
     if (receiveThread != null && receiveThread.isAlive()) {
@@ -332,6 +367,11 @@ public class VideoIo implements Camera.PreviewCallback {
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
       yuvImage.compressToJpeg(rect, COMPRESS_QUALITY, outputStream);
       byte[] bytes = outputStream.toByteArray();
+
+
+      // send message to handler for update myView
+      sendMessageForMyView(CcActivity.CcActivityHandler.CMD_VIEW_UPDATE, bytes);
+
       udpSend(bytes);
     }
     camera.addCallbackBuffer(data);
@@ -341,12 +381,13 @@ public class VideoIo implements Camera.PreviewCallback {
     Thread sendThread = new Thread(new Runnable() {
       @Override
       public void run() {
-
-        Log.d(TAG, "Video send to " + remoteIp + " " + remotePort);
-
         try {
-          DatagramPacket packet = new DatagramPacket(bytes, bytes.length, remoteIp, remotePort);
-          sendSocket.send(packet);
+          ArrayList<UdpPort> udpPortList = CcHandler.getInstance().getSendPortList();
+          for(UdpPort udpPort : udpPortList) {
+            Log.d(TAG, "Video send to " + udpPort.getIp() + " " + udpPort.getVideoPort());
+            DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(udpPort.getIp()), udpPort.getVideoPort());
+            sendSocket.send(packet);
+          }
         } catch (SocketException e) {
           Log.e(TAG, "Failed, SocketException: " + e);
         } catch (IOException e) {
@@ -357,4 +398,11 @@ public class VideoIo implements Camera.PreviewCallback {
     sendThread.start();
   }
 
+  public boolean isRealSender() {
+    return isRealSender;
+  }
+
+  public void setRealSender(boolean realSender) {
+    isRealSender = realSender;
+  }
 }

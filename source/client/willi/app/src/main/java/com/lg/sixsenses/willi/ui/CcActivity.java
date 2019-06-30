@@ -66,6 +66,7 @@ public class CcActivity extends AppCompatActivity {
         list.add(imageViewCc3.getId());
         list.add(imageViewCc4.getId());
 
+        CcHandler.getInstance().setMyViewId(imageViewCc1.getId());
         CcHandler.getInstance().setViewId(list);
         CcHandler.getInstance().setContext(getApplicationContext());
     }

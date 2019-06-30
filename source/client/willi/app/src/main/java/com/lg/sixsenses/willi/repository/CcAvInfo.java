@@ -10,6 +10,7 @@ public class CcAvInfo {
     private int recvVideoPort;
     private int sendAudioPort;
     private int sendVideoPort;
+    private String remoteIp;
 
     public AudioIo getAudioIo() {
         return audioIo;
@@ -59,6 +60,14 @@ public class CcAvInfo {
         this.sendVideoPort = sendVideoPort;
     }
 
+    public String getRemoteIp() {
+        return remoteIp;
+    }
+
+    public void setRemoteIp(String remoteIp) {
+        this.remoteIp = remoteIp;
+    }
+
     @Override
     public String toString() {
         return "CcAvInfo{" +
@@ -68,6 +77,7 @@ public class CcAvInfo {
                 ", recvVideoPort=" + recvVideoPort +
                 ", sendAudioPort=" + sendAudioPort +
                 ", sendVideoPort=" + sendVideoPort +
+                ", remoteIp='" + remoteIp + '\'' +
                 '}';
     }
 }

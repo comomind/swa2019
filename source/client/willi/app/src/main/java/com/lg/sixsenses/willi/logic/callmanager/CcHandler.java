@@ -39,6 +39,8 @@ public class CcHandler {
     private ArrayList<UdpPort> portList;
 
 
+    private int videoSendCount = 0;
+
     private CcActivity.CcActivityHandler handler;
     private ArrayList<Integer> viewIdList;
 
@@ -46,9 +48,19 @@ public class CcHandler {
         return viewIdList;
     }
 
+    private ArrayList<UdpPort> sendPortList;
+    private int myViewId;
+
+    public int getMyViewId() {
+        return myViewId;
+    }
+
+    public void setMyViewId(int myViewId) {
+        this.myViewId = myViewId;
+    }
+
     public void setViewId(ArrayList<Integer> viewIdList) {
         this.viewIdList = viewIdList;
-
 //        int i = 0;
 //        //Map<String, CcAvInfo> map = new HashMap<String, CcAvInfo>();
 //        for (Map.Entry<String, CcAvInfo> entry : ccAvInfoHashMap.entrySet())
@@ -91,6 +103,13 @@ public class CcHandler {
                 remoteIp = InetAddress.getByName(udpPort.getIp());
                 ccAvInfo.setSendVideoPort(udpPort.getVideoPort());
                 ccAvInfo.setSendAudioPort(udpPort.getAudioPort());
+                if(videoSendCount == 0) {
+                    ccAvInfo.getVideoIo().setRealSender(true);
+                    ccAvInfo.getVideoIo().setMyViewId(myViewId);
+                }
+                else ccAvInfo.getVideoIo().setRealSender(false);
+                videoSendCount ++;
+                sendPortList.add(udpPort);
                 ccAvInfo.getAudioIo().startSend(remoteIp, udpPort.getAudioPort());
                 ccAvInfo.getVideoIo().startSend(remoteIp, udpPort.getVideoPort());
                 Log.d(TAG,"Start AV  to  "+udpPort.getEmail()+" / A:"+ccAvInfo.getSendAudioPort()+" / V:"+ ccAvInfo.getSendVideoPort()+" IP:"+udpPort.getIp());
@@ -127,6 +146,8 @@ public class CcHandler {
     {
         ccAvInfoHashMap = new HashMap<String, CcAvInfo>();
         viewIdList = new ArrayList<Integer>();
+        sendPortList = new ArrayList<UdpPort>();
+
     }
 
 
@@ -223,5 +244,13 @@ public class CcHandler {
     {
         vIo.startReceive(port);
         return vIo.getMyPort();
+    }
+
+    public ArrayList<UdpPort> getSendPortList() {
+        return sendPortList;
+    }
+
+    public void setSendPortList(ArrayList<UdpPort> sendPortList) {
+        this.sendPortList = sendPortList;
     }
 }
