@@ -185,20 +185,20 @@ public class ContactsFragment extends Fragment {
                 }
                 else
                 {
-                    // for test
-                    ArrayList<String> emailList = new ArrayList<String>();
-                    Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
-                    for(UserInfo info : selected)
-                    {
-                        intent.putExtra("Email"+size, selected.get(size).getEmail());
-                        size += 1;
-                     //   emailList.add(info.getEmail());
-                    }
-                    startActivity(intent);
+//                    // for test
+//                    ArrayList<String> emailList = new ArrayList<String>();
+//                    Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
+//                    for(UserInfo info : selected)
+//                    {
+//                        intent.putExtra("Email"+size, selected.get(size).getEmail());
+//                        size += 1;
+//                     //   emailList.add(info.getEmail());
+//                    }
+//                    startActivity(intent);
 
                     // For test
 
-                    /*
+
                     CCRegisterBody ccRegisterBody = new CCRegisterBody();
                     Date date = new Date();
                     date.setTime(System.currentTimeMillis());
@@ -213,7 +213,7 @@ public class ContactsFragment extends Fragment {
 
                     RestManager rest = new RestManager();
                     rest.sendCCRegister(ccRegisterBody);
-                    */
+
 
                 }
             }
@@ -228,6 +228,10 @@ public class ContactsFragment extends Fragment {
                 // Test Code
                 //
                 Intent intent = new Intent(getActivity(),CcActivity.class);
+                int size = DataManager.getInstance().getCcList().size();
+                String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
+                Log.d(TAG,"Test :"+ccNumber);
+                intent.putExtra("ccNumber",ccNumber);
                 startActivity(intent);
             }
         });

@@ -4,6 +4,7 @@ import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
+import com.lg.sixsenses.willi.logic.callmanager.CcHandler;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.logic.callmanager.CallStateMachine;
@@ -361,6 +362,7 @@ public class TcpSendCallManager {
                         Log.d(TAG,"PeerUdpInfo : "+ list.toString());
                         // TO DO : CC StateMachine & onReceive
                         // CallHandler.getInstance().onReceiveCallAcceptMessage();
+                        CcHandler.getInstance().onReceiveCcRequestMsg(udpPortList);
 
                     } else if (recvBody.getCmd().equals("CcRejectS2C")) {
                         // TO DO : CC StateMachine & onReceive

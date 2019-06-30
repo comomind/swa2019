@@ -26,16 +26,18 @@ public class ContactsAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        //    return example.length;
+        //    return example.length
         example = DataManager.getInstance().getContactList();
-        return example.size();
+        if(example != null )return example.size();
+        else return 0;
     }
 
     @Override
     public Object getItem(int position) {
         //    return example[position];
         example = DataManager.getInstance().getContactList();
-        return example.get(position);
+        if(example != null) return example.get(position);
+        else return null;
     }
 
     @Override

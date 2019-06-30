@@ -8,6 +8,7 @@ import android.util.Log;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
+import com.lg.sixsenses.willi.logic.callmanager.CcHandler;
 import com.lg.sixsenses.willi.repository.CcInfo;
 import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
@@ -67,6 +68,7 @@ public class TcpRecvCallManager {
                         while (count < 2) {
                             data = streamIn.read();
                             char ch = (char) data;
+                           // Log.d(TAG,"READ Data : "+ch);
                             buf.append(ch);
 
                             if (ch == stop)
@@ -152,6 +154,11 @@ public class TcpRecvCallManager {
                             if (recvBody.getCmd().equals("CcRequestS2C")) {
 
                                 // 새로운 사람이 CC에 들어 온 경우
+                                // TODO CC 들어온 놈의 port 정보를 CcActivity에 알려주어, AV send start 해야 함.
+
+                                //CallHandler.getInstance().onReceiveCallRejectMessage();
+
+                                CcHandler.getInstance().onReceiveCcRequestMsg(recvBody.getList());
 
                                 Log.d(TAG, "CcRequestS2C.................");
                                 TcpCcSignalMessage ccSignalMessage = new TcpCcSignalMessage();
@@ -191,9 +198,7 @@ public class TcpRecvCallManager {
                                 socket.close();
                                 Log.d(TAG, "Socket Closed 2");
 
-                                // TODO CC 들어온 놈의 port 정보를 CcActivity에 알려주어, AV send start 해야 함.
 
-                                //CallHandler.getInstance().onReceiveCallRejectMessage();
                             }
                         }
                         else if(svcid.equals("tcpConferenceReject"))
@@ -212,6 +217,8 @@ public class TcpRecvCallManager {
                                 //CallStateMachine.getInstance().recvCallReject();
 
                                 Log.d(TAG,"CcRejectS2C - rejecter : "+recvBody.getRejecter());
+
+                                CcHandler.getInstance().onReceiveCcRejectMsg(recvBody.getRejecter());
 
                                 // CallReject 명령을 통화중/Ringing 에 받는 경우..
                                 // 서버 에게 확인의 의미로 CallRejectC2S를 보낸다

@@ -195,6 +195,7 @@ public class RestManager {
                 DataManager.getInstance().setToken(token);
                 String ccNum = (String)(restfulResponse.getBody());
                 Log.d(TAG, "Conference Call Number : " + ccNum);
+
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -344,7 +345,6 @@ public class RestManager {
             }
         }
         AsyncTask.execute(new MyRunnable(register));
-
         sendGetCCMsg();
     }
 

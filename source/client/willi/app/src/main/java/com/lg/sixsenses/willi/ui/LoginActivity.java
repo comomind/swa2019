@@ -194,6 +194,12 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         }
     }
 
+    public void buttonKimClick(View view)
+    {
+        editTextEmail.setText("kim@lge.com");
+        editTextPassword.setText("1111");
+    }
+
     public void buttonParkClick(View view)
     {
         editTextEmail.setText("park@lge.com");

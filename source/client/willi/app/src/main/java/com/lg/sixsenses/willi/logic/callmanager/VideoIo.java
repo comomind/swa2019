@@ -65,6 +65,7 @@ public class VideoIo implements Camera.PreviewCallback {
   }
 
   public void setViewId(int viewId) {
+    Log.d(TAG, "viewId: " + viewId);
     this.viewId = viewId;
   }
 
@@ -91,12 +92,18 @@ public class VideoIo implements Camera.PreviewCallback {
       return true;
     }
 
+    Log.d(TAG, "VideoIo start receive request: local: " + port);
+
+
     receiveSocket = bindSocket(port);
 
     // start receive thread
     startReceiveThread();
 
     isStartReceive = true;
+
+    Log.d(TAG, "VideoIo start receive done: local: " + port);
+
     return false;
   }
 
@@ -105,6 +112,8 @@ public class VideoIo implements Camera.PreviewCallback {
       return true;
     }
 
+    Log.d(TAG, "VideoIo start send request: remote: " + remoteIp + " " + remotePort);
+
     this.remoteIp = remoteIp;
     this.remotePort = remotePort;
 
@@ -112,6 +121,9 @@ public class VideoIo implements Camera.PreviewCallback {
     startSendThread();
 
     isStartSend = true;
+
+    Log.d(TAG, "VideoIo start send done: remote: " + remoteIp + " " + remotePort);
+
     return false;
   }
 
@@ -121,6 +133,8 @@ public class VideoIo implements Camera.PreviewCallback {
       return true;
     }
 
+    Log.d(TAG, "VideoIo stop request: remote:  " + remoteIp + " " + remotePort);
+
     sendMessage(TestActivity.TestActivityHandler.CMD_VIEW_CLEAR, null);
 
     // terminate receive thread
@@ -128,6 +142,8 @@ public class VideoIo implements Camera.PreviewCallback {
 
     // terminate send thread
     stopSendThread();
+
+    Log.d(TAG, "VideoIo stop done: remote: " + remoteIp + " " + remotePort);
 
     return false;
   }
@@ -325,6 +341,8 @@ public class VideoIo implements Camera.PreviewCallback {
     Thread sendThread = new Thread(new Runnable() {
       @Override
       public void run() {
+
+        Log.d(TAG, "Video send to " + remoteIp + " " + remotePort);
 
         try {
           DatagramPacket packet = new DatagramPacket(bytes, bytes.length, remoteIp, remotePort);
