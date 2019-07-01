@@ -13,7 +13,6 @@ import android.util.Log;
 
 import com.lg.sixsenses.willi.repository.UdpPort;
 import com.lg.sixsenses.willi.ui.CcActivity;
-import com.lg.sixsenses.willi.ui.TestActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +22,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class VideoIo implements Camera.PreviewCallback {
   private static final String TAG = VideoIo.class.getSimpleName();
@@ -165,7 +163,7 @@ public class VideoIo implements Camera.PreviewCallback {
 
     Log.d(TAG, "VideoIo stop request: isRealSender : "+isRealSender+" remote:  " + remoteIp + " " + remotePort);
 
-    sendMessage(TestActivity1.TestActivityHandler.CMD_VIEW_CLEAR, null);
+    sendMessage(CcActivity.CcActivityHandler.CMD_VIEW_CLEAR, null);
 
     // terminate receive thread
     stopReceiveThread();
@@ -195,7 +193,7 @@ public class VideoIo implements Camera.PreviewCallback {
             if (packet.getLength() > 0) {
 
               // send message to handler
-              sendMessage(TestActivity1.TestActivityHandler.CMD_VIEW_UPDATE, packet.getData());
+              sendMessage(CcActivity.CcActivityHandler.CMD_VIEW_UPDATE, packet.getData());
             }
           }
         } catch (SocketException e) {
@@ -222,8 +220,8 @@ public class VideoIo implements Camera.PreviewCallback {
     Message message = handler.obtainMessage();
 
     Bundle bundle = new Bundle();
-    bundle.putInt(TestActivity1.TestActivityHandler.KEY_IMAGE_VIEW_ID, viewId);
-    bundle.putByteArray(TestActivity1.TestActivityHandler.KEY_IMAGE_BYTES, imageBytes);
+    bundle.putInt(CcActivity.CcActivityHandler.KEY_IMAGE_VIEW_ID, viewId);
+    bundle.putByteArray(CcActivity.CcActivityHandler.KEY_IMAGE_BYTES, imageBytes);
 
     message.setData(bundle);
     message.what = cmd;

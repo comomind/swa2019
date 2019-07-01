@@ -30,6 +30,12 @@ public class AudioPlayer {
 
   private HashMap<String, JitterBuffer> jitterBufferMap;
 
+  public AudioPlayer(AudioCodec audioCodec, int sessionId) {
+    this.audioCodec = audioCodec;
+    this.sessionId = sessionId;
+    this.jitterBufferMap = new HashMap<String, JitterBuffer>();
+  }
+
   public AudioPlayer(Context context, int sessionId, AudioCodec audioCodec) {
     this.context = context;
     this.sessionId = sessionId;
@@ -37,8 +43,12 @@ public class AudioPlayer {
     this.audioCodec = audioCodec;
   }
 
+  public void setContext(Context context) {
+    this.context = context;
+  }
+
   public synchronized void addJitterBuffer(String peerEmail, JitterBuffer jitterBuffer) {
-   jitterBufferMap.put(peerEmail, jitterBuffer);
+    jitterBufferMap.put(peerEmail, jitterBuffer);
     Log.d(TAG, "addJitterBuffer, size: " + jitterBufferMap.size());
   }
 

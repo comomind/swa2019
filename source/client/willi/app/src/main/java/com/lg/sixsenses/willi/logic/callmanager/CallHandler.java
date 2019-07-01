@@ -10,6 +10,7 @@ import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
+import com.lg.sixsenses.willi.net.JitterBuffer;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UdpInfo;
 import com.lg.sixsenses.willi.ui.CallStateActivity;
@@ -18,6 +19,7 @@ import com.lg.sixsenses.willi.repository.UdpPort;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class CallHandler {
     public static final String TAG = CallHandler.class.getSimpleName();
@@ -25,6 +27,9 @@ public class CallHandler {
     public static CallHandler getInstance() {
         return instance;
     }
+
+    private final int JITTER_BUFFER_JITTER = 30;
+    private final int JITTER_BUFFER_PERIOD = 200;
 
     static {
         System.loadLibrary("native-lib");
@@ -35,6 +40,8 @@ public class CallHandler {
     private Context context;
 
     private AudioIo audioIo;
+    private AudioPlayer audioPlayer;
+    private AudioRecorder audioRecorder;
     private VideoIo videoIo;
     private CallStateActivity.CallStateActivityHandler handler;
     private int viewId;
@@ -76,6 +83,7 @@ public class CallHandler {
     public void callAccept() {
         tcpRecvCallManager.receiveCall();
 
+        audioPlayer.startPlay();
         audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
         videoIo.startReceive(DataManager.getInstance().getMyUdpInfo().getVideoPort());
 
@@ -85,6 +93,8 @@ public class CallHandler {
         InetAddress remoteIp;
 
         try {
+            audioRecorder.startRecord();
+
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
             audioIo.startSend(remoteIp, peerInfo.getAudioPort());
 
@@ -106,6 +116,7 @@ public class CallHandler {
     public void callRequest(String phoneNumber) {
         tcpSendCallManager.startPhoneCall(phoneNumber);
 
+        audioPlayer.startPlay();
         audioIo.startReceive(DataManager.getInstance().getMyUdpInfo().getAudioPort());
         videoIo.startReceive(DataManager.getInstance().getMyUdpInfo().getVideoPort());
     }
@@ -122,6 +133,8 @@ public class CallHandler {
         InetAddress remoteIp;
 
         try {
+            audioRecorder.startRecord();
+
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
             audioIo.startSend(remoteIp, peerInfo.getAudioPort());
 
@@ -163,10 +176,20 @@ public class CallHandler {
         tcpRecvCallManager = new TcpRecvCallManager(context);
         tcpRecvCallManager.start();
 
-        // create audio
-        audioIo = new AudioIo(context);
+        // create
         AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
-        audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+        AudioCodec audioCodec = codecFactory.getCodec(AudioCodecConst.CodecType.OPUS);
+        JitterBuffer jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
+        ConcurrentLinkedQueue<byte[]> recorderQueue = new ConcurrentLinkedQueue<byte[]>();
+
+        // create audio
+        audioRecorder = new AudioRecorder(audioCodec);
+        audioRecorder.addRecorderQueue("test", recorderQueue);
+
+        audioPlayer = new AudioPlayer(context, audioRecorder.getAudioSessionId(), audioCodec);
+        audioPlayer.addJitterBuffer("test", jitterBuffer);
+
+        audioIo = new AudioIo(context, audioCodec, jitterBuffer, recorderQueue);
 
         // create video
         videoIo = new VideoIo(context);
@@ -186,6 +209,9 @@ public class CallHandler {
 
     private void stopAudioVideo() {
         audioIo.stopAll();
+        audioRecorder.stopRecord();
+        audioPlayer.stopPlay();
+
         videoIo.stopAll();
     }
 }

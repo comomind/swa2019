@@ -28,7 +28,6 @@ public class AudioRecorder {
   public AudioRecorder(AudioCodec audioCodec) {
     this.audioCodec = audioCodec;
     recorderQueueMap = new HashMap<String, ConcurrentLinkedQueue<byte[]>>();
-
   }
 
   public int getAudioSessionId() {

@@ -157,10 +157,10 @@ public class TestActivity1 extends AppCompatActivity {
         Log.d(TAG, "stopAll");
         audioIo1.stopAll();
 //        audioIo2.stopAll();
-
-        videoIo1.stopAll();
         audioRecorder.stopRecord();
         audioPlayer.stopPlay();
+
+        videoIo1.stopAll();
     }
 
     public class TestActivityHandler extends Handler {

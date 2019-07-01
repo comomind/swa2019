@@ -4,10 +4,12 @@ import android.content.Context;
 import android.util.Log;
 
 import com.lg.sixsenses.willi.codec.audio.AbstractAudioCodecFactory;
+import com.lg.sixsenses.willi.codec.audio.AudioCodec;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
+import com.lg.sixsenses.willi.net.JitterBuffer;
 import com.lg.sixsenses.willi.repository.CcAvInfo;
 import com.lg.sixsenses.willi.repository.CcInfo;
 import com.lg.sixsenses.willi.repository.DataManager;
@@ -21,19 +23,28 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class CcHandler {
     public static final String TAG = CcHandler.class.getSimpleName();
     private static CcHandler instance = new CcHandler();
+    private CcHandler() {
+    }
     public static CcHandler getInstance() {
         return instance;
     }
+
+    private final int JITTER_BUFFER_JITTER = 30;
+    private final int JITTER_BUFFER_PERIOD = 200;
 
     private TcpSendCallManager tcpSendCallManager;
     private Context context;
 
     private HashMap<String, CcAvInfo> ccAvInfoHashMap;
+    private AudioPlayer audioPlayer = null;
+    private AudioRecorder audioRecorder = null;
+    private AudioCodec audioCodec = null;
 
     private CcInfo thisCc = new CcInfo();
     private ArrayList<UdpPort> portList;
@@ -86,6 +97,7 @@ public class CcHandler {
     public void setContext(Context context)
     {
         this.context = context;
+        audioPlayer.setContext(context);
     }
 
 
@@ -107,10 +119,14 @@ public class CcHandler {
                     ccAvInfo.getVideoIo().setRealSender(true);
                     ccAvInfo.getVideoIo().setMyViewId(myViewId);
                 }
-                else ccAvInfo.getVideoIo().setRealSender(false);
+                else {
+                    ccAvInfo.getVideoIo().setRealSender(false);
+                }
                 videoSendCount ++;
                 sendPortList.add(udpPort);
                 setSendPortListForVideoIo(sendPortList);
+
+                audioRecorder.startRecord();
                 ccAvInfo.getAudioIo().startSend(remoteIp, udpPort.getAudioPort());
                 ccAvInfo.getVideoIo().startSend(remoteIp, udpPort.getVideoPort());
                 Log.d(TAG,"Start AV  to  "+udpPort.getEmail()+" / A:"+ccAvInfo.getSendAudioPort()+" / V:"+ ccAvInfo.getSendVideoPort()+" IP:"+udpPort.getIp());
@@ -125,8 +141,12 @@ public class CcHandler {
     public void onReceiveCcRejectMsg(String email)
     {
         Log.d(TAG,"onReceiveCcRejectMsg : "+email);
+
         AudioIo audioIo = ccAvInfoHashMap.get(email).getAudioIo();
         audioIo.stopAll();
+        audioRecorder.removeRecorderQueue(email);
+        audioPlayer.removeJitterBuffer(email);
+
         VideoIo videoIo = ccAvInfoHashMap.get(email).getVideoIo();
         videoIo.stopAll();
     }
@@ -149,6 +169,11 @@ public class CcHandler {
         viewIdList = new ArrayList<Integer>();
         sendPortList = new ArrayList<UdpPort>();
 
+        AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
+        audioCodec = codecFactory.getCodec(AudioCodecConst.CodecType.OPUS);
+
+        audioRecorder = new AudioRecorder(audioCodec);
+        audioPlayer = new AudioPlayer(audioCodec, audioRecorder.getAudioSessionId());
     }
 
 
@@ -177,17 +202,20 @@ public class CcHandler {
         for(int i = 0; i<peopleList.size(); i++)
         {
             String email = peopleList.get(i);
-            AudioIo audioIo = new AudioIo(context);
-            VideoIo videoIo = new VideoIo(context);
 
             // for audio
-            AbstractAudioCodecFactory codecFactory = new AudioCodecFactory();
-            audioIo.setAudioCodec(codecFactory.getCodec(AudioCodecConst.CodecType.OPUS));
+            JitterBuffer jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
+            ConcurrentLinkedQueue<byte[]> recorderQueue = new ConcurrentLinkedQueue<byte[]>();
+            audioPlayer.addJitterBuffer(email, jitterBuffer);
+            audioRecorder.addRecorderQueue(email, recorderQueue);
+            AudioIo audioIo = new AudioIo(context, audioCodec, jitterBuffer, recorderQueue);
 
             // for video
+            VideoIo videoIo = new VideoIo(context);
             videoIo.setHandler(handler);
             videoIo.setViewId(viewIdList.get(i));
 
+            audioPlayer.startPlay();
             int audioPort = startAudioReceive(audioIo, DataManager.getInstance().getMyUdpInfo().getAudioPort()+i);
             int videoPort = startVideoReceive(videoIo, DataManager.getInstance().getMyUdpInfo().getVideoPort()+i);
 
@@ -225,6 +253,13 @@ public class CcHandler {
             VideoIo videoIo = ccAvInfoHashMap.get(peopleList.get(i)).getVideoIo();
             videoIo.stopAll();
         }
+
+        audioRecorder.stopRecord();
+        audioPlayer.stopPlay();
+
+        audioRecorder.clearRecorderQueue();
+        audioPlayer.clearJitterBuffer();
+
         Log.d(TAG,"Disconnect CC : "+ccNumber);
 
         tcpSendCallManager.rejectCc(ccNumber);
