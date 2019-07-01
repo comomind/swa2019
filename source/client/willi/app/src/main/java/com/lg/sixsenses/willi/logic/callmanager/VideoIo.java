@@ -27,6 +27,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoIo implements Camera.PreviewCallback {
   private static final String TAG = VideoIo.class.getSimpleName();
@@ -43,7 +44,7 @@ public class VideoIo implements Camera.PreviewCallback {
   private Handler handler;
   private int viewId;
 
-  private int myViewId = 0;
+  private int myViewId = -1;
 
   private Camera camera;
   private SurfaceTexture texture;
@@ -68,13 +69,25 @@ public class VideoIo implements Camera.PreviewCallback {
 
   private boolean isRealSender = false;
 
+  private ArrayList<UdpPort> udpPortList;
+
+
   public VideoIo(Context context) {
     this.context = context;
+    udpPortList = new ArrayList<UdpPort>();
   }
 
   public void setViewId(int viewId) {
     Log.d(TAG, "viewId: " + viewId);
     this.viewId = viewId;
+  }
+
+  public ArrayList<UdpPort> getUdpPortList() {
+    return udpPortList;
+  }
+
+  public void setUdpPortList(ArrayList<UdpPort> udpPortList) {
+    this.udpPortList = udpPortList;
   }
 
   public VideoIo(Context context, Handler handler, int viewId) {
@@ -288,10 +301,18 @@ public class VideoIo implements Camera.PreviewCallback {
       if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
         try {
           camera = Camera.open(i);
+
         } catch (RuntimeException e) {
           Log.e(TAG, "camera failed to open: " + e.getLocalizedMessage());
         }
       }
+    }
+
+    Camera.Parameters params1   = camera.getParameters();
+    List<Camera.Size> list = params1 .getSupportedPreviewSizes();
+    for(Camera.Size size : list)
+    {
+      Log.d(TAG, "Camera Size : "+ size.width +" x "+size.height);
     }
 
     texture = new SurfaceTexture(TEX_NAME);
@@ -300,7 +321,6 @@ public class VideoIo implements Camera.PreviewCallback {
     } catch (IOException e) {
       Log.e(TAG, e.getMessage());
     }
-
     Camera.Parameters params = camera.getParameters();
     params.setPreviewSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
     params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
@@ -370,7 +390,7 @@ public class VideoIo implements Camera.PreviewCallback {
 
 
       // send message to handler for update myView
-      sendMessageForMyView(CcActivity.CcActivityHandler.CMD_VIEW_UPDATE, bytes);
+      if(myViewId > 0) sendMessageForMyView(CcActivity.CcActivityHandler.CMD_VIEW_UPDATE, bytes);
 
       udpSend(bytes);
     }
@@ -382,8 +402,7 @@ public class VideoIo implements Camera.PreviewCallback {
       @Override
       public void run() {
         try {
-          ArrayList<UdpPort> udpPortList = CcHandler.getInstance().getSendPortList();
-          for(UdpPort udpPort : udpPortList) {
+            for(UdpPort udpPort : udpPortList) {
             Log.d(TAG, "Video send to " + udpPort.getIp() + " " + udpPort.getVideoPort());
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, InetAddress.getByName(udpPort.getIp()), udpPort.getVideoPort());
             sendSocket.send(packet);

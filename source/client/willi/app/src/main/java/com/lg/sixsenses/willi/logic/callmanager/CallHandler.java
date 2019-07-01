@@ -77,6 +77,15 @@ public class CallHandler {
         try {
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
             audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+
+            ArrayList<UdpPort> list = new ArrayList<UdpPort>();
+            UdpPort port = new UdpPort();
+            port.setVideoPort(peerInfo.getVideoPort());
+            port.setAudioPort(peerInfo.getAudioPort());
+            port.setIp(peerInfo.getIpaddr());
+            list.add(port);
+
+            videoIo.setUdpPortList(list);
             videoIo.startSend(remoteIp, peerInfo.getVideoPort());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -99,11 +108,21 @@ public class CallHandler {
         ArrayList<UdpInfo> peerInfos = DataManager.getInstance().getPeerUdpInfoList();
         // TODO: improve this
         UdpInfo peerInfo = peerInfos.get(0);
+
         InetAddress remoteIp;
 
         try {
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
             audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+
+            ArrayList<UdpPort> list = new ArrayList<UdpPort>();
+            UdpPort port = new UdpPort();
+            port.setVideoPort(peerInfo.getVideoPort());
+            port.setAudioPort(peerInfo.getAudioPort());
+            port.setIp(peerInfo.getIpaddr());
+            list.add(port);
+
+            videoIo.setUdpPortList(list);
             videoIo.startSend(remoteIp, peerInfo.getVideoPort());
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -141,6 +160,7 @@ public class CallHandler {
 
         // create video
         videoIo = new VideoIo(context);
+        videoIo.setRealSender(true);
     }
 
 

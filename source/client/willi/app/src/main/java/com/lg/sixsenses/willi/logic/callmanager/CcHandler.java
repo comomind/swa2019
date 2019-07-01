@@ -110,6 +110,7 @@ public class CcHandler {
                 else ccAvInfo.getVideoIo().setRealSender(false);
                 videoSendCount ++;
                 sendPortList.add(udpPort);
+                setSendPortListForVideoIo(sendPortList);
                 ccAvInfo.getAudioIo().startSend(remoteIp, udpPort.getAudioPort());
                 ccAvInfo.getVideoIo().startSend(remoteIp, udpPort.getVideoPort());
                 Log.d(TAG,"Start AV  to  "+udpPort.getEmail()+" / A:"+ccAvInfo.getSendAudioPort()+" / V:"+ ccAvInfo.getSendVideoPort()+" IP:"+udpPort.getIp());
@@ -246,11 +247,12 @@ public class CcHandler {
         return vIo.getMyPort();
     }
 
-    public ArrayList<UdpPort> getSendPortList() {
-        return sendPortList;
-    }
 
-    public void setSendPortList(ArrayList<UdpPort> sendPortList) {
-        this.sendPortList = sendPortList;
+    private void setSendPortListForVideoIo(ArrayList<UdpPort> portList)
+    {
+        for (Map.Entry<String, CcAvInfo> entry : ccAvInfoHashMap.entrySet())
+        {
+            entry.getValue().getVideoIo().setUdpPortList(portList);
+        }
     }
 }

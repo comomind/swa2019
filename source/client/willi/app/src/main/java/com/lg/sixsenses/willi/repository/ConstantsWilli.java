@@ -2,10 +2,10 @@ package com.lg.sixsenses.willi.repository;
 
 public class ConstantsWilli {
 
-    public static final String SERVER_IP = "192.168.225.31";
+    //public static final String SERVER_IP = "192.168.225.31";
     //public static final String SERVER_IP = "128.237.193.216";
     //public static final String SERVER_IP = "10.0.1.67";
-    //public static final String SERVER_IP = "10.0.1.2";
+    public static final String SERVER_IP = "10.0.1.2";
     //public static final String SERVER_IP = "128.237.163.200";
 
     public static final int SERVER_TCP_PORT = 8081;
