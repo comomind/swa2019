@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.ContactConferenceCallActivity"></activity>
+        <activity android:name=".ui.LogoutActivity"></activity>
+        <activity android:name=".ui.ContactConferenceCallActivity" />
         <activity android:name=".ui.MyInfoActivity" />
         <activity android:name=".ui.ForgotPWActivity" />
         <activity android:name=".ui.ContactAddActivity" />

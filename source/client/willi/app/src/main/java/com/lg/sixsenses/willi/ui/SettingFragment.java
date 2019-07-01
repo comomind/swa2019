@@ -17,7 +17,10 @@ import android.widget.Spinner;
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.RegisterInfo;
 import com.lg.sixsenses.willi.repository.UpdatedData;
+import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
+import com.lg.sixsenses.willi.repository.UserInfo;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,7 @@ public class SettingFragment extends Fragment {
     private Button buttonSave;
     private Button myInfobutton;
     private Button logoutbutton;
+    UserInfo userInfo = new UserInfo();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
@@ -91,9 +95,14 @@ public class SettingFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),LoginActivity.class);
+                Log.d(TAG, "logoutclic!!!!");
+                Intent intent = new Intent(getActivity(),LogoutActivity.class);
                 startActivity(intent);
+
+                RestManager rest = new RestManager();
+                rest.sendLogout(userInfo);
             }
+
         });
 
         buttonSave = (Button)view.findViewById(R.id.buttonSave);

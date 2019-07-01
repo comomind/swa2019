@@ -46,6 +46,7 @@ public class RestManager {
     public static final String CMD_UPDATEPW = "user/passwordRestore.json";
     public static final String CMD_CC_REGISTER = "cc/register.json";
     public static final String CMD_CC_GET_MSG = "cc/getcc.json";
+    public static final String CMD_LOGOUT = "user/logout.json";
 
     public HttpURLConnection setupRestfulConnection(String cmd)
     {
@@ -295,6 +296,23 @@ public class RestManager {
         }
         AsyncTask.execute(new MyRunnable(loginInfo));
         sendGetCCMsg();
+    }
+
+    public void sendLogout(UserInfo userInfo)
+    {
+        class MyRunnable implements Runnable {
+            UserInfo userInfo;
+            //RegisterInfo registerInfo;
+            MyRunnable(UserInfo info) { userInfo = info; }
+
+            public void run() {
+                HttpURLConnection conn = setupRestfulConnection(CMD_LOGOUT);
+                sendRestfulRequest(conn,userInfo);
+                recvRestfulResponse(conn);
+                conn.disconnect();
+            }
+        }
+        AsyncTask.execute(new MyRunnable(userInfo));
     }
 
     public void sendFriendCommand(UserInfo userInfo,String cmd)

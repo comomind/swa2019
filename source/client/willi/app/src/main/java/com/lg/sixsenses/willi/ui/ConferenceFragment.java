@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.repository.CcInfo;
+import com.lg.sixsenses.willi.repository.DataManager;
+import com.lg.sixsenses.willi.repository.UserInfo;
 
 import java.util.ArrayList;
 
@@ -30,6 +32,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ConferenceFragment extends Fragment {
+    public static final String TAG = RegisterActivity.class.getName().toString();
     Button buttonCdCall;
     TextView textViewContactResult;
 
@@ -81,8 +84,31 @@ public class ConferenceFragment extends Fragment {
                 }
                 else
                 {
-                    CallHandler.getInstance().callRequest(selected.get(0).getCcNumber());
-                    Intent intent = new Intent(getActivity(),CallStateActivity.class);
+                    /*
+                    Intent intent = new Intent(getActivity(),CcActivity.class);
+                    int size = DataManager.getInstance().getCcList().size();
+                    String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
+                    Log.d(TAG,"Test :"+ccNumber);
+                    intent.putExtra("ccNumber",ccNumber);
+                    startActivity(intent);
+                    */
+                    //CallHandler.getInstance().callRequest(selected.get(0).getCcNumber());
+                    Intent intent = new Intent(getActivity(),CcActivity.class);
+                   // int size = DataManager.getInstance().getCcList().size();
+                    //Log.d(TAG,"ccnumsize!!! :"+size);
+                    //String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
+
+                    int i = 1;
+                   // String ccNumber;
+                    for(CcInfo info : selected)
+                    {
+                        String key = "ccNumber"+i;
+                        intent.putExtra(key, info.getCcNumber());
+                        Log.d(TAG,"ccNumber!!! :"+info.getCcNumber());
+                        i++;
+                    }
+                    //String ccNumber = DataManager.getInstance().getCcList().get(selected.).getCcNumber();
+                    //intent.putExtra("ccNumber",ccNumber);
                     startActivity(intent);
                 }
             }
