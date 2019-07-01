@@ -33,8 +33,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
-
 public class LoginActivity extends AppCompatActivity implements Observer {
 
     public static final String TAG = LoginActivity.class.getName().toString();
@@ -108,9 +106,13 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         startActivity(intent);
     }
 
-    public void buttonTestClick(View view)
-    {
-        Intent intent = new Intent(getApplicationContext(),TestActivity.class);
+    public void buttonTest1Click(View view) {
+        Intent intent = new Intent(getApplicationContext(), TestActivity1.class);
+        startActivity(intent);
+    }
+
+    public void buttonTest2Click(View view) {
+        Intent intent = new Intent(getApplicationContext(), TestActivity2.class);
         startActivity(intent);
     }
 

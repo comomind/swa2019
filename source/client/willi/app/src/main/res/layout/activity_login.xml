@@ -175,15 +175,23 @@
             </TableRow>
         </TableRow>
         <TableRow>
-
+        <TableRow android:layout_span="2">
             <Button
-                android:id="@+id/buttonTest"
+                android:id="@+id/buttonTest1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
-                android:onClick="buttonTestClick"
-                android:text="TEST" />
+                android:onClick="buttonTest1Click"
+                android:text="TEST1" />
 
+            <Button
+                android:id="@+id/buttonTest2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:onClick="buttonTest2Click"
+                android:text="TEST2" />
+        </TableRow>
         </TableRow>
         <TableRow>
 

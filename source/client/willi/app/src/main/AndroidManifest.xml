@@ -46,7 +46,8 @@
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.CallStateActivity" />
         <activity android:name=".ui.DialActivity" />
-        <activity android:name=".ui.TestActivity" />
+        <activity android:name=".ui.TestActivity1" />
+        <activity android:name=".ui.TestActivity2" />
         <activity android:name=".ui.CcActivity" />
 
         <receiver

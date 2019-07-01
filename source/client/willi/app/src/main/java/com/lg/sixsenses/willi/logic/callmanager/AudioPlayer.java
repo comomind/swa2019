@@ -98,71 +98,68 @@ public class AudioPlayer {
 
         outputTrack.play();
 
-        RtpPacket packet = null;
         byte[] rawBuffer = new byte[audioCodec.getRawBufferSize()];
         byte[] tempBuffer = new byte[audioCodec.getEncodedBufferSize()];
 
-        short[] mixedTemp = new short[rawBuffer.length / 2];
-        short[] mixedOuput = new short[rawBuffer.length / 2];
+        short[] mixedTemp = new short[audioCodec.getRawBufferSize()/ 2];
+        short[] mixedOutput = new short[audioCodec.getRawBufferSize() / 2];
 
         Log.d(TAG, "isPlayThreadRun = " + isPlayThreadRun);
 
         int count = 0;
 
+        ArrayList<RtpPacket> packetList = new ArrayList<>();
+        RtpPacket packet = null;
+
         while(isPlayThreadRun) {
+//          Log.d(TAG, "jitterBufferMap size: " + jitterBufferMap.size());
 
-          Log.d(TAG, "jitterBufferMap size= " + jitterBufferMap.size());
-
-          // get packet from jitter buffer array
-          for (JitterBuffer jitterBuffer: jitterBufferMap.values()) {
+          for (JitterBuffer jitterBuffer : jitterBufferMap.values()) {
             packet = jitterBuffer.read();
-            if (packet == null) {
-//              Log.d(TAG, "packet == null, continue");
-              continue;
+            if (packet != null) {
+              packetList.add(packet);
             }
-            Log.d(TAG, "packet != null, try to mix");
-            packet.getPayload(tempBuffer);
-            byte[] encodedBuffer = Arrays.copyOf(tempBuffer, packet.getPayloadLength());
-            audioCodec.decode(encodedBuffer, rawBuffer);
-
-            byte[] audioOutputBuffer = rawBuffer;
-            ByteBuffer.wrap(audioOutputBuffer).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(mixedTemp);
-
-//            if (count == 0) {
-//              System.arraycopy(mixedTemp, 0, mixedOuput, 0, mixedTemp.length);
-//              count++;
-//              continue;
-//            }
-
-//            for (int i=0 ; i<mixedTemp.length; i++) {
-//              float sample1 = mixedTemp[i] / 32768.0f;
-//              float sample2 = mixedOuput[i] / 32768.0f;
-//
-//              float mixed = sample1 + sample2;
-//
-//              // reduce the volume a bit
-//              mixed *= 0.8;
-//
-//              // hard clipping
-//              if (mixed > 1.0f) {
-//                mixed = 1.0f;
-//              }
-//              if (mixed < -1.0f) {
-//                mixed = -1.0f;
-//              }
-//
-//              short outputSample = (short)(mixed * 32768.0f);
-//              mixedOuput[i] = outputSample;
-//            }
-            outputTrack.write(mixedTemp, 0, mixedTemp.length);
           }
 
-//          outputTrack.write(mixedOuput, 0, mixedOuput.length);
-          count = 0;
+          if (packetList.size() > 0) {
+//            Log.d(TAG, "packetList size: " + packetList.size());
+            short[][] audioShortBuffer = new short[packetList.size()][];
 
-          outputTrack.write(mixedTemp, 0, mixedTemp.length);
+            for (int i=0 ; i< packetList.size() ; i++) {
+              RtpPacket p = packetList.get(i);
+              p.getPayload(tempBuffer);
+              byte[] encodedBuffer = Arrays.copyOf(tempBuffer, p.getPayloadLength());
+              audioCodec.decode(encodedBuffer, rawBuffer);
 
+              byte[] audioOutputBuffer = rawBuffer;
+              ByteBuffer.wrap(audioOutputBuffer).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(mixedTemp);
 
+              audioShortBuffer[i] = Arrays.copyOf(mixedTemp, mixedTemp.length);
+            }
+
+            for (int i=0 ; i<audioShortBuffer[0].length ; i++) {
+              float mixed = 0;
+              mixed = audioShortBuffer[0][i] / 32768.0f;
+              for (int j=1 ; j<packetList.size() ; j++) {
+                mixed += audioShortBuffer[j][i] / 32768.0f;
+              }
+              // reduce the volume a bit
+              mixed *= 0.8;
+
+              // hard clipping
+              if (mixed > 1.0f) {
+                mixed = 1.0f;
+              }
+              if (mixed < -1.0f) {
+                mixed = -1.0f;
+              }
+
+              short outPutSample = (short)(mixed * 32768.0f);
+              mixedOutput[i] = outPutSample;
+            }
+            outputTrack.write(mixedOutput, 0, mixedOutput.length);
+          }
+          packetList.clear();
         }
 
         outputTrack.stop();

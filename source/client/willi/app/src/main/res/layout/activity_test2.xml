@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.TestActivity1">
+
+
+    <TableLayout
+        android:layout_width="345dp"
+        android:layout_height="524dp"
+        android:layout_margin="8dp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textViewTest"
+                android:layout_width="378dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:text="Test"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/textViewIP"
+                android:layout_width="378dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:text="My IP : "
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </TableRow>
+        <TableRow>
+            <TableRow android:layout_span="2">
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IP : "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/editTextIP1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+                <EditText
+                    android:id="@+id/editTextPort1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </TableRow>
+        </TableRow>
+
+        <TableRow>
+            <TableRow android:layout_span="2">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IP : "
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/editTextIP2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+                <EditText
+                    android:id="@+id/editTextPort2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10" />
+            </TableRow>
+        </TableRow>
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/buttonReceive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonReceiveClick"
+                android:text="Receive Thread On" />
+            <Button
+                android:id="@+id/buttonSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonSendClick"
+                android:text="Send Thread On" />
+        </TableRow>
+
+        <TableRow>
+            <Button
+                android:id="@+id/buttonStop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonStopClick"
+                android:text="Stop" />
+            <Button
+                android:id="@+id/buttonMixPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="buttonMixPlayClick"
+                android:text="Play 2 files" />
+        </TableRow>
+
+        <TableRow>
+            <ImageView
+                android:id="@+id/imageViewVideo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/VideoFrame"/>
+        </TableRow>
+
+    </TableLayout>
+
+
+</android.support.constraint.ConstraintLayout>
