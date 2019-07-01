@@ -185,20 +185,24 @@ public class ContactsFragment extends Fragment {
                 }
                 else
                 {
-//                    // for test
-//                    ArrayList<String> emailList = new ArrayList<String>();
-//                    Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
-//                    for(UserInfo info : selected)
-//                    {
-//                        intent.putExtra("Email"+size, selected.get(size).getEmail());
-//                        size += 1;
-//                     //   emailList.add(info.getEmail());
-//                    }
-//                    startActivity(intent);
+                    // for test
+                    ArrayList<String> emailList = new ArrayList<String>();
+                    Intent intent = new Intent(getActivity(), ContactConferenceCallActivity.class);
+
+                    int i=1;
+                    for(UserInfo info : selected)
+                    {
+                        String key = "Email"+i;
+                        intent.putExtra(key, info.getEmail());
+                        Log.d(TAG, "Key:" + key+" info.getEmail()!!!"+info.getEmail());
+                        i++;
+                    }
+                    intent.putExtra("size",i-1);
+                    startActivity(intent);
 
                     // For test
 
-
+                    /*
                     CCRegisterBody ccRegisterBody = new CCRegisterBody();
                     Date date = new Date();
                     date.setTime(System.currentTimeMillis());
@@ -213,6 +217,7 @@ public class ContactsFragment extends Fragment {
 
                     RestManager rest = new RestManager();
                     rest.sendCCRegister(ccRegisterBody);
+					*/
 
 
                 }

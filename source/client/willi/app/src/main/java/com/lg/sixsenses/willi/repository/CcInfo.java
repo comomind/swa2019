@@ -8,7 +8,7 @@ public class CcInfo
 {
     //String startDate;
     Date startDate;
-    private String email;
+    //private String email;
     int duration;
     ArrayList<String> aList;
     String ccNumber;
@@ -31,10 +31,6 @@ public class CcInfo
 
     public String getCcNumber() {
         return ccNumber;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setCcNumber(String ccNumber) {

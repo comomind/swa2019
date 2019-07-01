@@ -44,6 +44,8 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
     private String email1;
     private String email2;
     ArrayList<CcInfo> selected;
+    private String email;
+    private TextView textViewContactUpdateEmail;
 
     public void close(View view)
     {
@@ -93,14 +95,21 @@ public class ContactConferenceCallActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         ArrayList<String> emailList = new ArrayList<String>();
-        for(CcInfo info : selected)
+        int size = intent.getIntExtra("size",0);
+        for(int i=0;i<size;i++)
         {
-            emailList.add(info.getEmail());
+            String key = "Email"+(i+1);
+            String email = intent.getStringExtra(key);
+            Log.d(TAG, "Key:" + key+"email!!!"+email);
+            emailList.add(email);
         }
         ccRegisterBody.setaList(emailList);
 
         RestManager rest = new RestManager();
         rest.sendCCRegister(ccRegisterBody);
+
+        textViewResult = (TextView)findViewById(R.id.textViewResult);
+        textViewResult.setText("Success video conference reservation!");
     }
 
     @Override
