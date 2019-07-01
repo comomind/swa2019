@@ -26,8 +26,9 @@ import com.lg.sixsenses.willi.codec.audio.AudioCodec;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
 import com.lg.sixsenses.willi.codec.audio.AudioCodecFactory;
 import com.lg.sixsenses.willi.logic.callmanager.AudioIo;
+import com.lg.sixsenses.willi.logic.callmanager.AudioPlayer;
+import com.lg.sixsenses.willi.logic.callmanager.AudioRecorder;
 import com.lg.sixsenses.willi.logic.callmanager.VideoIo;
-import com.lg.sixsenses.willi.net.AudioClock;
 import com.lg.sixsenses.willi.net.JitterBuffer;
 import com.lg.sixsenses.willi.util.Util;
 
@@ -43,12 +44,28 @@ public class TestActivity extends AppCompatActivity {
     private final int JITTER_BUFFER_JITTER = 30;
     private final int JITTER_BUFFER_PERIOD = 200;
 
-    private EditText editTextIP;
+    private final int RECEIVE_PORT1 = 60001;
+    private final int RECEIVE_PORT2 = 60002;
+
+    private EditText remoteIpText1;
+    private EditText remoteIpText2;
+    private EditText remotePortText1;
+    private EditText remotePortText2;
+
     private TextView textView;
     private ImageView imageView;
 
-    private AudioIo audioIo;
-    private VideoIo videoIo;
+    private InetAddress remoteIpAddress1;
+    private InetAddress remoteIpAddress2;
+
+    private int port1;
+    private int port2;
+
+    private AudioRecorder audioRecorder;
+    private AudioPlayer audioPlayer;
+    private AudioIo audioIo1;
+    private AudioIo audioIo2;
+    private VideoIo videoIo1;
 
     private TestActivityHandler handler;
     private AudioCodec audioCodec;
@@ -59,9 +76,19 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_test);
-        editTextIP = (EditText)findViewById(R.id.editTextIP);
-        editTextIP.setText(Util.getIPAddress());
-        editTextIP.setSelection(editTextIP.length());
+        remoteIpText1 = (EditText)findViewById(R.id.editTextIP1);
+        remoteIpText1.setText(Util.getIPAddress());
+        remoteIpText1.setSelection(remoteIpText1.length());
+
+        remoteIpText2 = (EditText)findViewById(R.id.editTextIP2);
+        remoteIpText2.setText(Util.getIPAddress());
+        remoteIpText2.setSelection(remoteIpText2.length());
+
+        remotePortText1 = (EditText)findViewById(R.id.editTextPort1);
+        remotePortText1.setText("60001");
+
+        remotePortText2 = (EditText)findViewById(R.id.editTextPort2);
+        remotePortText2.setText("60002");
 
         textView = (TextView)findViewById(R.id.textViewIP);
         textView.setText(Util.getIPAddress());
@@ -85,17 +112,32 @@ public class TestActivity extends AppCompatActivity {
 
         JitterBuffer jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
 
-        audioIo = new AudioIo(getApplicationContext(), audioCodec);
-        videoIo = new VideoIo(getApplicationContext(), handler, imageView.getId());
+        audioRecorder = new AudioRecorder(audioCodec);
+        audioRecorder.addRecorderQueue("test", recorderQueue);
 
+        audioPlayer = new AudioPlayer(getApplicationContext(), audioRecorder.getAudioSessionId(), audioCodec);
+        audioPlayer.addJitterBuffer("test", jitterBuffer);
 
+        audioIo1 = new AudioIo(getApplicationContext(), audioCodec, jitterBuffer, recorderQueue);
+        audioIo2 = new AudioIo(getApplicationContext(), audioCodec, jitterBuffer, recorderQueue);
+
+        videoIo1 = new VideoIo(getApplicationContext(), handler, imageView.getId());
     }
 
     public void buttonSendClick(View view) {
         try {
-            InetAddress remoteIp = InetAddress.getByName(editTextIP.getText().toString());
-            audioIo.startSend(remoteIp, 60001);
-            videoIo.startSend(remoteIp, 61001);
+            audioRecorder.startRecord();
+
+            InetAddress remoteIp1 = InetAddress.getByName(remoteIpText1.getText().toString());
+
+            int port1 = Integer.valueOf(remotePortText1.getText().toString());
+            audioIo1.startSend(remoteIp1, port1);
+
+            InetAddress remoteIp2 = InetAddress.getByName(remoteIpText2.getText().toString());
+            int port2 = Integer.valueOf(remotePortText2.getText().toString());
+            audioIo2.startSend(remoteIp2, port2);
+
+//            videoIo1.startSend(remoteIp, 61001);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,14 +145,22 @@ public class TestActivity extends AppCompatActivity {
     }
 
     public void buttonReceiveClick(View view) {
-        audioIo.startReceive(60001);
-        videoIo.startReceive(61001);
+        audioPlayer.startPlay();
+
+        audioIo1.startReceive(RECEIVE_PORT1);
+        audioIo2.startReceive(RECEIVE_PORT2);
+
+//        videoIo1.startReceive(61001);
     }
 
     public void buttonStopClick(View view) {
         Log.d(TAG, "stopAll");
-        audioIo.stopAll();
-        videoIo.stopAll();
+        audioIo1.stopAll();
+        audioIo2.stopAll();
+
+        videoIo1.stopAll();
+        audioRecorder.stopRecord();
+        audioPlayer.stopPlay();
     }
 
     public class TestActivityHandler extends Handler {

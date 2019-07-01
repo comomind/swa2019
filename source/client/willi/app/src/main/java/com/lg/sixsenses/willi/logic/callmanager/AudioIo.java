@@ -29,13 +29,10 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AudioIo {
   private static final String TAG = AudioIo.class.getSimpleName();
-
-  // TODO: some const values (should remove this after integration)
-  private final int JITTER_BUFFER_JITTER = 30;
-  private final int JITTER_BUFFER_PERIOD = 200;
 
   private Context context;
 
@@ -65,7 +62,8 @@ public class AudioIo {
   private boolean isSendThreadRun = false;
 
   private AudioCodec audioCodec;
-  private JitterBuffer jitterBuffer;
+  private JitterBuffer jitterBuffer = null;
+  private ConcurrentLinkedQueue<byte[]> recorderQueue = null;
 
 //  private int rtpSequenceNumber = 0;
 //  private int timestampOffset = 0;
@@ -73,10 +71,12 @@ public class AudioIo {
   public AudioIo(Context context) {
     this.context = context;
   }
-  
-  public AudioIo(Context context, AudioCodec audioCodec) {
+
+  public AudioIo(Context context, AudioCodec audioCodec, JitterBuffer jitterBuffer, ConcurrentLinkedQueue<byte[]> recorderQueue) {
     this.context = context;
     this.audioCodec = audioCodec;
+    this.jitterBuffer = jitterBuffer;
+    this.recorderQueue = recorderQueue;
   }
 
   public boolean getIsBoostAudio() {
@@ -130,9 +130,11 @@ public class AudioIo {
 
     // terminate receive thread
     stopReceiveThread();
+    isStartReceive = false;
 
     // terminate send thread
     stopSendThread();
+    isStartSend = false;
 
     audioCodec.close();
 
@@ -156,8 +158,6 @@ public class AudioIo {
 
     receiveThread = null;
     receiveSocket = null;
-
-    isStartReceive = false;
   }
 
   public void stopSendThread() {
@@ -174,7 +174,6 @@ public class AudioIo {
     }
 
     sendThread = null;
-    isStartSend = false;
   }
 
   private void startReceiveThread() {
@@ -185,8 +184,6 @@ public class AudioIo {
         Log.d(TAG, "receive thread started, tid: " + Thread.currentThread().getId());
 
         try {
-          jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
-
           while (isReceiveThreadRun) {
             byte[] rtpBuffer = new byte[RtpPacket.HEADER_SIZE + audioCodec.getEncodedBufferSize()];
             DatagramPacket packet = new DatagramPacket(rtpBuffer, RtpPacket.HEADER_SIZE + audioCodec.getEncodedBufferSize());
@@ -215,35 +212,8 @@ public class AudioIo {
     sendThread = new Thread(new Runnable() {
       @Override
       public void run() {
-        Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO);
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        int previousAudioManagerMode = 0;
-        if (audioManager != null) {
-          previousAudioManagerMode = audioManager.getMode();
-          audioManager.setMode(AudioManager.MODE_IN_COMMUNICATION); //Enable AEC
-        }
-
         // create instance of AudioRecord
         Log.d(TAG, "send thread started, tid: " + Thread.currentThread().getId());
-        AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, audioCodec.getSampleRate(),
-            AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT,
-            AudioRecord.getMinBufferSize(audioCodec.getSampleRate(), AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT));
-
-        AudioTrack outputTrack = new AudioTrack.Builder()
-            .setAudioAttributes(new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_VOICE_COMMUNICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                //	.setFlags(AudioAttributes.FLAG_LOW_LATENCY) //This is Nougat+ only (API 25) comment if you have lower
-                .build())
-            .setAudioFormat(new AudioFormat.Builder()
-                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                .setSampleRate(audioCodec.getSampleRate())
-                .setChannelMask(AudioFormat.CHANNEL_OUT_MONO).build())
-            .setBufferSizeInBytes(audioCodec.getRawBufferSize())
-            .setTransferMode(AudioTrack.MODE_STREAM)
-            //.setPerformanceMode(AudioTrack.PERFORMANCE_MODE_LOW_LATENCY) //Not until Api 26
-            .setSessionId(recorder.getAudioSessionId())
-            .build();
 
         int bytesRead = 0;
         byte[] rawBuffer = new byte[audioCodec.getRawBufferSize()];
@@ -251,46 +221,16 @@ public class AudioIo {
 
         try {
           Log.i(TAG, "Packet destination: " + remoteIp.toString() + " " + remotePort);
+
           DatagramSocket socket = new DatagramSocket();
-          recorder.startRecording();
-          outputTrack.play();
 
           int rtpSeqNum = 0;
           int timeStampOffset = 0;
 
           while (isSendThreadRun) {
-            RtpPacket rtpReceivedPacket = jitterBuffer.read();
-            if (rtpReceivedPacket != null) {
-              rtpReceivedPacket.getPayload(tempBuffer);
-              byte[] encodedBuffer = Arrays.copyOf(tempBuffer, rtpReceivedPacket.getPayloadLength());
-              audioCodec.decode(encodedBuffer, rawBuffer);
-
-              byte[] audioOutputBuffer = rawBuffer;
-              if (!isBoostAudio) {
-                // normal case
-                outputTrack.write(audioOutputBuffer, 0, audioCodec.getRawBufferSize());
-              } else {
-                // boost case
-                short[] boostAudioOutputBuffer = new short[audioOutputBuffer.length / 2];
-                // to turn bytes to short as either big endian or little endian
-                ByteBuffer.wrap(audioOutputBuffer).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(boostAudioOutputBuffer);
-                for (int i=0 ; i<boostAudioOutputBuffer.length ; i++) {  // 16 bit sample size
-                  int value = boostAudioOutputBuffer[i]*10;   //increase level by gain=20dB: Math.pow(10., dB/20.);  dB to gain factor
-                  if (value > 32767) {
-                    value = 32767;
-                  } else if (value <-32767) {
-                    value = -32767;
-                  }
-                  boostAudioOutputBuffer[i] = (short)value;
-                }
-                // to turn shorts back to bytes
-                outputTrack.write(boostAudioOutputBuffer, 0, boostAudioOutputBuffer.length);
-              }
-            }
-
-            // capture audio from microphone and send
-            bytesRead = recorder.read(rawBuffer, 0, audioCodec.getRawBufferSize());
-            if (bytesRead == audioCodec.getRawBufferSize()) {
+            rawBuffer = recorderQueue.poll();
+            if (rawBuffer != null && rawBuffer.length == audioCodec.getRawBufferSize()) {
+//              Log.d(TAG, "send rendered packet");
               int len = audioCodec.encode(rawBuffer, tempBuffer);
 
               int timeStampIncrement = audioCodec.getSampleRate() / (AudioCodecConst.MILLISECONDS_IN_A_SECOND / audioCodec.getSampleInterval());
@@ -306,17 +246,9 @@ public class AudioIo {
           }
 
           // stop audio thread
-          recorder.stop();
-          recorder.release();
-          outputTrack.stop();
-          outputTrack.flush();
           socket.disconnect();
           socket.close();
 
-          if (audioManager != null) {
-            audioManager.setMode(previousAudioManagerMode);
-          }
-          Log.i(TAG, "audio thread stopped");
         } catch (SocketException e) {
           isReceiveThreadRun = false;
           Log.e(TAG, "SocketException: " + e.toString());

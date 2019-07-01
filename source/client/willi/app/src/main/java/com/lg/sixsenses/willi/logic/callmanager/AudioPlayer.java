@@ -16,6 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class AudioPlayer {
   private static final String TAG = AudioPlayer.class.getSimpleName();
@@ -25,28 +26,30 @@ public class AudioPlayer {
   private Thread playThread = null;
   private Context context;
   private AudioCodec audioCodec = null;
+  private int sessionId = 0;
 
-  private ArrayList<JitterBuffer> jitterBufferArray;
+  private HashMap<String, JitterBuffer> jitterBufferMap;
 
-  public AudioPlayer(Context context, AudioCodec audioCodec) {
+  public AudioPlayer(Context context, int sessionId, AudioCodec audioCodec) {
     this.context = context;
-    this.jitterBufferArray = new ArrayList<>();
+    this.sessionId = sessionId;
+    this.jitterBufferMap = new HashMap<String, JitterBuffer>();
     this.audioCodec = audioCodec;
   }
 
-  public synchronized void addJitterBuffer(JitterBuffer jitterBuffer) {
-    jitterBufferArray.add(jitterBuffer);
-    Log.d(TAG, "addJitterBuffer, size: " + jitterBufferArray.size());
+  public synchronized void addJitterBuffer(String peerEmail, JitterBuffer jitterBuffer) {
+   jitterBufferMap.put(peerEmail, jitterBuffer);
+    Log.d(TAG, "addJitterBuffer, size: " + jitterBufferMap.size());
   }
 
-  public synchronized void removeJitterBuffer(JitterBuffer jitterBuffer) {
-    jitterBufferArray.remove(jitterBuffer);
-    Log.d(TAG, "removeJitterBuffer, size: " + jitterBufferArray.size());
+  public synchronized void removeJitterBuffer(String peerEmail) {
+    jitterBufferMap.remove(peerEmail);
+    Log.d(TAG, "removeJitterBuffer, size: " + jitterBufferMap.size());
   }
 
   public synchronized void clearJitterBuffer() {
-    jitterBufferArray.clear();
-    Log.d(TAG, "clearJitterBuffer, size: " + jitterBufferArray.size());
+    jitterBufferMap.clear();
+    Log.d(TAG, "clearJitterBuffer, size: " + jitterBufferMap.size());
   }
 
   public synchronized boolean startPlay() {
@@ -90,7 +93,7 @@ public class AudioPlayer {
                 .setBufferSizeInBytes(audioCodec.getRawBufferSize())
                 .setTransferMode(AudioTrack.MODE_STREAM)
                 //.setPerformanceMode(AudioTrack.PERFORMANCE_MODE_LOW_LATENCY) //Not until Api 26
-//            .setSessionId(recorder.getAudioSessionId())
+            .setSessionId(sessionId)
                 .build();
 
         outputTrack.play();
@@ -102,46 +105,69 @@ public class AudioPlayer {
         short[] mixedTemp = new short[rawBuffer.length / 2];
         short[] mixedOuput = new short[rawBuffer.length / 2];
 
+        Log.d(TAG, "isPlayThreadRun = " + isPlayThreadRun);
+
+        int count = 0;
+
         while(isPlayThreadRun) {
+
+          Log.d(TAG, "jitterBufferMap size= " + jitterBufferMap.size());
+
           // get packet from jitter buffer array
-          for (JitterBuffer buffer : jitterBufferArray) {
-            packet = buffer.read();
-            if (packet != null) {
-              packet.getPayload(tempBuffer);
-              byte[] encodedBuffer = Arrays.copyOf(tempBuffer, packet.getPayloadLength());
-              audioCodec.decode(encodedBuffer, rawBuffer);
-
-              byte[] audioOutputBuffer = rawBuffer;
-              ByteBuffer.wrap(audioOutputBuffer).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(mixedTemp);
-
-              for (int i=0 ; i<mixedTemp.length ; i++) {
-                float sample1 = mixedTemp[i] / 32768.0f;
-                float sample2 = mixedOuput[i] / 32768.0f;
-
-                float mixed = sample1 + sample2;
-
-                // reduce the volume a bit
-                mixed *= 0.8;
-
-                // hard clipping
-                if (mixed > 1.0f) {
-                  mixed = 1.0f;
-                }
-                if (mixed < -1.0f) {
-                  mixed = -1.0f;
-                }
-
-              }
-
-
-
+          for (JitterBuffer jitterBuffer: jitterBufferMap.values()) {
+            packet = jitterBuffer.read();
+            if (packet == null) {
+//              Log.d(TAG, "packet == null, continue");
+              continue;
             }
+            Log.d(TAG, "packet != null, try to mix");
+            packet.getPayload(tempBuffer);
+            byte[] encodedBuffer = Arrays.copyOf(tempBuffer, packet.getPayloadLength());
+            audioCodec.decode(encodedBuffer, rawBuffer);
+
+            byte[] audioOutputBuffer = rawBuffer;
+            ByteBuffer.wrap(audioOutputBuffer).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(mixedTemp);
+
+//            if (count == 0) {
+//              System.arraycopy(mixedTemp, 0, mixedOuput, 0, mixedTemp.length);
+//              count++;
+//              continue;
+//            }
+
+//            for (int i=0 ; i<mixedTemp.length; i++) {
+//              float sample1 = mixedTemp[i] / 32768.0f;
+//              float sample2 = mixedOuput[i] / 32768.0f;
+//
+//              float mixed = sample1 + sample2;
+//
+//              // reduce the volume a bit
+//              mixed *= 0.8;
+//
+//              // hard clipping
+//              if (mixed > 1.0f) {
+//                mixed = 1.0f;
+//              }
+//              if (mixed < -1.0f) {
+//                mixed = -1.0f;
+//              }
+//
+//              short outputSample = (short)(mixed * 32768.0f);
+//              mixedOuput[i] = outputSample;
+//            }
+            outputTrack.write(mixedTemp, 0, mixedTemp.length);
           }
+
+//          outputTrack.write(mixedOuput, 0, mixedOuput.length);
+          count = 0;
+
+          outputTrack.write(mixedTemp, 0, mixedTemp.length);
+
 
         }
 
         outputTrack.stop();
         outputTrack.flush();
+        outputTrack.release();
 
       }
     });
@@ -153,9 +179,8 @@ public class AudioPlayer {
       return true;
     }
 
-    audioCodec.close();
-
     stopPlayThread();
+
     isRunning = false;
 
     return false;
@@ -175,7 +200,7 @@ public class AudioPlayer {
     }
 
     playThread = null;
-    jitterBufferArray.clear();
-  }
 
+    audioCodec.close();
+  }
 }
