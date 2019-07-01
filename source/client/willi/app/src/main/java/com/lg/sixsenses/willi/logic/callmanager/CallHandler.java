@@ -198,6 +198,35 @@ public class CallHandler {
         videoIo.setRealSender(true);
     }
 
+    public void startVideo()
+    {
+        videoIo.startReceive(DataManager.getInstance().getMyUdpInfo().getVideoPort());
+        ArrayList<UdpInfo> peerInfos = DataManager.getInstance().getPeerUdpInfoList();
+        UdpInfo peerInfo = peerInfos.get(0);
+        InetAddress remoteIp;
+
+        try {
+            audioRecorder.startRecord();
+            remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
+            ArrayList<UdpPort> list = new ArrayList<UdpPort>();
+            UdpPort port = new UdpPort();
+            port.setVideoPort(peerInfo.getVideoPort());
+            port.setAudioPort(peerInfo.getAudioPort());
+            port.setIp(peerInfo.getIpaddr());
+            list.add(port);
+
+            videoIo.setUdpPortList(list);
+            videoIo.startSend(remoteIp, peerInfo.getVideoPort());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public void stopVideo()
+    {
+        videoIo.stopAll();
+    }
+
 
     public void startCc(String phoneNum, ArrayList<UdpPort> portList)
     {

@@ -290,11 +290,11 @@ public class VideoIo implements Camera.PreviewCallback {
 
   public void stopSendThread() {
     closeCamera();
-
-    sendSocket.disconnect();
-    sendSocket.close();
-    sendSocket = null;
-
+    if(sendSocket != null) {
+      sendSocket.disconnect();
+      sendSocket.close();
+      sendSocket = null;
+    }
     isStartSend = false;
   }
 

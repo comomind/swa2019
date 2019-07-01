@@ -20,7 +20,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.lg.sixsenses.willi.repository.DataManager;
@@ -85,6 +87,31 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         CallHandler.getInstance().setHandler(handler);
         CallHandler.getInstance().setViewId(imageViewState.getId());
         CallHandler.getInstance().setMyViewId(imageView1.getId());
+
+        Switch sw = (Switch) findViewById(R.id.switchVideo);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Log.d(TAG,"Video On");
+                    CallHandler.getInstance().startVideo();
+                    // The toggle is enabled
+                } else {
+                    // The toggle is disabled
+                    Log.d(TAG,"Video Off");
+                    CallHandler.getInstance().stopVideo();
+                    Message message = handler.obtainMessage();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(CcActivity.CcActivityHandler.KEY_IMAGE_VIEW_ID, imageView1.getId());
+                    bundle.putByteArray(CcActivity.CcActivityHandler.KEY_IMAGE_BYTES, null);
+
+                    message.setData(bundle);
+                    message.what = CallStateActivityHandler.CMD_VIEW_CLEAR;
+                    handler.sendMessage(message);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -106,6 +133,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         else if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.RINGING)
             CallHandler.getInstance().callRejectForIncomingCall();
     }
+
+
 
     @Override
     public void onBackPressed() {
