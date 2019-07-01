@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UdpPort;
 import com.lg.sixsenses.willi.ui.CcActivity;
 
@@ -22,6 +23,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class VideoIo implements Camera.PreviewCallback {
   private static final String TAG = VideoIo.class.getSimpleName();
@@ -31,10 +33,13 @@ public class VideoIo implements Camera.PreviewCallback {
 //  private static final int PREVIEW_HEIGHT = 640;
 //  private static final int MAX_VIDEO_FRAME_SIZE =PREVIEW_HEIGHT*PREVIEW_WIDTH*4;
 //  private static final int COMPRESS_QUALITY = 40;
-  private static final int PREVIEW_WIDTH = 240;
-  private static final int PREVIEW_HEIGHT = 320;
-  private static final int MAX_VIDEO_FRAME_SIZE =PREVIEW_HEIGHT*PREVIEW_WIDTH*4;
-  private static final int COMPRESS_QUALITY = 25;
+  private int PREVIEW_WIDTH = 240;
+  private int PREVIEW_HEIGHT = 320;
+  private int COMPRESS_QUALITY = 25;
+
+  private int MAX_VIDEO_FRAME_SIZE =PREVIEW_HEIGHT*PREVIEW_WIDTH*4;
+
+
   private static final int VIDEO_BUFFER_SIZE = 65507;
   private static final int ROTATE_DEGREE = -90;
 
@@ -73,6 +78,9 @@ public class VideoIo implements Camera.PreviewCallback {
   public VideoIo(Context context) {
     this.context = context;
     udpPortList = new ArrayList<UdpPort>();
+
+    Log.d(TAG,"Video Quality !!!!!!!!!!!!!!!!!!!!1 "+PREVIEW_WIDTH +" x "+ PREVIEW_HEIGHT+" / "+COMPRESS_QUALITY);
+
   }
 
   public void setViewId(int viewId) {
@@ -138,6 +146,10 @@ public class VideoIo implements Camera.PreviewCallback {
     if (isStartSend) {
       return true;
     }
+
+    PREVIEW_WIDTH = DataManager.getInstance().getCamWidth();
+    PREVIEW_HEIGHT = DataManager.getInstance().getCamHeight();
+    COMPRESS_QUALITY = DataManager.getInstance().getComRate();
 
     Log.d(TAG, "VideoIo start send request: isRealSender: "+isRealSender+" remote: " + remoteIp + " " + remotePort);
 
@@ -315,6 +327,12 @@ public class VideoIo implements Camera.PreviewCallback {
     Camera.Parameters params = camera.getParameters();
     params.setPreviewSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
     params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+
+//    List<Camera.Size> sizeList = params.getSupportedPreviewSizes();
+//    for(Camera.Size size : sizeList)
+//      Log.d(TAG,"Support resolution : " +size.width+ " x "+size.height);
+
+    Log.d(TAG," @@@@@@@@@@@@@@@@@@@@@@@ Set Video Quality : " +PREVIEW_WIDTH+ " x "+PREVIEW_HEIGHT+" : "+COMPRESS_QUALITY);
 
     camera.setParameters(params);
     camera.setPreviewCallbackWithBuffer(this);

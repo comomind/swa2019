@@ -35,7 +35,7 @@ public class RestManager {
 
     public static final String TAG = RestManager.class.getName().toString();
 
-    public static final String SERVER_IP = ConstantsWilli.SERVER_IP;
+    //public static final String SERVER_IP = DataManager.getInstance().getSERVER_IP();
     public static final String PORT = "8080";
     public static final String CMD_REGISTER = "user/register.json";
     public static final String CMD_LOGIN = "user/login.json";
@@ -51,6 +51,7 @@ public class RestManager {
     public HttpURLConnection setupRestfulConnection(String cmd)
     {
         try {
+            String SERVER_IP = DataManager.getInstance().getSERVER_IP();
             String restAPI = "http://" + SERVER_IP + ":" + PORT + "/" + cmd;
             URL url = new URL(restAPI);
             Log.d(TAG, "restAPI : " + restAPI);

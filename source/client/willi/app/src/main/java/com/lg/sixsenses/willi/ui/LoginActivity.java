@@ -40,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView textViewResult;
+    private EditText editIPaddr;
 
     private String[] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
@@ -65,6 +66,9 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         //RegisterInfo registerInfo = new RegisterInfo();
         //registerInfo.setEmail(editTextEmail.getText().toString());
         //registerInfo.setPassword(editTextPassword.getText().toString());
+
+        String ip = editIPaddr.getText().toString();
+        DataManager.getInstance().setSERVER_IP(ip);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(editTextEmail.getText().toString());
@@ -128,6 +132,10 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         editTextPassword    = (EditText)findViewById(R.id.editAddNum);
         textViewResult      = (TextView)findViewById(R.id.textViewResult);
         textViewResult.setText(null);
+
+        editIPaddr = (EditText)findViewById((R.id.editIPaddr));
+        editIPaddr.setText(ConstantsWilli.SERVER_IP);
+
 // Moved to CallReceiveService
 //        CallHandler.getInstance().setContext(getApplicationContext());
 //        CallHandler.getInstance().startCallHandler();

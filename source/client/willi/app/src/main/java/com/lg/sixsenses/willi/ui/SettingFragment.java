@@ -1,6 +1,8 @@
 package com.lg.sixsenses.willi.ui;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +18,7 @@ import android.widget.Spinner;
 
 import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.RegisterInfo;
 import com.lg.sixsenses.willi.repository.UpdatedData;
@@ -36,6 +39,7 @@ public class SettingFragment extends Fragment {
     public static final String TAG = SettingFragment.class.getName().toString();
     private Spinner spinnerAudioOutput;
     private Spinner spinnerSound;
+    private Spinner spinnerResolution;
     private Button buttonSave;
     private Button myInfobutton;
     private Button logoutbutton;
@@ -117,6 +121,11 @@ public class SettingFragment extends Fragment {
                     data.setType("AudioOutput");
                     data.setData(selected);
                     DataManager.getInstance().NotifyUpdate(data);
+                    SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(ConstantsWilli.PREFERENCE_KEY_AUDIOOUTPUT, selected.toString());
+                    editor.commit();
+
                 }
 
                 DataManager.Sound selectedSound = DataManager.Sound.values()[spinnerSound.getSelectedItemPosition()];
@@ -126,10 +135,63 @@ public class SettingFragment extends Fragment {
                     data.setType("Sound");
                     data.setData(selectedSound);
                     DataManager.getInstance().NotifyUpdate(data);
+
+                    SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(ConstantsWilli.PREFERENCE_KEY_SOUND, selectedSound.toString());
+                    editor.commit();
+
+
+                }
+
+                DataManager.Resolution selectedResolution = DataManager.Resolution.values()[spinnerResolution.getSelectedItemPosition()];
+                if(selectedResolution != DataManager.getInstance().getResolution()) {
+                    DataManager.getInstance().setResolution(selectedResolution);
+                    if(selectedResolution == DataManager.Resolution.LOW)
+                    {
+                        DataManager.getInstance().setCamWidth(176);
+                        DataManager.getInstance().setCamHeight(144);
+                        DataManager.getInstance().setComRate(15);
+                        Log.d(TAG, "Resolution : LOW");
+                    }
+                    else if(selectedResolution == DataManager.Resolution.MID)
+                    {
+                        DataManager.getInstance().setCamWidth(176);
+                        DataManager.getInstance().setCamHeight(144);
+                        DataManager.getInstance().setComRate(20);
+                        Log.d(TAG, "Resolution : MID");
+                    }
+                    else if(selectedResolution == DataManager.Resolution.HIGH)
+                    {
+                        DataManager.getInstance().setCamWidth(320);
+                        DataManager.getInstance().setCamHeight(240);
+                        DataManager.getInstance().setComRate(25);
+                        Log.d(TAG, "Resolution : HIGH");
+                    }
+
+                    SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString(ConstantsWilli.PREFERENCE_KEY_RESOLUTION, selectedResolution.toString());
+                    editor.commit();
+//                    UpdatedData data = new UpdatedData();
+//                    data.setType("Sound");
+//                    data.setData(selectedSound);
+//                    DataManager.getInstance().NotifyUpdate(data);
                 }
             }
         });
 
+        spinnerResolution = (Spinner)view.findViewById(R.id.spinnerResolution);
+        String[] itemsResolution = new String[]{ "LOW","MID","HIGH"};
+        ArrayAdapter<String> adapterResolution = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,itemsResolution);
+        spinnerResolution.setAdapter(adapterResolution);
+
+        DataManager.Resolution ro = DataManager.getInstance().getResolution();
+        int index2 = 0;
+        if(ro == DataManager.Resolution.LOW) index2 = 0;
+        else if (ro == DataManager.Resolution.MID) index2 = 1;
+        else if (ro == DataManager.Resolution.HIGH) index2 = 2;
+        spinnerResolution.setSelection(index2);
         return view;
     }
 }

@@ -81,6 +81,7 @@ public class CcActivity extends AppCompatActivity {
     {
 
         CcHandler.getInstance().rejectCc(ccNumber);
+        finish();
     }
 
 

@@ -60,6 +60,19 @@
                 android:spinnerMode="dropdown" />
 
         </TableRow>
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Resolution : " />
+            <Spinner
+                android:id="@+id/spinnerResolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown" />
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"

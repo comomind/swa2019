@@ -25,4 +25,5 @@ public class ConstantsWilli {
     public static final String PREFERENCE_KEY_MY_NAME           = "myName";
     public static final String PREFERENCE_KEY_MY_EMAIL          = "myEmail";
     public static final String PREFERENCE_KEY_TOKEN             = "token";
+    public static final String PREFERENCE_KEY_RESOLUTION        = "resolution";
 }

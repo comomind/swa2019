@@ -34,6 +34,7 @@ public class TcpSendCallManager {
 
             public void run() {
                 try {
+                    String SERVER_IP = DataManager.getInstance().getSERVER_IP();
                     TcpCallSignalRequest callSignal = new TcpCallSignalRequest();
 
                     TcpCallSignalHeader header = new TcpCallSignalHeader();
@@ -57,8 +58,8 @@ public class TcpSendCallManager {
                     callSignal.setHeader(header);
                     callSignal.setBody(body);
 
-                    Log.d(TAG, "TCP ServerIP : " + ConstantsWilli.SERVER_IP + " Port : " + ConstantsWilli.SERVER_TCP_PORT);
-                    Socket socket = new Socket(ConstantsWilli.SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
+                    Log.d(TAG, "TCP ServerIP : " + SERVER_IP + " Port : " + ConstantsWilli.SERVER_TCP_PORT);
+                    Socket socket = new Socket(SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
 
                     ObjectMapper mapper = new ObjectMapper();
                     String input = mapper.writeValueAsString(callSignal);
@@ -183,8 +184,9 @@ public class TcpSendCallManager {
                     callSignal.setHeader(header);
                     callSignal.setBody(body);
 
-                    Log.d(TAG, "TCP ServerIP : " + ConstantsWilli.SERVER_IP + " Port : " + ConstantsWilli.SERVER_TCP_PORT);
-                    Socket socket = new Socket(ConstantsWilli.SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
+                    String SERVER_IP = DataManager.getInstance().getSERVER_IP();
+                    Log.d(TAG, "TCP ServerIP : " + SERVER_IP + " Port : " + ConstantsWilli.SERVER_TCP_PORT);
+                    Socket socket = new Socket(SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     ObjectMapper mapper = new ObjectMapper();
@@ -293,7 +295,8 @@ public class TcpSendCallManager {
                     ccMessage.setBody(body);
 
                     //Log.d(TAG, "TCP ServerIP : " + ConstantsWilli.SERVER_IP + " Port : " + ConstantsWilli.SERVER_TCP_PORT);
-                    Socket socket = new Socket(ConstantsWilli.SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
+                    String SERVER_IP = DataManager.getInstance().getSERVER_IP();
+                    Socket socket = new Socket(SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
 
                     ObjectMapper mapper = new ObjectMapper();
                     String input = mapper.writeValueAsString(ccMessage);
@@ -415,7 +418,8 @@ public class TcpSendCallManager {
                     callSignal.setHeader(header);
                     callSignal.setBody(body);
 
-                    Socket socket = new Socket(ConstantsWilli.SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
+                    String SERVER_IP = DataManager.getInstance().getSERVER_IP();
+                    Socket socket = new Socket(SERVER_IP, ConstantsWilli.SERVER_TCP_PORT);
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                     ObjectMapper mapper = new ObjectMapper();

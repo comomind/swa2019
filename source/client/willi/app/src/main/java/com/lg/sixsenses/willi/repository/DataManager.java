@@ -17,6 +17,10 @@ public class DataManager extends Observable {
     public enum CallStatus {IDLE, CALLING, RINGING, CONNECTED}
     public enum AudioOutput {BLUETOOTH, SPEAKER, EARPIECE }
     public enum Sound {BELL, VIBRATE, MUTE }
+    public enum Resolution {LOW, MID, HIGH }  //640x480 , 320x240, 176 x 144
+
+    private String SERVER_IP;
+
 
     private DataManager() {
     }
@@ -34,6 +38,10 @@ public class DataManager extends Observable {
     private Sound sound;
     private boolean isLogin;
     private ArrayList<CcInfo> ccList;
+    private Resolution resolution;
+    private int camWidth = 176;
+    private int camHeight = 144;
+    private int comRate = 15;
 
     public void clearCallInfo()
     {
@@ -146,6 +154,46 @@ public class DataManager extends Observable {
 
     public void setCcList(ArrayList<CcInfo> ccList) {
         this.ccList = ccList;
+    }
+
+    public String getSERVER_IP() {
+        return SERVER_IP;
+    }
+
+    public void setSERVER_IP(String SERVER_IP) {
+        this.SERVER_IP = SERVER_IP;
+    }
+
+    public Resolution getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(Resolution resolution) {
+        this.resolution = resolution;
+    }
+
+    public int getCamWidth() {
+        return camWidth;
+    }
+
+    public void setCamWidth(int camWidth) {
+        this.camWidth = camWidth;
+    }
+
+    public int getCamHeight() {
+        return camHeight;
+    }
+
+    public void setCamHeight(int camHeight) {
+        this.camHeight = camHeight;
+    }
+
+    public int getComRate() {
+        return comRate;
+    }
+
+    public void setComRate(int comRate) {
+        this.comRate = comRate;
     }
 
     public void NotifyUpdate(UpdatedData data) {
