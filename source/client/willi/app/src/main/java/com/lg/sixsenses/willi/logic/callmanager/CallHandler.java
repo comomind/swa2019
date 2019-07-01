@@ -96,7 +96,8 @@ public class CallHandler {
             audioRecorder.startRecord();
 
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
-            audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+//            audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+            audioRecorder.addSendList("test", remoteIp, peerInfo.getAudioPort());
 
             ArrayList<UdpPort> list = new ArrayList<UdpPort>();
             UdpPort port = new UdpPort();
@@ -136,7 +137,8 @@ public class CallHandler {
             audioRecorder.startRecord();
 
             remoteIp = InetAddress.getByName(peerInfo.getIpaddr());
-            audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+//            audioIo.startSend(remoteIp, peerInfo.getAudioPort());
+            audioRecorder.addSendList("test", remoteIp, peerInfo.getAudioPort());
 
             ArrayList<UdpPort> list = new ArrayList<UdpPort>();
             UdpPort port = new UdpPort();

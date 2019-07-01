@@ -127,7 +127,12 @@ public class CcHandler {
                 setSendPortListForVideoIo(sendPortList);
 
                 audioRecorder.startRecord();
-                ccAvInfo.getAudioIo().startSend(remoteIp, udpPort.getAudioPort());
+
+                //
+
+//                ccAvInfo.getAudioIo().startSend(remoteIp, udpPort.getAudioPort());
+                audioRecorder.addSendList(udpPort.getEmail(), remoteIp, udpPort.getAudioPort());
+
                 ccAvInfo.getVideoIo().startSend(remoteIp, udpPort.getVideoPort());
                 Log.d(TAG,"Start AV  to  "+udpPort.getEmail()+" / A:"+ccAvInfo.getSendAudioPort()+" / V:"+ ccAvInfo.getSendVideoPort()+" IP:"+udpPort.getIp());
             }
@@ -141,6 +146,8 @@ public class CcHandler {
     public void onReceiveCcRejectMsg(String email)
     {
         Log.d(TAG,"onReceiveCcRejectMsg : "+email);
+
+        audioRecorder.removeSendList(email);
 
         AudioIo audioIo = ccAvInfoHashMap.get(email).getAudioIo();
         audioIo.stopAll();
@@ -206,6 +213,7 @@ public class CcHandler {
             // for audio
             JitterBuffer jitterBuffer = new JitterBuffer(JITTER_BUFFER_JITTER, JITTER_BUFFER_PERIOD, audioCodec.getSampleRate());
             ConcurrentLinkedQueue<byte[]> recorderQueue = new ConcurrentLinkedQueue<byte[]>();
+
             audioPlayer.addJitterBuffer(email, jitterBuffer);
             audioRecorder.addRecorderQueue(email, recorderQueue);
             AudioIo audioIo = new AudioIo(context, audioCodec, jitterBuffer, recorderQueue);
@@ -244,6 +252,8 @@ public class CcHandler {
         ArrayList<String> peopleList = thisCc.getaList();
 
         Log.d(TAG, "people list = "+peopleList.toString());
+
+        audioRecorder.clearSendList();
 
         for(int i = 0; i<peopleList.size(); i++)
         {

@@ -6,7 +6,15 @@ import android.media.MediaRecorder;
 import android.util.Log;
 
 import com.lg.sixsenses.willi.codec.audio.AudioCodec;
+import com.lg.sixsenses.willi.codec.audio.AudioCodecConst;
+import com.lg.sixsenses.willi.net.RtpConst;
+import com.lg.sixsenses.willi.net.RtpPacket;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +27,8 @@ public class AudioRecorder {
   private HashMap<String, ConcurrentLinkedQueue<byte[]>> recorderQueueMap = null;
   private AudioCodec audioCodec = null;
 
+  private HashMap<String, AvInfo> sendList = null;
+
   private Thread recordThread = null;
   private boolean isRunning = false;
   private boolean isRecordThreadRun = false;
@@ -28,6 +38,25 @@ public class AudioRecorder {
   public AudioRecorder(AudioCodec audioCodec) {
     this.audioCodec = audioCodec;
     recorderQueueMap = new HashMap<String, ConcurrentLinkedQueue<byte[]>>();
+    sendList = new HashMap<>();
+  }
+
+  public synchronized boolean addSendList(String email, InetAddress remoteIp, int remotePort) {
+    AvInfo info = new AvInfo(email, remoteIp, remotePort);
+    sendList.put(email, info);
+
+    return true;
+  }
+
+  public synchronized boolean removeSendList(String email) {
+    sendList.remove(email);
+
+    return true;
+  }
+
+  public synchronized boolean clearSendList() {
+    sendList.clear();
+    return true;
   }
 
   public int getAudioSessionId() {
@@ -81,6 +110,8 @@ public class AudioRecorder {
       @Override
       public void run() {
         byte[] rawBuffer = new byte[audioCodec.getRawBufferSize()];
+        byte[] tempBuffer = new byte[audioCodec.getEncodedBufferSize()];
+
         int bytesRead = 0;
 
         AudioRecord recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, audioCodec.getSampleRate(),
@@ -89,14 +120,49 @@ public class AudioRecorder {
 
         recorder.startRecording();
 
-        while (isRecordThreadRun) {
-          bytesRead = recorder.read(rawBuffer, 0, audioCodec.getRawBufferSize());
+        int rtpSeqNum = 0;
+        int timeStampOffset = 0;
 
-          // push audio to queue
-          for (ConcurrentLinkedQueue<byte[]> recorderQueue :recorderQueueMap.values()) {
-            byte[] temp = Arrays.copyOf(rawBuffer, rawBuffer.length);
-            recorderQueue.offer(temp);
+        try {
+          DatagramSocket socket = new DatagramSocket();
+
+          while (isRecordThreadRun) {
+            bytesRead = recorder.read(rawBuffer, 0, audioCodec.getRawBufferSize());
+
+            if (sendList.size() == 0) {
+              continue;
+            }
+
+            // send packet
+            int len = audioCodec.encode(rawBuffer, tempBuffer);
+            int timeStampIncrement = audioCodec.getSampleRate() / (AudioCodecConst.MILLISECONDS_IN_A_SECOND / audioCodec.getSampleInterval());
+            RtpPacket rtpSendPacket = new RtpPacket(RtpConst.PayloadType.GSM.getValue(), rtpSeqNum, timeStampOffset + (rtpSeqNum * timeStampIncrement), tempBuffer, len);
+            int packetLen = rtpSendPacket.getLength();
+            byte[] packetBits = new byte[packetLen];
+
+            rtpSendPacket.getPacket(packetBits);
+
+            for (AvInfo info : sendList.values()) {
+              DatagramPacket packet = new DatagramPacket(packetBits, packetLen, info.remoteIp, info.remotePort);
+              socket.send(packet);
+            }
+            rtpSeqNum++;
+
+//          // push audio to queue
+//          for (ConcurrentLinkedQueue<byte[]> recorderQueue :recorderQueueMap.values()) {
+//            byte[] temp = Arrays.copyOf(rawBuffer, rawBuffer.length);
+//            recorderQueue.offer(temp);
+//          }
           }
+
+          // stop audio thread
+          socket.disconnect();
+          socket.close();
+
+        } catch (SocketException e) {
+          e.printStackTrace();
+        } catch (IOException e) {
+          e.printStackTrace();
         }
 
         recorder.stop();
@@ -121,4 +187,17 @@ public class AudioRecorder {
 
 
   }
+
+  class AvInfo {
+    String email;
+    InetAddress remoteIp;
+    int remotePort;
+
+    public AvInfo(String email, InetAddress remoteIp, int remotePort) {
+      this.email = email;
+      this.remoteIp = remoteIp;
+      this.remotePort = remotePort;
+    }
+  }
+
 }
