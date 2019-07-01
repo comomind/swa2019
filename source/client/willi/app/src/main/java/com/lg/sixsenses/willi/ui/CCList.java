@@ -16,9 +16,9 @@ public class CCList extends LinearLayout{
         super(context);
         inflation_init(context);
 
-        text1 = (TextView)findViewById(R.id.starttimelist);
-        text2 = (TextView)findViewById(R.id.durationlayout);
-        text3 = (TextView)findViewById(R.id.ccNum);
+        text1 = (TextView)findViewById(R.id.textName);
+        text2 = (TextView)findViewById(R.id.textEmail);
+        text3 = (TextView)findViewById(R.id.textNum);
     }
 
     private void inflation_init(Context context){

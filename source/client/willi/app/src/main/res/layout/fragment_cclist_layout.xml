@@ -11,8 +11,8 @@
         android:weightSum="1">
 
         <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="116dp"
+            android:id="@+id/imageView3"
+            android:layout_width="130dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/conference" />
@@ -23,22 +23,37 @@
             android:layout_gravity="center_horizontal"
             android:orientation="vertical">
 
-            <TableRow android:layout_height="wrap_content">
+            <TableRow>
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView3"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="fill_vertical"
-                    android:text="Start time : " />
+                    android:layout_height="wrap_content"
+                    android:text="Start time :" />
 
                 <TextView
-                    android:id="@+id/starttimelist"
-                    android:layout_width="133dp"
-                    android:layout_height="wrap_content"
-                    android:layout_span="4"
-                    android:textSize="14dp"
+                    android:id="@+id/textName"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_span="3"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
+
+            </TableRow>
+
+            <TableRow android:layout_height="50dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Duration :"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textEmail"
+                    android:layout_width="115dp"
+                    android:layout_height="20dp"
+                    android:textSize="14sp" />
 
             </TableRow>
 
@@ -50,29 +65,13 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Duration : " />
+                    android:text="CC Num :" />
 
                 <TextView
-                    android:id="@+id/durationlayout"
-                    android:layout_width="142dp"
-                    android:layout_height="match_parent"
-                    android:inputType="number" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="259dp"
-                android:layout_height="120dp">
-
-                <TextView
-                    android:id="@+id/durationlist"
-                    android:layout_width="77dp"
-                    android:layout_height="match_parent"
-                    android:text="CC Num : " />
-
-                <TextView
-                    android:id="@+id/ccNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:id="@+id/textNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textSize="14sp" />
             </TableRow>
         </TableLayout>
 
