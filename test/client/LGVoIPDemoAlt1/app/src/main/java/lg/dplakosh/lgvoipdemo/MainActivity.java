@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements Observer, PopupMe
                 Matcher matcher = IP_ADDRESS.matcher(RemoteIpText.getText().toString());
                 if (matcher.matches()) {
                     broadcastIntent(RemoteIpText.getText().toString(), "/CALL_BUTTON/");
+                    broadcastIntent("", "/ANSWER_CALL_BUTTON/");
                 } else {
                     final AlertDialog alert = new AlertDialog.Builder(MainActivity.this).create();
                     alert.setTitle("Invailid IP");
