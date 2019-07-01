@@ -118,8 +118,8 @@ public class TestActivity extends AppCompatActivity {
         audioPlayer = new AudioPlayer(getApplicationContext(), audioRecorder.getAudioSessionId(), audioCodec);
         audioPlayer.addJitterBuffer("test", jitterBuffer);
 
-        audioIo1 = new AudioIo(getApplicationContext(), audioCodec, jitterBuffer, recorderQueue);
-        audioIo2 = new AudioIo(getApplicationContext(), audioCodec, jitterBuffer, recorderQueue);
+//        audioIo1 = new AudioIo(getApplicationContext(), audioCodec, jitterBuffer, recorderQueue);
+//        audioIo2 = new AudioIo(getApplicationContext(), audioCodec, jitterBuffer, recorderQueue);
 
         videoIo1 = new VideoIo(getApplicationContext(), handler, imageView.getId());
     }
