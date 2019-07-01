@@ -14,6 +14,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -47,6 +48,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     private TcpSendCallManager sender = null;
     private TcpRecvCallManager receiver = null;
     private ImageView imageViewState;
+    private ImageView imageView1;
     private PowerManager.WakeLock proximityWakeLock;
     private AudioManager audioManager;
     private MediaPlayer ring;
@@ -66,6 +68,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         buttonAccept = (Button)findViewById(R.id.buttonAccept);
         buttonReject = (Button)findViewById(R.id.buttonReject);
         imageViewState = (ImageView)findViewById(R.id.imageViewState);
+        imageView1 =  (ImageView)findViewById(R.id.imageView1);
 
         // for test
         imageViewState.setImageResource(R.drawable.calling);
@@ -78,6 +81,7 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         handler = new CallStateActivityHandler();
         CallHandler.getInstance().setHandler(handler);
         CallHandler.getInstance().setViewId(imageViewState.getId());
+        CallHandler.getInstance().setMyViewId(imageView1.getId());
     }
 
     @Override
@@ -294,12 +298,17 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                         true);
 
                     // TODO: get image view by id
-                    imageViewState.setImageBitmap(rotator);
+                    ImageView imageView = (ImageView)findViewById(viewId);
+                    imageView.setImageBitmap(rotator);
+
                 }
                 break;
 
                 case CMD_VIEW_CLEAR: {
-                    imageViewState.setImageBitmap(null);
+                    Bundle bundle = msg.getData();
+                    int viewId = bundle.getInt(KEY_IMAGE_VIEW_ID);
+                    ImageView imageView = (ImageView)findViewById(viewId);
+                    imageView.setImageBitmap(null);;
                 }
                 break;
 

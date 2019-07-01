@@ -38,6 +38,7 @@ public class CallHandler {
     private VideoIo videoIo;
     private CallStateActivity.CallStateActivityHandler handler;
     private int viewId;
+    private int myViewId;
 
     public int getViewId() {
         return viewId;
@@ -46,6 +47,15 @@ public class CallHandler {
     public void setViewId(int viewId) {
         this.viewId = viewId;
         videoIo.setViewId(viewId);
+    }
+
+    public int getMyViewId() {
+        return myViewId;
+    }
+
+    public void setMyViewId(int myViewId) {
+        this.myViewId = myViewId;
+        videoIo.setMyViewId(myViewId);
     }
 
     public CallStateActivity.CallStateActivityHandler getHandler() {

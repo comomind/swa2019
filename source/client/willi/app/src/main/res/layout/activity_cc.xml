@@ -18,13 +18,13 @@
             android:gravity="center">
             <ImageView
                 android:id="@+id/imageViewCc1"
-                android:layout_width="300px"
-                android:layout_height="400px"
+                android:layout_width="320px"
+                android:layout_height="240px"
                 android:layout_centerInParent="true" />
             <ImageView
                 android:id="@+id/imageViewCc2"
-                android:layout_width="300px"
-                android:layout_height="400px"
+                android:layout_width="320px"
+                android:layout_height="240px"
                 android:layout_centerInParent="true" />
 
         </TableRow>
@@ -32,13 +32,13 @@
             android:gravity="center">
             <ImageView
                 android:id="@+id/imageViewCc3"
-                android:layout_width="300px"
-                android:layout_height="400px"
+                android:layout_width="320px"
+                android:layout_height="240px"
                 android:layout_centerInParent="true" />
             <ImageView
                 android:id="@+id/imageViewCc4"
-                android:layout_width="300px"
-                android:layout_height="400px"
+                android:layout_width="320px"
+                android:layout_height="240px"
                 android:layout_centerInParent="true" />
 
         </TableRow>

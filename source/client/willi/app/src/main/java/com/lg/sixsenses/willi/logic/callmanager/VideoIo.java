@@ -33,10 +33,14 @@ public class VideoIo implements Camera.PreviewCallback {
   private static final String TAG = VideoIo.class.getSimpleName();
 
   private static final int TEX_NAME = 10;
-  private static final int PREVIEW_WIDTH = 480;
-  private static final int PREVIEW_HEIGHT = 640;
+//  private static final int PREVIEW_WIDTH = 480;
+//  private static final int PREVIEW_HEIGHT = 640;
+//  private static final int MAX_VIDEO_FRAME_SIZE =PREVIEW_HEIGHT*PREVIEW_WIDTH*4;
+//  private static final int COMPRESS_QUALITY = 40;
+  private static final int PREVIEW_WIDTH = 240;
+  private static final int PREVIEW_HEIGHT = 320;
   private static final int MAX_VIDEO_FRAME_SIZE =PREVIEW_HEIGHT*PREVIEW_WIDTH*4;
-  private static final int COMPRESS_QUALITY = 40;
+  private static final int COMPRESS_QUALITY = 25;
   private static final int VIDEO_BUFFER_SIZE = 65507;
   private static final int ROTATE_DEGREE = -90;
 
@@ -306,13 +310,6 @@ public class VideoIo implements Camera.PreviewCallback {
           Log.e(TAG, "camera failed to open: " + e.getLocalizedMessage());
         }
       }
-    }
-
-    Camera.Parameters params1   = camera.getParameters();
-    List<Camera.Size> list = params1 .getSupportedPreviewSizes();
-    for(Camera.Size size : list)
-    {
-      Log.d(TAG, "Camera Size : "+ size.width +" x "+size.height);
     }
 
     texture = new SurfaceTexture(TEX_NAME);
