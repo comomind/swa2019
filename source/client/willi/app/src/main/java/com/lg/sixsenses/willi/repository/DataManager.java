@@ -30,6 +30,8 @@ public class DataManager extends Observable {
     private String token;
     private String callerPhoneNum;
     private String calleePhoneNum;
+//    private String callerName;
+//    private String calleeName;
     private CallStatus callStatus;
     private long callId;
     private ArrayList<UdpInfo> peerUdpInfoList;
@@ -103,7 +105,15 @@ public class DataManager extends Observable {
     public String getCalleePhoneNum() {
         return calleePhoneNum;
     }
+/*
+    public String getCalleeName() {
+        return calleeName;
+    }
 
+    public String getCallerName() {
+        return callerName;
+    }
+*/
     public void setCalleePhoneNum(String calleePhoneNum) {
         this.calleePhoneNum = calleePhoneNum;
     }

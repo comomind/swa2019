@@ -145,8 +145,10 @@ public class ContactsFragment extends Fragment {
                 }
                 else
                 {
+                   // CallHandler.getInstance().callRequest(selected.get(0).getName());
                     CallHandler.getInstance().callRequest(selected.get(0).getPhoneNum());
                     Intent intent = new Intent(getActivity(),CallStateActivity.class);
+                    intent.putExtra("Name",selected.get(0).getName());
                     startActivity(intent);
                 }
             }

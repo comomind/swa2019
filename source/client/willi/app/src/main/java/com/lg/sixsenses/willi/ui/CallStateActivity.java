@@ -29,6 +29,7 @@ import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpRecvCallManager;
 import com.lg.sixsenses.willi.logic.servercommmanager.TcpSendCallManager;
 import com.lg.sixsenses.willi.R;
+import com.lg.sixsenses.willi.repository.UserInfo;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -54,6 +55,8 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
     private MediaPlayer ring;
     private Vibrator vibrator;
     private final long[] vibratorPattern = {0, 300, 1000};
+
+    String name;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,7 +147,9 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         if(DataManager.getInstance().getCallStatus() == DataManager.CallStatus.CALLING)
         {
             imageViewState.setImageResource(R.drawable.calling);
-            textViewCallstate.setText("Calling to "+DataManager.getInstance().getCalleePhoneNum());
+            Intent in = getIntent();
+            name = in.getStringExtra("Name");
+            textViewCallstate.setText("Calling to "+name+"("+DataManager.getInstance().getCalleePhoneNum()+")");
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(false);
         }
@@ -181,7 +186,19 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         {
             DoPmAndBringActivityToForeground();
             imageViewState.setImageResource(R.drawable.ringing);
-            textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
+            String callername = null;
+            Log.e(TAG, "userInfo.getName()!!!!!"+DataManager.getInstance().getContactList());
+            for(UserInfo userInfo: DataManager.getInstance().getContactList()){
+                if(userInfo.getPhoneNum().equals(DataManager.getInstance().getCallerPhoneNum())) {
+                    callername = userInfo.getName();
+                    Log.e(TAG, "userInfo.getName()!!!!!"+userInfo.getName());
+                }
+            }
+
+          //  Intent in = getIntent();
+          //  name = in.getStringExtra("Name");
+            textViewCallstate.setText("Call from "+callername+"("+DataManager.getInstance().getCallerPhoneNum()+")");
+          //  textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
 
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(true);
