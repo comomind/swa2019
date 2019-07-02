@@ -119,19 +119,15 @@ public class RestManager {
         else if(type.equals("UpdateResult"))
         {
             try {
+
                 ObjectMapper mapper = new ObjectMapper();
-                TypeReference ref = new TypeReference<RestfulResponse<UserInfo>>() {};
+                TypeReference ref = new TypeReference<RestfulResponse<String>>() {};
                 RestfulResponse restfulResponse = mapper.readValue(recv, ref);
                 Log.d(TAG, restfulResponse.toString());
 
-                UserInfo myInfo = (UserInfo) (restfulResponse.getBody());
-        //        Log.d(TAG, "MyInfo : " + myInfo.toString());
-                DataManager.getInstance().setMyInfo((UserInfo) myInfo);
-                UpdatedData data = new UpdatedData();
-                data.setType("UpdateResult");
-                data.setData(myInfo);
-                Log.d(TAG, "Notify my info ");
-                DataManager.getInstance().NotifyUpdate(data);
+                String token = restfulResponse.getToken();
+                DataManager.getInstance().setToken(token);
+
             } catch (IOException e) {
 
                 e.printStackTrace();

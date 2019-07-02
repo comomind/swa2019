@@ -32,6 +32,7 @@ public class MyInfoActivity extends AppCompatActivity implements Observer {
     private Spinner spinnerSecurityQuestion;
     private EditText editTextSecurityAnswer;
     private TextView textViewResult;
+    private TextView result2;
 
     public void close(View view)
     {
@@ -57,8 +58,11 @@ public class MyInfoActivity extends AppCompatActivity implements Observer {
 
         restManager.sendUpdateUser(registerInfo);
 
-      //  textViewResult = (TextView)findViewById(R.id.textViewResult);
-      //  textViewResult.setText("Success Update");
+        textViewResult = (TextView)findViewById(R.id.textViewResult);
+        textViewResult.setText("Success Update");
+        Log.d(TAG,"update in MyInfo"+editTextName.getText().toString());
+        result2 = (TextView)findViewById(R.id.textViewResult);
+        result2.setText("New name : "+editTextName.getText().toString());
 
 
     }
