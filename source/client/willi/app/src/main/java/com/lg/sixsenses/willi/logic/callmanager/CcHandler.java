@@ -249,18 +249,19 @@ public class CcHandler {
 
     public void rejectCc(String ccNumber)
     {
+        Log.d(TAG, "rejectCC() called");
         ArrayList<String> peopleList = thisCc.getaList();
-
-        Log.d(TAG, "people list = "+peopleList.toString());
+        if (peopleList != null) {
+            Log.d(TAG, "people list = " + peopleList.toString());
+        }
 
         audioRecorder.clearSendList();
 
-        for(int i = 0; i<peopleList.size(); i++)
-        {
-            AudioIo audioIo = ccAvInfoHashMap.get(peopleList.get(i)).getAudioIo();
-            audioIo.stopAll();
+        for (CcAvInfo avInfo : ccAvInfoHashMap.values()) {
+            AudioIo audioIo = avInfo.getAudioIo();
+            VideoIo videoIo = avInfo.getVideoIo();
 
-            VideoIo videoIo = ccAvInfoHashMap.get(peopleList.get(i)).getVideoIo();
+            audioIo.stopAll();
             videoIo.stopAll();
         }
 
