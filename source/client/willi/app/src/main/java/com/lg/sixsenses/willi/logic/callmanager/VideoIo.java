@@ -79,7 +79,7 @@ public class VideoIo implements Camera.PreviewCallback {
     this.context = context;
     udpPortList = new ArrayList<UdpPort>();
 
-    Log.d(TAG,"Video Quality !!!!!!!!!!!!!!!!!!!!1 "+PREVIEW_WIDTH +" x "+ PREVIEW_HEIGHT+" / "+COMPRESS_QUALITY);
+
 
   }
 
@@ -150,7 +150,7 @@ public class VideoIo implements Camera.PreviewCallback {
     PREVIEW_WIDTH = DataManager.getInstance().getCamWidth();
     PREVIEW_HEIGHT = DataManager.getInstance().getCamHeight();
     COMPRESS_QUALITY = DataManager.getInstance().getComRate();
-
+    Log.d(TAG,"Video Quality !!!!!!!!!!!!!!!!!!!!1 "+PREVIEW_WIDTH +" x "+ PREVIEW_HEIGHT+" / "+COMPRESS_QUALITY);
     Log.d(TAG, "VideoIo start send request: isRealSender: "+isRealSender+" remote: " + remoteIp + " " + remotePort);
 
     this.remoteIp = remoteIp;
@@ -325,7 +325,8 @@ public class VideoIo implements Camera.PreviewCallback {
       Log.e(TAG, e.getMessage());
     }
     Camera.Parameters params = camera.getParameters();
-    params.setPreviewSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+    //params.setPreviewSize(PREVIEW_WIDTH, PREVIEW_HEIGHT);
+    params.setPreviewSize(240, 320);
     params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
 
 //    List<Camera.Size> sizeList = params.getSupportedPreviewSizes();
@@ -394,7 +395,8 @@ public class VideoIo implements Camera.PreviewCallback {
       // Convert YUV to Jpeg
       Rect rect = new Rect(0, 0, w, h);
       ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-      yuvImage.compressToJpeg(rect, COMPRESS_QUALITY, outputStream);
+      //yuvImage.compressToJpeg(rect, COMPRESS_QUALITY, outputStream);
+      yuvImage.compressToJpeg(rect, 25, outputStream);
       byte[] bytes = outputStream.toByteArray();
 
 

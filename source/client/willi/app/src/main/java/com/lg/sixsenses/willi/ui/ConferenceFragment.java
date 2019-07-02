@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class ConferenceFragment extends Fragment {
-    public static final String TAG = RegisterActivity.class.getName().toString();
+    public static final String TAG = ConferenceFragment.class.getName().toString();
     Button buttonCdCall;
     TextView textViewContactResult;
 
@@ -84,31 +84,9 @@ public class ConferenceFragment extends Fragment {
                 }
                 else
                 {
-                    /*
-                    Intent intent = new Intent(getActivity(),CcActivity.class);
-                    int size = DataManager.getInstance().getCcList().size();
-                    String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
-                    Log.d(TAG,"Test :"+ccNumber);
-                    intent.putExtra("ccNumber",ccNumber);
-                    startActivity(intent);
-                    */
-                    //CallHandler.getInstance().callRequest(selected.get(0).getCcNumber());
-                    Intent intent = new Intent(getActivity(),CcActivity.class);
-                   // int size = DataManager.getInstance().getCcList().size();
-                    //Log.d(TAG,"ccnumsize!!! :"+size);
-                    //String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
 
-                    int i = 1;
-                   // String ccNumber;
-                    for(CcInfo info : selected)
-                    {
-                        String key = "ccNumber"+i;
-                        intent.putExtra(key, info.getCcNumber());
-                        Log.d(TAG,"ccNumber!!! :"+info.getCcNumber());
-                        i++;
-                    }
-                    //String ccNumber = DataManager.getInstance().getCcList().get(selected.).getCcNumber();
-                    //intent.putExtra("ccNumber",ccNumber);
+                    Intent intent = new Intent(getActivity(),CcActivity.class);
+                    intent.putExtra("ccNumber", selected.get(0).getCcNumber());
                     startActivity(intent);
                 }
             }

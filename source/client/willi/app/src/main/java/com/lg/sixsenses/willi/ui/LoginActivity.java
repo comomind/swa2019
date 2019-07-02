@@ -100,12 +100,14 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     public void buttonRegisterClick(View view)
     {
+        DataManager.getInstance().setSERVER_IP(editIPaddr.getText().toString());
         Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
         startActivity(intent);
     }
 
     public void forgotPassword(View view)
     {
+        DataManager.getInstance().setSERVER_IP(editIPaddr.getText().toString());
         Intent intent = new Intent(getApplicationContext(),ForgotPWActivity.class);
         startActivity(intent);
     }

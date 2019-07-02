@@ -1,8 +1,10 @@
 package com.lg.sixsenses.willi.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -84,6 +86,8 @@ public class SettingFragment extends Fragment {
         else if (so == DataManager.Sound.MUTE) indexSound = 2;
         spinnerSound.setSelection(indexSound);
 
+
+
         myInfobutton = (Button)view.findViewById(R.id.myInfobutton);
         myInfobutton.setOnClickListener(new View.OnClickListener()
         {
@@ -149,22 +153,22 @@ public class SettingFragment extends Fragment {
                     DataManager.getInstance().setResolution(selectedResolution);
                     if(selectedResolution == DataManager.Resolution.LOW)
                     {
-                        DataManager.getInstance().setCamWidth(176);
-                        DataManager.getInstance().setCamHeight(144);
+                        DataManager.getInstance().setCamWidth(144);
+                        DataManager.getInstance().setCamHeight(176);
                         DataManager.getInstance().setComRate(15);
                         Log.d(TAG, "Resolution : LOW");
                     }
                     else if(selectedResolution == DataManager.Resolution.MID)
                     {
-                        DataManager.getInstance().setCamWidth(176);
-                        DataManager.getInstance().setCamHeight(144);
+                        DataManager.getInstance().setCamWidth(144);
+                        DataManager.getInstance().setCamHeight(176);
                         DataManager.getInstance().setComRate(20);
                         Log.d(TAG, "Resolution : MID");
                     }
                     else if(selectedResolution == DataManager.Resolution.HIGH)
                     {
-                        DataManager.getInstance().setCamWidth(320);
-                        DataManager.getInstance().setCamHeight(240);
+                        DataManager.getInstance().setCamWidth(240);
+                        DataManager.getInstance().setCamHeight(320);
                         DataManager.getInstance().setComRate(25);
                         Log.d(TAG, "Resolution : HIGH");
                     }
@@ -186,12 +190,20 @@ public class SettingFragment extends Fragment {
         ArrayAdapter<String> adapterResolution = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,itemsResolution);
         spinnerResolution.setAdapter(adapterResolution);
 
-        DataManager.Resolution ro = DataManager.getInstance().getResolution();
-        int index2 = 0;
-        if(ro == DataManager.Resolution.LOW) index2 = 0;
-        else if (ro == DataManager.Resolution.MID) index2 = 1;
-        else if (ro == DataManager.Resolution.HIGH) index2 = 2;
-        spinnerResolution.setSelection(index2);
+
+        SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        String resolution = sp.getString(ConstantsWilli.PREFERENCE_KEY_RESOLUTION, "");
+        if(resolution.equals("LOW")) DataManager.getInstance().setResolution(DataManager.Resolution.LOW);
+        else if(resolution.equals("MID")) DataManager.getInstance().setResolution(DataManager.Resolution.MID);
+        else if(resolution.equals("HIGH")) DataManager.getInstance().setResolution(DataManager.Resolution.HIGH);
+
+        DataManager.Resolution re = DataManager.getInstance().getResolution();
+        int indexSolution = 0;
+        if(re == DataManager.Resolution.LOW) indexSolution = 0;
+        else if (re == DataManager.Resolution.MID) indexSolution = 1;
+        else if (re == DataManager.Resolution.HIGH) indexSolution = 2;
+        spinnerResolution.setSelection(indexSolution);
+
         return view;
     }
 }
