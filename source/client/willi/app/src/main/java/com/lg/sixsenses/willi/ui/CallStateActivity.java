@@ -1,8 +1,10 @@
 package com.lg.sixsenses.willi.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -25,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UpdatedData;
 import com.lg.sixsenses.willi.logic.callmanager.CallHandler;
@@ -302,6 +305,13 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
 
     int PreviousAudioManagerMode = 0;
     private void StartRinger() {
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        String sound = sp.getString(ConstantsWilli.PREFERENCE_KEY_SOUND, "");
+        String resolution = sp.getString(ConstantsWilli.PREFERENCE_KEY_RESOLUTION, "");
+        Log.d(TAG, "StartRinger " + sound + " " + DataManager.getInstance().getSound());
+        Log.d(TAG, "resolution " + resolution);
+
+
         if (DataManager.getInstance().getSound() == DataManager.Sound.BELL) {
             if (ring == null) {
                 PreviousAudioManagerMode = audioManager.getMode();

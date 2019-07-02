@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity implements Observer {
             Log.d(TAG, "Contact List : "+p);
 
             UserInfo myInfo = DataManager.getInstance().getMyInfo();
-            SharedPreferences sp = getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+            SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = sp.edit();
             editor.putString(ConstantsWilli.PREFERENCE_KEY_MY_PHONE_NUMBER, myInfo.getPhoneNum());
             editor.putString(ConstantsWilli.PREFERENCE_KEY_MY_EMAIL, myInfo.getEmail());

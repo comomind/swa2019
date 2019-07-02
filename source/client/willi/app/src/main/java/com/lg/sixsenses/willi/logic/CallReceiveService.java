@@ -32,7 +32,8 @@ public class CallReceiveService extends Service {
         Log.d(TAG,"Start CallReceiveService~~~");
 
         // get AudioOutput Setting
-        SharedPreferences sp = getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
         String audioOutput = sp.getString(ConstantsWilli.PREFERENCE_KEY_AUDIOOUTPUT, "");
         Log.d(TAG, "Read AudioOutput Option from Preference : "+audioOutput);
         if(audioOutput.equals("BLUETOOTH")) DataManager.getInstance().setAudioOutput(DataManager.AudioOutput.BLUETOOTH);

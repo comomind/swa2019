@@ -120,14 +120,18 @@ public class SettingFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
+
                 DataManager.AudioOutput selected = DataManager.AudioOutput.values()[spinnerAudioOutput.getSelectedItemPosition()];
+
+                Log.d(TAG, "SettingFragment selected " + selected + " " + DataManager.getInstance().getAudioOutput());
+
                 if(selected != DataManager.getInstance().getAudioOutput()) {
                     DataManager.getInstance().setAudioOutput(selected);
                     UpdatedData data = new UpdatedData();
                     data.setType("AudioOutput");
                     data.setData(selected);
                     DataManager.getInstance().NotifyUpdate(data);
-                    SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+                    SharedPreferences sp = getActivity().getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString(ConstantsWilli.PREFERENCE_KEY_AUDIOOUTPUT, selected.toString());
                     editor.commit();
@@ -135,6 +139,9 @@ public class SettingFragment extends Fragment {
                 }
 
                 DataManager.Sound selectedSound = DataManager.Sound.values()[spinnerSound.getSelectedItemPosition()];
+
+                Log.d(TAG, "SettingFragment selectedSound " + selectedSound + " " + DataManager.getInstance().getSound());
+
                 if(selectedSound != DataManager.getInstance().getSound()) {
                     DataManager.getInstance().setSound(selectedSound);
                     UpdatedData data = new UpdatedData();
@@ -142,7 +149,7 @@ public class SettingFragment extends Fragment {
                     data.setData(selectedSound);
                     DataManager.getInstance().NotifyUpdate(data);
 
-                    SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+                    SharedPreferences sp = getActivity().getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString(ConstantsWilli.PREFERENCE_KEY_SOUND, selectedSound.toString());
                     editor.commit();
@@ -175,7 +182,7 @@ public class SettingFragment extends Fragment {
                         Log.d(TAG, "Resolution : HIGH");
                     }
 
-                    SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+                    SharedPreferences sp = getActivity().getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString(ConstantsWilli.PREFERENCE_KEY_RESOLUTION, selectedResolution.toString());
                     editor.commit();
@@ -193,7 +200,7 @@ public class SettingFragment extends Fragment {
         spinnerResolution.setAdapter(adapterResolution);
 
 
-        SharedPreferences sp = getActivity().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        SharedPreferences sp = getActivity().getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
         String resolution = sp.getString(ConstantsWilli.PREFERENCE_KEY_RESOLUTION, "");
         if(resolution.equals("LOW")) DataManager.getInstance().setResolution(DataManager.Resolution.LOW);
         else if(resolution.equals("MID")) DataManager.getInstance().setResolution(DataManager.Resolution.MID);
