@@ -32,14 +32,22 @@ public class CCAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
+        int result = 0;
         example = DataManager.getInstance().getCcList();
-        return example.size();
+        if (example != null) {
+            result = example.size();
+        }
+        return result;
     }
 
     @Override
     public Object getItem(int position) {
+        Object result = null;
         example = DataManager.getInstance().getCcList();
-        return example.get(position);
+        if (example != null) {
+            result = example.get(position);
+        }
+        return result;
     }
 
     @Override
@@ -49,14 +57,16 @@ public class CCAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        example = DataManager.getInstance().getCcList();
         CCList listItem = new CCList(parent.getContext());
 
-        CcInfo ccInfo = example.get(position);
+        example = DataManager.getInstance().getCcList();
+        if (example != null) {
+            CcInfo ccInfo = example.get(position);
 
-        listItem.setText1(mFormat.format(ccInfo.getStartDate()));
-        listItem.setText2(""+ccInfo.getDuration());
-        listItem.setText3(ccInfo.getCcNumber());
+            listItem.setText1(mFormat.format(ccInfo.getStartDate()));
+            listItem.setText2(""+ccInfo.getDuration());
+            listItem.setText3(ccInfo.getCcNumber());
+        }
 
         return listItem;
     }
