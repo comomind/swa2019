@@ -63,6 +63,11 @@ public class LoginActivity extends AppCompatActivity implements Observer {
             return;
         }
 
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(ConstantsWilli.PREFERENCE_KEY_SERVER_IP, editIPaddr.getText().toString());
+        editor.commit();
+
         //RegisterInfo registerInfo = new RegisterInfo();
         //registerInfo.setEmail(editTextEmail.getText().toString());
         //registerInfo.setPassword(editTextPassword.getText().toString());
@@ -100,6 +105,11 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     public void buttonRegisterClick(View view)
     {
+
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(ConstantsWilli.PREFERENCE_KEY_SERVER_IP, editIPaddr.getText().toString());
+        editor.commit();
         DataManager.getInstance().setSERVER_IP(editIPaddr.getText().toString());
         Intent intent = new Intent(getApplicationContext(),RegisterActivity.class);
         startActivity(intent);
@@ -107,6 +117,11 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     public void forgotPassword(View view)
     {
+
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(ConstantsWilli.PREFERENCE_KEY_SERVER_IP, editIPaddr.getText().toString());
+        editor.commit();
         DataManager.getInstance().setSERVER_IP(editIPaddr.getText().toString());
         Intent intent = new Intent(getApplicationContext(),ForgotPWActivity.class);
         startActivity(intent);
@@ -247,8 +262,4 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         }
 
     }
-
-
-
-
 }

@@ -68,6 +68,12 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_callstate);
 
+
+
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+        String serverIp = sp.getString(ConstantsWilli.PREFERENCE_KEY_SERVER_IP,ConstantsWilli.SERVER_IP);
+        DataManager.getInstance().setSERVER_IP(serverIp);
+
         DataManager.getInstance().addObserver(this);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

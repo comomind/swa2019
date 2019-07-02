@@ -1,6 +1,8 @@
 package com.lg.sixsenses.willi.logic.callmanager;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
@@ -9,11 +11,14 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 
+import com.lg.sixsenses.willi.repository.ConstantsWilli;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.UdpPort;
 import com.lg.sixsenses.willi.ui.CcActivity;
+import com.lg.sixsenses.willi.util.Util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -74,13 +79,17 @@ public class VideoIo implements Camera.PreviewCallback {
 
   private ArrayList<UdpPort> udpPortList;
 
+  private void loadSharedPreference() {
+    SharedPreferences sp = context.getApplicationContext().getSharedPreferences(ConstantsWilli.PREFERENCE_FILENAME, Activity.MODE_PRIVATE);
+    String resolution = sp.getString(ConstantsWilli.PREFERENCE_KEY_RESOLUTION, "LOW");
+    Util.setResolution(resolution);
+  }
+
 
   public VideoIo(Context context) {
     this.context = context;
     udpPortList = new ArrayList<UdpPort>();
-
-
-
+    loadSharedPreference();
   }
 
   public void setViewId(int viewId) {
@@ -100,6 +109,7 @@ public class VideoIo implements Camera.PreviewCallback {
     this.context = context;
     this.handler = handler;
     this.viewId = viewId;
+    loadSharedPreference();
   }
 
   public int getMyViewId() {
