@@ -170,47 +170,47 @@
                 <!--android:text="Send" />-->
         <!--</TableRow>-->
 
-        <TableRow>
-            <TableRow android:layout_span="2">
-            <Button
-                android:id="@+id/buttonKim"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonKimClick"
-                android:text="Kim" />
-            <Button
-                android:id="@+id/buttonLee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonLeeClick"
-                android:text="Lee" />
-            <Button
-                android:id="@+id/buttonPark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="buttonParkClick"
-                android:text="Park" />
-            </TableRow>
-        </TableRow>
-        <TableRow>
-        <TableRow android:layout_span="2">
-            <Button
-                android:id="@+id/buttonTest1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
-                android:onClick="buttonTest1Click"
-                android:text="TEST1" />
+        <!--<TableRow>-->
+            <!--<TableRow android:layout_span="2">-->
+            <!--<Button-->
+                <!--android:id="@+id/buttonKim"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:onClick="buttonKimClick"-->
+                <!--android:text="Kim" />-->
+            <!--<Button-->
+                <!--android:id="@+id/buttonLee"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:onClick="buttonLeeClick"-->
+                <!--android:text="Lee" />-->
+            <!--<Button-->
+                <!--android:id="@+id/buttonPark"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:onClick="buttonParkClick"-->
+                <!--android:text="Park" />-->
+            <!--</TableRow>-->
+        <!--</TableRow>-->
+        <!--<TableRow>-->
+        <!--<TableRow android:layout_span="2">-->
+            <!--<Button-->
+                <!--android:id="@+id/buttonTest1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_span="2"-->
+                <!--android:onClick="buttonTest1Click"-->
+                <!--android:text="TEST1" />-->
 
-            <Button
-                android:id="@+id/buttonTest2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_span="2"
-                android:onClick="buttonTest2Click"
-                android:text="TEST2" />
-        </TableRow>
-        </TableRow>
+            <!--<Button-->
+                <!--android:id="@+id/buttonTest2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_span="2"-->
+                <!--android:onClick="buttonTest2Click"-->
+                <!--android:text="TEST2" />-->
+        <!--</TableRow>-->
+        <!--</TableRow>-->
         <TableRow>
 
             <TextView
