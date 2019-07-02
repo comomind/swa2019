@@ -202,12 +202,14 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                 phone = DataManager.getInstance().getCalleePhoneNum();
 
             String connectedname = null;
-            for(UserInfo userInfo: DataManager.getInstance().getContactList()){
-                if(userInfo.getPhoneNum().equals(phone)) {
-                    connectedname = userInfo.getName();
-                    Log.e(TAG, "userInfo.getName()!!!!!"+userInfo.getName());
-                }
-            };
+            if(DataManager.getInstance().getContactList() != null) {
+                for (UserInfo userInfo : DataManager.getInstance().getContactList()) {
+                    if (userInfo.getPhoneNum().equals(phone)) {
+                        connectedname = userInfo.getName();
+                        Log.e(TAG, "userInfo.getName()!!!!!" + userInfo.getName());
+                    }
+                };
+            }
             //if(name.equals(0))
             if(connectedname != null)
                 textViewCallstate.setText("Connected with "+connectedname+"("+phone+")");
@@ -236,12 +238,15 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             imageViewState.setImageResource(R.drawable.ringing);
             String callername = null;
             Log.e(TAG, "userInfo.getName()!!!!!"+DataManager.getInstance().getContactList());
-            for(UserInfo userInfo: DataManager.getInstance().getContactList()){
-                if(userInfo.getPhoneNum().equals(DataManager.getInstance().getCallerPhoneNum())) {
-                    callername = userInfo.getName();
-                    Log.e(TAG, "userInfo.getName()!!!!!"+userInfo.getName());
-                }
-            };
+
+            if(DataManager.getInstance().getContactList() != null) {
+                for (UserInfo userInfo : DataManager.getInstance().getContactList()) {
+                    if (userInfo.getPhoneNum().equals(DataManager.getInstance().getCallerPhoneNum())) {
+                        callername = userInfo.getName();
+                        Log.e(TAG, "userInfo.getName()!!!!!" + userInfo.getName());
+                    }
+                };
+            }
             if(callername != null)
                 textViewCallstate.setText("Call from "+callername+"("+DataManager.getInstance().getCallerPhoneNum()+")");
             else
