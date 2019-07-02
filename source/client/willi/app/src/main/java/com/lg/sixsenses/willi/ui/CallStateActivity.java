@@ -178,7 +178,11 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             imageViewState.setImageResource(R.drawable.calling);
             Intent in = getIntent();
             name = in.getStringExtra("Name");
-            textViewCallstate.setText("Calling to "+name+"("+DataManager.getInstance().getCalleePhoneNum()+")");
+            //if(name.equals(0))
+            if(name != null)
+                textViewCallstate.setText("Calling to "+name+"("+DataManager.getInstance().getCalleePhoneNum()+")");
+            else
+                textViewCallstate.setText("Calling to "+"("+DataManager.getInstance().getCalleePhoneNum()+")");
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(false);
         }
@@ -194,7 +198,19 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             else if(DataManager.getInstance().getMyInfo().getPhoneNum() == DataManager.getInstance().getCallerPhoneNum())
                 phone = DataManager.getInstance().getCalleePhoneNum();
 
-            textViewCallstate.setText("Connected with "+phone);
+            String connectedname = null;
+            for(UserInfo userInfo: DataManager.getInstance().getContactList()){
+                if(userInfo.getPhoneNum().equals(phone)) {
+                    connectedname = userInfo.getName();
+                    Log.e(TAG, "userInfo.getName()!!!!!"+userInfo.getName());
+                }
+            };
+            //if(name.equals(0))
+            if(connectedname != null)
+                textViewCallstate.setText("Connected with "+connectedname+"("+phone+")");
+            else
+                textViewCallstate.setText("Connected with "+"("+phone+")");
+            //textViewCallstate.setText("Connected with "+phone);
 
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(false);
@@ -222,12 +238,11 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
                     callername = userInfo.getName();
                     Log.e(TAG, "userInfo.getName()!!!!!"+userInfo.getName());
                 }
-            }
-
-          //  Intent in = getIntent();
-          //  name = in.getStringExtra("Name");
-            textViewCallstate.setText("Call from "+callername+"("+DataManager.getInstance().getCallerPhoneNum()+")");
-          //  textViewCallstate.setText("Call from "+DataManager.getInstance().getCallerPhoneNum());
+            };
+            if(callername != null)
+                textViewCallstate.setText("Call from "+callername+"("+DataManager.getInstance().getCallerPhoneNum()+")");
+            else
+                textViewCallstate.setText("Call from "+"("+DataManager.getInstance().getCallerPhoneNum()+")");
 
             buttonReject.setEnabled(true);
             buttonAccept.setEnabled(true);

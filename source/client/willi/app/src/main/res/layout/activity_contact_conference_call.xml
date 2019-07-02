@@ -116,8 +116,7 @@
                 android:id="@+id/textViewResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_span="2"
-                />
+                android:layout_span="4" />
         </TableRow>
     </TableLayout>
 

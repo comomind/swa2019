@@ -109,6 +109,8 @@ public class SettingFragment extends Fragment {
 
                 RestManager rest = new RestManager();
                 rest.sendLogout(userInfo);
+
+                getActivity().finish();
             }
 
         });

@@ -2,6 +2,7 @@ package com.lg.sixsenses.willi.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,9 +14,14 @@ import com.lg.sixsenses.willi.R;
 import com.lg.sixsenses.willi.logic.servercommmanager.RestManager;
 import com.lg.sixsenses.willi.repository.DataManager;
 import com.lg.sixsenses.willi.repository.RegisterInfo;
+import com.lg.sixsenses.willi.repository.UpdatedData;
 import com.lg.sixsenses.willi.repository.UserInfo;
 
-public class MyInfoActivity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
+
+public class MyInfoActivity extends AppCompatActivity implements Observer {
+    public static final String TAG = MyInfoActivity.class.getName().toString();
     private RestManager restManager;
     private Button MyInfoSave;
 
@@ -34,7 +40,7 @@ public class MyInfoActivity extends AppCompatActivity {
 
     public void MyInfoSave(View view)
     {
-        UserInfo myInfo = DataManager.getInstance().getMyInfo();
+        //UserInfo myInfo = DataManager.getInstance().getMyInfo();
 
         if(editTextSecurityAnswer.getText().toString().length() == 0)
         {
@@ -50,6 +56,11 @@ public class MyInfoActivity extends AppCompatActivity {
         registerInfo.setSecurityAnswer(editTextSecurityAnswer.getText().toString());
 
         restManager.sendUpdateUser(registerInfo);
+
+      //  textViewResult = (TextView)findViewById(R.id.textViewResult);
+      //  textViewResult.setText("Success Update");
+
+
     }
 
     @Override
@@ -74,9 +85,32 @@ public class MyInfoActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         spinnerSecurityQuestion.setAdapter(adapter);
 
-        textViewResult = (TextView)findViewById(R.id.textViewResult);
-        textViewResult.setText(null);
+
 
         restManager = new RestManager();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Log.d(TAG,"update in MyInfo");
+        UpdatedData data = (UpdatedData)arg;
+        if(data.getType().equals("UpdateResult"))
+        {
+            UserInfo myInfo = (UserInfo)data.getData();
+            RegisterInfo registerInfo = (RegisterInfo)data.getData();
+            Log.d(TAG, "Phone num : "+myInfo.getPhoneNum());
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    Toast.makeText(getApplicationContext(),"My Phone Number is "+ DataManager.getInstance().getMyInfo().getPhoneNum(),Toast.LENGTH_SHORT).show();
+                    textViewResult.setText("Success Update");
+
+
+                }
+            });
+
+
+        }
     }
 }

@@ -116,7 +116,27 @@ public class RestManager {
                 e.printStackTrace();
             }
         }
+        else if(type.equals("UpdateResult"))
+        {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference ref = new TypeReference<RestfulResponse<UserInfo>>() {};
+                RestfulResponse restfulResponse = mapper.readValue(recv, ref);
+                Log.d(TAG, restfulResponse.toString());
 
+                UserInfo myInfo = (UserInfo) (restfulResponse.getBody());
+        //        Log.d(TAG, "MyInfo : " + myInfo.toString());
+                DataManager.getInstance().setMyInfo((UserInfo) myInfo);
+                UpdatedData data = new UpdatedData();
+                data.setType("UpdateResult");
+                data.setData(myInfo);
+                Log.d(TAG, "Notify my info ");
+                DataManager.getInstance().NotifyUpdate(data);
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
         else if(type.equals("LoginResult"))
         {
             try {
@@ -345,6 +365,8 @@ public class RestManager {
             public void run() {
                 HttpURLConnection conn = setupRestfulConnection(CMD_UPDATE);
                 sendRestfulRequest(conn, registerInfo);
+                recvRestfulResponse(conn);
+                conn.disconnect();
             }
         }
         AsyncTask.execute(new MyRunnable(registerInfo));
