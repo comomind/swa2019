@@ -237,15 +237,15 @@ public class CallStateActivity extends AppCompatActivity implements Observer {
             DoPmAndBringActivityToForeground();
             imageViewState.setImageResource(R.drawable.ringing);
             String callername = null;
-            Log.e(TAG, "userInfo.getName()!!!!!"+DataManager.getInstance().getContactList());
 
             if(DataManager.getInstance().getContactList() != null) {
+                Log.e(TAG, "userInfo.getName()!!!!!" + DataManager.getInstance().getContactList());
                 for (UserInfo userInfo : DataManager.getInstance().getContactList()) {
                     if (userInfo.getPhoneNum().equals(DataManager.getInstance().getCallerPhoneNum())) {
                         callername = userInfo.getName();
                         Log.e(TAG, "userInfo.getName()!!!!!" + userInfo.getName());
                     }
-                };
+                }
             }
             if(callername != null)
                 textViewCallstate.setText("Call from "+callername+"("+DataManager.getInstance().getCallerPhoneNum()+")");
