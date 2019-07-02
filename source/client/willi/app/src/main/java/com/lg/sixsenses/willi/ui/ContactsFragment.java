@@ -227,21 +227,21 @@ public class ContactsFragment extends Fragment {
         });
 
         // TEST CODE
-        buttonCCStart = (Button)view.findViewById(R.id.buttonCCStart);
-        buttonCCStart.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v) {
-                // Test Code
-                //
-                Intent intent = new Intent(getActivity(),CcActivity.class);
-                int size = DataManager.getInstance().getCcList().size();
-                String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
-                Log.d(TAG,"Test :"+ccNumber);
-                intent.putExtra("ccNumber",ccNumber);
-                startActivity(intent);
-            }
-        });
+//        buttonCCStart = (Button)view.findViewById(R.id.buttonCCStart);
+//        buttonCCStart.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v) {
+//                // Test Code
+//                //
+//                Intent intent = new Intent(getActivity(),CcActivity.class);
+//                int size = DataManager.getInstance().getCcList().size();
+//                String ccNumber = DataManager.getInstance().getCcList().get(size-1).getCcNumber();
+//                Log.d(TAG,"Test :"+ccNumber);
+//                intent.putExtra("ccNumber",ccNumber);
+//                startActivity(intent);
+//            }
+//        });
 
         return view;
     }

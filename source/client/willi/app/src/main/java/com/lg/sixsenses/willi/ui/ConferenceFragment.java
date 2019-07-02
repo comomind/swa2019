@@ -80,7 +80,7 @@ public class ConferenceFragment extends Fragment {
             public void onClick(View v) {
                 if(selected.size() != 1)
                 {
-                    textViewContactResult.setText("Please select only one!");
+//                    textViewContactResult.setText("Please select only one!");
                 }
                 else
                 {
