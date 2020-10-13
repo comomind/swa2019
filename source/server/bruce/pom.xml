@@ -46,7 +46,7 @@
 		<hsqldb.version>2.2.6</hsqldb.version>
 
 		<!-- Test -->
-		<junit.version>4.12</junit.version>
+		<junit.version>4.13.1</junit.version>
 
 	</properties>
 
