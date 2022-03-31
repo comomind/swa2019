@@ -28,7 +28,7 @@
 		<maven.javadoc.skip>false</maven.javadoc.skip>
 
 		<!-- Spring -->
-		<org.springframework.version>4.3.16.RELEASE</org.springframework.version>
+		<org.springframework.version>5.3.18</org.springframework.version>
 		<devonframe.version>${project.version}</devonframe.version>
 
 		<!-- commons -->
